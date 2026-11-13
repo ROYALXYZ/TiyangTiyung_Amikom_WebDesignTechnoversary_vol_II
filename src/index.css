@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  --color-cream: #fffdf7;
+  --color-mint: #f0fdf4;
+  --color-ink: #1e293b;
+
+  --color-organic: #22c55e;
+  --color-organic-soft: #dcfce7;
+  --color-anorganic: #f59e0b;
+  --color-anorganic-soft: #fef3c7;
+  --color-b3: #ef4444;
+  --color-b3-soft: #fee2e2;
+  --color-paper: #3b82f6;
+  --color-paper-soft: #dbeafe;
+  --color-residu: #64748b;
+  --color-residu-soft: #f1f5f9;
+
+  --shadow-chunk: 0 6px 0 #1e293b;
+  --shadow-chunk-lg: 0 10px 0 #1e293b;
+  --shadow-chunk-sm: 0 4px 0 #1e293b;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-cream font-body text-ink antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    @apply bg-organic-soft text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-4 outline-offset-3 outline-ink;
+  }
+}
+
+@layer components {
+  .btn-chunk {
+    @apply inline-flex items-center justify-center gap-2 rounded-3xl border-4 border-ink
+      px-7 py-4 font-display text-lg font-semibold shadow-chunk-sm transition-all
+      duration-150 hover:-translate-y-0.5 hover:shadow-chunk active:translate-y-1
+      active:shadow-none;
+  }
+
+  .card-chunk {
+    @apply rounded-3xl border-4 border-ink bg-white shadow-chunk-sm;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html { scroll-padding-top: 76px; }
+.home-flow { background: linear-gradient(to bottom, #fffdf7 0%, #fffdf7 19%, #f0fdf4 27%, #f0fdf4 41%, #fffdf7 52%, #fffdf7 77%, #f0fdf4 100%); }
+#beranda { background: transparent; }
+.home-flow .section-shell { background: transparent; }
+#beranda { background: transparent !important; }
+.section-shell { padding: clamp(5rem, 9vw, 9rem) 1.25rem; min-height: 750px; }
+.section-inner { max-width: 1240px; margin-inline: auto; }
+.adventure-trail { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible; opacity: 1; }
+.trail-marker-layer { z-index: 20; }
+.trail-marker { filter: drop-shadow(0 3px 3px #1e293b80); }
+.park-litter:not(:disabled)::after { content: ''; position: absolute; inset: 3px; border-radius: 12px; pointer-events: none; animation: park-hint 2.5s ease-in-out infinite; }
+@keyframes park-hint { 50% { box-shadow: inset 0 0 0 3px #22c55e77; } }
+.trail-dot { transition: r .3s ease, fill .3s ease; }
+.park-scene { background: #afcee0; transition: background .7s ease; }
+.park-scene.park-clean { background: #a6e4f9; }
+@media (min-width: 1024px) {
+  .park-scene { position: sticky; top: 110px; }
+  #geng article:nth-child(1), #geng article:nth-child(2) { position: sticky; top: 180px; align-self: start; }
+}
+.mascot-bob { animation: mascot-bob 3.5s ease-in-out infinite; transform-origin: 50% 80%; }
+.mascot-bob:nth-child(2n) { animation-delay: -.9s; }
+.mascot-bob:nth-child(3n) { animation-delay: -1.8s; }
+.mascot-eyes { transform-origin: center; animation: blink 5s infinite; }
+@keyframes mascot-bob { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+@keyframes blink { 0%,93%,97%,100% { transform: scaleY(1); } 95% { transform: scaleY(.12); } }
+@media (prefers-reduced-motion: reduce) { .mascot-bob,.mascot-eyes { animation: none; } .adventure-trail { opacity: 1; } }
