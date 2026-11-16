@@ -18,7 +18,8 @@ Isi utama:
   maskot, game memilah sampah tiga level, dan pembuat sertifikat pahlawan yang dapat diunduh
   sebagai PNG.
 - **Pojok Cerita & Kreasi** — komik bercabang "Petualangan Bobi si Botol Plastik", galeri
-  sulap daur ulang, dan artikel edukasi bersumber Waste4Change.
+  sulap daur ulang, fakta sampah Indonesia berangka resmi, dan artikel edukasi bersumber
+  Waste4Change.
 - **Tentang Geng Pilah** — cerita misi, alasan usia dini adalah masa emas pembentukan kebiasaan,
   penjelasan keputusan UX, kartu atribusi data, dan profil tim.
 - **Surat Pahlawan** — papan janji pahlawan cilik (tersimpan di perangkat) dan kotak kolaborasi
@@ -40,10 +41,10 @@ Fitur yang dirancang khusus untuk anak:
 | --- | --- |
 | Build | Vite |
 | UI | React 19 + Tailwind CSS v4 |
-| Animasi | GSAP + ScrollTrigger, Lenis (smooth scroll), CSS keyframes |
+| Animasi | CSS keyframes + IntersectionObserver (POP), scroll-drawn SVG trail, Web Audio SFX |
 | Ikon & maskot | SVG buatan sendiri (tanpa aset berbayar) |
 | Suara | Web Audio API + Web Speech API |
-| Font | Fredoka & Plus Jakarta Sans (Google Fonts, gratis) |
+| Font | Fredoka & Nunito (Google Fonts, gratis) |
 
 Seluruh aset gratis dan dibuat sendiri; tidak ada template atau komponen berbayar.
 
@@ -89,12 +90,11 @@ src/
 
 ## Sumber Data & Kurikulum
 
-Seluruh materi jenis sampah, waktu penguraian, dan regulasi diadaptasi dari:
+Seluruh materi jenis sampah, waktu penguraian, dan angka nasional diadaptasi dari:
 
-- **Waste4Change Indonesia** — *"Sampah: Pengertian, Jenis, Hingga Peraturannya di Indonesia"*.
-- **UU No. 18 Tahun 2008** tentang Pengelolaan Sampah.
-- **PP No. 81 Tahun 2012** tentang Pengelolaan Sampah Rumah Tangga.
-- **Perpres No. 97 Tahun 2017 (Jakstranas)** — target pengurangan sampah 30% dan penanganan 70%.
+- **Waste4Change Indonesia** — *"Sampah: Pengertian, Jenis, Hingga Peraturannya di Indonesia"*,
+  termasuk angka 68,5 juta ton sampah nasional (2022), 24,3 juta ton belum tertangani, dan
+  0,7 kg sampah per orang per hari (Waste4Change mengutip Antara dan KLHK).
 
 ## Tim
 

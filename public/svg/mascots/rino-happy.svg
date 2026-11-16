@@ -1,0 +1,12 @@
+<!-- Geng Pilah mascot: rino / happy / 128 viewBox / palette: #F59E0B -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Si Rino, happy">
+  <g stroke="#1E293B" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M32 78 Q20 71 15 52 M96 78 Q108 71 113 52" fill="none"/>
+    <path d="M64 39 V23" fill="none"/><circle cx="64" cy="17" r="6" fill="#F59E0B"/><path d="M82 25 L86 27 L90 25 L92 29 L89 33 L92 37 L88 39 L84 36 L80 38 L77 34 L80 30 L78 27 Z" fill="#FEF3C7"/><circle cx="85" cy="32" r="2" fill="#1E293B" stroke="none"/>
+    <path d="M36 49 H92 L87 108 Q86 115 78 115 H50 Q42 115 41 108 Z" fill="#F59E0B"/>
+    <path d="M41 57 H87 L83 99 Q82 103 77 103 H51 Q46 103 45 99 Z" fill="#FEF3C7"/>
+    <rect x="28" y="38" width="72" height="16" rx="8" fill="#F59E0B"/>
+    <ellipse cx="51" cy="73" rx="10" ry="12" fill="white"/><ellipse cx="77" cy="73" rx="10" ry="12" fill="white"/><circle cx="54" cy="73" r="4" fill="#1E293B" stroke="none"/><circle cx="80" cy="73" r="4" fill="#1E293B" stroke="none"/><circle cx="55" cy="71" r="1.5" fill="white" stroke="none"/><circle cx="81" cy="71" r="1.5" fill="white" stroke="none"/>
+    <path d="M53 87 Q64 106 75 87 Q64 94 53 87 Z" fill="#1E293B"/>
+  </g>
+</svg>

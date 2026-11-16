@@ -1,0 +1,5 @@
+<!-- Geng Pilah doodle: wrapper -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 23 L10 18 L12 28 L8 35 L18 37 L23 43 Q31 46 41 42 L47 38 L56 42 L54 32 L57 23 L47 25 L41 20 Q29 18 21 22 Z" fill="#F1F5F9"/>
+  <path d="M18 23 Q23 30 18 37 M47 25 Q43 31 47 38 M26 30 Q33 27 39 30"/>
+</svg>

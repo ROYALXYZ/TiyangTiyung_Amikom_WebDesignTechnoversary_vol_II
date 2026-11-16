@@ -1,0 +1,153 @@
+/* ===========================================================
+   Motion — preloader, hero pin, --progress, art slot.
+   Satu pipeline untuk semua animasi scroll (lihat src/lib/smooth.js).
+   =========================================================== */
+
+:root {
+  --ease-motion: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- preloader: wipe 1s, dilepas pada 1.25s ---------- */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  background: var(--color-cream);
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1s var(--ease-motion);
+}
+
+html.is-first-loaded .preloader {
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+}
+
+html.no-preloader .preloader {
+  display: none;
+}
+
+.preloader-mark {
+  margin: 0;
+  font: 700 clamp(28px, 5vw, 48px) var(--font-display);
+  letter-spacing: -0.03em;
+  transition: opacity 0.4s ease, translate 0.5s var(--ease-motion);
+}
+
+html.is-first-loaded .preloader-mark {
+  opacity: 0;
+  translate: 0 -12px;
+}
+
+/* ---------- hero: pin 200svh, --progress 0..1 ---------- */
+
+.hero-pin {
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: var(--color-ink, #1e293b);
+  opacity: calc(var(--progress, 0) * 0.4);
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    height: 200svh;
+  }
+  .hero-pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+  .hero-pin > .hero-grid {
+    transform: scale(calc(1 - var(--progress, 0) * 0.2));
+    transform-origin: 50% 40%;
+  }
+  /* Kartu bertumpuk: section 2 naik 100svh menutup hero yang sedang ter-pin.
+     Z: hero 0 < latar+isi section 2 (auto) < garis Jejak 2 < kartu 3. */
+  .beranda #fakta-1 {
+    position: relative;
+    margin-top: -100svh;
+    border-radius: 36px 36px 0 0;
+    background: var(--color-cream);
+    box-shadow: 0 -28px 64px rgba(15, 23, 42, 0.18), 0 -2px 0 rgba(15, 23, 42, 0.06);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-overlay {
+    display: none;
+  }
+}
+
+/* ---------- hero intro: dipicu preloader selesai ---------- */
+
+html.is-first-loaded .hero-pin .hero-grid > * {
+  animation: first-hit 0.8s var(--ease-motion) both;
+}
+
+html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+@keyframes first-hit {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ---------- art slot: SVG drop-in dari public/svg/art/ ---------- */
+
+.art-slot {
+  display: block;
+  pointer-events: none;
+}
+
+.hero-slot {
+  position: absolute;
+  right: 2%;
+  bottom: 4%;
+  width: clamp(56px, 8vw, 116px);
+  height: auto;
+}
+
+/* ---------- reduced motion: tanpa pin, tanpa wipe ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    transition: none;
+  }
+  .hero {
+    height: auto;
+  }
+  .hero-pin {
+    position: static;
+    height: auto;
+  }
+  .hero-pin > .hero-grid {
+    transform: none;
+  }
+  .hero-overlay {
+    display: none;
+  }
+  /* tanpa pin, tumpukan kartu tidak punya penopang -> kembali ke alir normal */
+  .beranda #fakta-1 {
+    margin-top: -46px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  html.is-first-loaded .hero-pin .hero-grid > * {
+    animation: none;
+  }
+}

@@ -1,6 +1,5 @@
 // Sumber konten & data edukasi: Waste4Change Indonesia
 // ("Sampah: Pengertian, Jenis, Hingga Peraturannya di Indonesia")
-// Regulasi: UU No. 18/2008, PP No. 81/2012, Perpres No. 97/2017 (Jakstranas)
 
 export const BINS = {
   organik: {

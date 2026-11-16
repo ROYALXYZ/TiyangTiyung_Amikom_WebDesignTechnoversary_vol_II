@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" width="100%" height="100%">
+  <style>
+@keyframes vk-anim-waste-soda-can {
+  0%, 100% { transform: translateY(0px) scale(1, 1); }
+  15% { transform: translateY(5px) scale(1.11, 0.89); }
+  50% { transform: translateY(-34.2px) scale(0.89, 1.11); }
+  85% { transform: translateY(0px) scale(1.04, 0.96); }
+}
+.vk-anim-waste-soda-can { animation: vk-anim-waste-soda-can 2.6s ease-in-out 0.4s infinite normal; transform-origin: 0px 0px;  }
+  </style>
+  <g transform="translate(400, 270) rotate(-14)">
+    <g class="vk-anim-waste-soda-can">
+      <g transform="scale(0.64)">
+        <!-- Dented Can Cylinder -->
+        <path d="M -46 -62 L 46 -62 L 52 -12 L 34 14 L 48 64 C 48 78, -48 78, -48 64 L -36 18 L -52 -16 Z" fill="#FF6B5B" stroke="#1E1E1E" stroke-width="2.8" stroke-linejoin="round" />
+        <!-- Top Metallic Rim & Pull Tab -->
+        <ellipse cx="0" cy="-62" rx="46" ry="14" fill="#DCD7C9" stroke="#1E1E1E" stroke-width="2.8" />
+        <ellipse cx="6" cy="-62" rx="14" ry="6" fill="#1E1E1E" />
+        <!-- Yellow / White Stripe Graphic -->
+        <path d="M -44 -26 L 48 -20 L 38 6 L -40 2 Z" fill="#FDE047" stroke="#1E1E1E" stroke-width="2.24" />
+        <!-- Dent Crease Lines -->
+        <path d="M -20 22 L 18 32 M -14 44 L 22 38" fill="none" stroke="#1E1E1E" stroke-width="2.8" stroke-linecap="round" />
+        <ellipse cx="-28" cy="-38" rx="5" ry="12" fill="#FFFFFF" />
+      </g>
+    </g>
+  </g>
+</svg>

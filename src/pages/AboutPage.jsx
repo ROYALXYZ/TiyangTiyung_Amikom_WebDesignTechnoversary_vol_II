@@ -44,13 +44,11 @@ export default function AboutPage() {
 
     <section className="section-shell !min-h-0 bg-mint">
       <div className="section-inner">
-        <SectionHeading number="04" eyebrow="REFERENSI RESMI" title="Sumber data kami" subtitle="Materi edukasi yang dapat diperiksa oleh orang tua, guru, dan juri." />
+        <SectionHeading number="04" eyebrow="KREDIT DATA" title="Sumber data kami" subtitle="Bacaan tentang sampah untuk orang tua dan guru." />
         <article className="card-chunk bg-mint p-6 sm:p-10">
           <p className="font-display text-sm font-bold uppercase tracking-widest text-green-800">Atribusi data pendidikan lingkungan</p>
           <h3 className="mt-3 text-3xl font-bold">{ABOUT.attribution.source}</h3>
           <p className="mt-3 text-lg font-semibold">Artikel: “{ABOUT.attribution.article}”</p>
-          <h4 className="mt-8 text-xl font-bold">Dasar hukum Indonesia</h4>
-          <ul className="mt-4 grid gap-3">{ABOUT.attribution.laws.map(law => <li key={law} className="rounded-2xl border-2 border-ink bg-white px-5 py-4 font-medium">{law}</li>)}</ul>
           <p className="mt-7 border-t-2 border-ink/30 pt-5 leading-relaxed">{ABOUT.attribution.note}</p>
         </article>
       </div>

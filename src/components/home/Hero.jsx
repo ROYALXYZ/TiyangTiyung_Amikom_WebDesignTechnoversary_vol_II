@@ -1,4 +1,66 @@
-import { Earth, Orgi, Rino, Bebe, Kiki, Resi } from '../mascots/Mascots'
-import SpeakButton from '../common/SpeakButton'
-const intro = 'Halo, Pahlawan Cilik! Yuk belajar memilah sampah bersama Geng Pilah. Setiap sampah punya tempatnya. Bumi akan senang kalau kamu membantu!'
-export default function Hero(){return <section id="beranda" className="relative flex min-h-[760px] items-center overflow-hidden bg-cream px-5 py-16 sm:px-8 lg:px-12 lg:py-20"><div className="absolute -left-28 top-24 h-72 w-72 rounded-full bg-organic-soft/70"/><div className="absolute -right-28 bottom-4 h-80 w-80 rounded-full bg-anorganic-soft/80"/><div className="relative mx-auto grid w-full max-w-[1320px] items-center gap-8 lg:grid-cols-[.95fr_1.05fr]"><div className="reveal relative z-10 max-w-[650px]"><div className="mb-6 inline-flex items-center gap-2 rounded-full border-[3px] border-ink bg-white px-4 py-2 font-display font-bold shadow-chunk-sm"><span className="h-3 w-3 rounded-full bg-organic"/>PETUALANGAN PAHLAWAN CILIK</div><h1 className="text-[clamp(3.15rem,6.2vw,6.25rem)] font-bold leading-[.98] tracking-[-.045em]">Belajar Pilah Sampah, <span className="relative inline text-green-700">Jadi Pahlawan Bumi!<svg viewBox="0 0 360 22" className="absolute -bottom-3 left-0 w-full" aria-hidden="true"><path d="M3 15 Q175 -3 355 13" fill="none" stroke="#F9BE38" strokeWidth="9" strokeLinecap="round"/></svg></span></h1><p className="mt-9 max-w-xl text-lg font-medium leading-relaxed text-slate-700 sm:text-xl">Setiap sampah punya rumahnya. Yuk, bantu Bumi tersenyum bersama lima teman baru!</p><div className="mt-5"><SpeakButton text={intro}/></div><div className="mt-9 flex flex-col gap-4 sm:flex-row"><a className="btn-chunk min-h-16 bg-anorganic text-center" href="#game">🎮 Main Game Pilah Sampah</a><a className="btn-chunk min-h-16 bg-white text-center" href="#taman">🚀 Mulai Petualangan</a></div><p className="mt-8 font-display text-sm font-semibold tracking-wide text-slate-600">✦ BELAJAR · BERMAIN · JAGA BUMI</p></div><div className="reveal hero-scene relative mx-auto aspect-square w-full max-w-[640px]" aria-label="Lima anggota Geng Pilah mengelilingi Bumi"><div className="absolute inset-[13%] rounded-full border-[3px] border-dashed border-organic/40 bg-[#DDF5E5]"/><Earth className="absolute left-[25%] top-[22%] w-[50%] drop-shadow-[0_14px_0_#1e293b18]"/><Orgi className="mascot-bob absolute bottom-[2%] left-[3%] w-[28%] rotate-[-12deg]"/><Rino className="mascot-bob absolute bottom-[1%] right-[3%] w-[29%] rotate-[9deg]"/><Bebe className="mascot-bob absolute left-[-1%] top-[1%] w-[27%] rotate-[-9deg]"/><Kiki className="mascot-bob absolute right-[1%] top-[1%] w-[27%] rotate-[10deg]"/><Resi className="mascot-bob absolute bottom-[-5%] left-[37%] w-[27%]"/><span className="absolute left-[27%] top-[5%] text-4xl text-anorganic" aria-hidden="true">✳</span><span className="absolute right-[10%] top-[42%] text-3xl text-b3" aria-hidden="true">✦</span></div></div></section>}
+﻿import { playPop } from '../../lib/sfx'
+import { speak } from '../../lib/speech'
+import ArtSlot from '../../lib/artSlot.jsx'
+
+const BINS = ['organik', 'anorganik', 'b3', 'kertas', 'residu']
+const HERO_TEXT =
+  'Ikuti petualangan Geng Pilah. Kenali 5 jenis sampah, pilah dengan benar, dan lihat Bumi tersenyum lagi.'
+
+export default function Hero() {
+  return (
+    <section className="hero" aria-labelledby="hero-title" data-progress>
+      <div className="hero-pin" data-pin>
+        <div className="hero-overlay" aria-hidden="true" />
+        <div className="hero-grid">
+          <div>
+            <p className="eyebrow">Petualangan Pahlawan Cilik</p>
+            <h1 id="hero-title">Belajar Pilah Sampah, Jadi Pahlawan Bumi!</h1>
+            <p className="hero-sub">{HERO_TEXT}</p>
+            <div className="hero-speak">
+              <button
+                type="button"
+                className="btn-chunk btn-secondary"
+                onClick={() => {
+                  playPop()
+                  speak(HERO_TEXT)
+                }}
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                  <path d="M4 9v6h4l5 4V5L8 9H4M17 8c2 2 2 6 0 8" />
+                </svg>
+                Bacakan untukku
+              </button>
+            </div>
+            <div className="hero-actions">
+              <a
+                href="#main-game"
+                className="btn-chunk btn-primary"
+                onClick={() => playPop()}
+              >
+                Main Game Pilah Sampah
+              </a>
+              <a
+                href="#fakta-1"
+                className="btn-chunk btn-secondary"
+                onClick={() => playPop()}
+              >
+                Mulai Petualangan
+              </a>
+            </div>
+          </div>
+          <div className="hero-art">
+            <div className="hero-blob" aria-hidden="true" />
+            <img className="hero-orgi" src="/svg/mascots/orgi-happy.svg" alt="Si Orgi, tong sampah organik, melambaikan tangan" width="300" height="300" />
+            <div className="hero-bins" aria-hidden="true">
+              {BINS.map((bin) => (
+                <img key={bin} src={`/svg/bins/${bin}.svg`} alt="" width="54" height="54" loading="lazy" />
+              ))}
+            </div>
+            <ArtSlot name="hero-doodle" className="hero-slot" />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+

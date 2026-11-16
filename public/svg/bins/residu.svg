@@ -1,0 +1,8 @@
+<!-- Geng Pilah bin: residu / 64 viewBox / palette: #64748B #F1F5F9 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M17 21L22 15L27 17L32 7L38 15L43 13L48 21H17Z" fill="#F1F5F9"/>
+  <path d="M32 7L34 17"/>
+  <path d="M16 26H48L45 55C45 57 43 59 41 59H23C21 59 19 57 19 55L16 26Z" fill="#64748B"/>
+  <path d="M17 21H47C50 21 52 23 52 26V29H12V26C12 23 14 21 17 21Z" fill="#64748B"/>
+  <path d="M24 34H40L38 51H26L24 34Z" fill="#F1F5F9"/>
+</svg>
