@@ -49,7 +49,7 @@ export function SampahApa() {
   const tutup =
     'Kalau dibuang sembarangan, sampah bikin Bumi sakit. Kalau dipilah, sampah bisa jadi barang baru.'
   return (
-    <section className="band" id="fakta-1" aria-labelledby="i1-title">
+    <section className="band" id="fakta-1" data-progress aria-labelledby="i1-title">
       <div className="band-in">
         <Wp side="l" at="above" y={205} />
         <div className="fakta-intro" data-pop>
@@ -387,7 +387,7 @@ const JURUS = [
 
 export function JurusR() {
   return (
-    <section className="band band-mint" id="jurus" aria-labelledby="i4-title">
+    <section className="band band-mint" id="jurus" data-progress aria-labelledby="i4-title">
       <div className="band-in">
         <p className="eyebrow">Fakta 3 dari 5</p>
         <h2 className="h2" id="i4-title">

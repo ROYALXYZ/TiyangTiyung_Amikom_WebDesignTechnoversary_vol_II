@@ -119,12 +119,49 @@
 }
 
 .h2 {
+  position: relative;
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(28px, 3.5vw, 40px);
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: -0.01em;
+}
+
+/* Underline wave: satu gelombang 24x7 buatan sendiri, bergeser satu ubin
+   per loop = mulus. Mulai saat heading dapat .pop-in (lihat pop.js). */
+.h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -9px;
+  width: min(180px, 55%);
+  height: 7px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='7' viewBox='0 0 24 7'%3E%3Cpath d='M0 3.5q3-3 6 0t6 0 6 0 6 0' fill='none' stroke='%2322C55E' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    repeat-x 0 0 / 24px 7px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: h2-wave 1.2s linear infinite;
+  animation-play-state: paused;
+  pointer-events: none;
+}
+
+.h2.pop-in::after {
+  opacity: 0.9;
+  animation-play-state: running;
+}
+
+@keyframes h2-wave {
+  to {
+    transform: translate3d(-24px, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h2::after {
+    animation: none;
+    opacity: 0.9;
+  }
 }
 
 .lede {
@@ -1379,4 +1416,53 @@
   .beranda .trail-marker { margin-left: -72px; margin-right: 0; }
   .beranda .trail-marker-row > p { max-width: none; }
   .beranda .trail-marker-i6 { margin-top: 32px; }
+}
+
+/* ===========================================================
+   MARQUEE - rail tong sampah di atas footer.
+   Track berisi 2 salinan; satu salinan digeser per frame (src/components/home/Marquee.jsx).
+   =========================================================== */
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  margin: -20px 0 44px;
+  padding: 12px 0;
+  border-block: 2px solid color-mix(in srgb, var(--color-cream) 35%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-group {
+  display: flex;
+  gap: 24px;
+  padding-right: 24px;
+}
+
+.marquee-item {
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.5vw, 19px);
+  white-space: nowrap;
+}
+
+.marquee-item::before {
+  content: '\00b7';
+  margin-right: 10px;
+  color: var(--color-organic);
+}
+
+@media (max-width: 700px) {
+  .marquee {
+    margin: 8px 0 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    transform: none !important;
+  }
 }

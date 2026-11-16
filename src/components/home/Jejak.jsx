@@ -150,7 +150,8 @@ export default function Jejak({ hostRef }) {
     const lineA = lineRef.current
     const lineB = lineBRef.current
     const traceA = buildTrace(lineA)
-    const traceB = lineB ? buildTrace(lineB) : null
+    // jalur B bisa kosong (cornerPath menolak) -> getPointAtLength melempar
+    const traceB = lineB?.getAttribute('d') ? buildTrace(lineB) : null
     const totalA = traceA.total
     const totalB = traceB?.total || 0
     const layers = (part) => [...svg.current.querySelectorAll(`[data-stroke="${part}"]`)]
@@ -183,6 +184,8 @@ export default function Jejak({ hostRef }) {
       stageTravel = Math.max(1, r.height - (stage.querySelector('[data-pin]')?.offsetHeight || 0))
     }
     const draw = (y) => {
+      // rute berganti saat frame masih jalan: ref sudah null, jangan crash
+      if (!svg.current) return
       const pinned = Boolean(stage) && window.matchMedia(PIN_QUERY).matches && !isTouch()
       const p = pinned ? (y - stageTop) / stageTravel : -1
       const afterPin = pinned && y >= stageTop + stageTravel - 0.5

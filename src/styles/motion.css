@@ -15,9 +15,30 @@
   z-index: 90;
   display: grid;
   place-items: center;
+  align-content: center;
+  gap: 16px;
   background: var(--color-cream);
   clip-path: inset(0 0 0 0);
   transition: clip-path 1s var(--ease-motion);
+}
+
+/* Logo digambar 1s, selesai 250ms sebelum wipe (rilis tetap 1.25s). */
+.preloader-logo {
+  width: clamp(64px, 9vw, 104px);
+  height: auto;
+  color: var(--color-trail);
+}
+
+.preloader-logo path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: preloader-draw 1s var(--ease-motion) both;
+}
+
+@keyframes preloader-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 html.is-first-loaded .preloader {
@@ -107,6 +128,59 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
   }
 }
 
+/* ---------- scrub dekorasi: hanya transform, digerakkan --progress induk ---------- */
+/* --progress ditulis useProgressVars() pada [data-progress]; custom property
+   itu inherit, jadi dekorasi di dalamnya ikut tanpa JS tambahan.
+   Gate data-motion='smooth': touch & reduced tampil final (tanpa transform). */
+
+:root[data-motion='smooth'] .hero-art {
+  transform:
+    translate3d(0, calc((1 - var(--progress, 0)) * 28px), 0)
+    rotate(calc((1 - var(--progress, 0)) * -3deg));
+}
+
+:root[data-motion='smooth'] .beranda #fakta-1 .asal-mascot {
+  transform:
+    translate3d(0, calc((1 - var(--progress, 0)) * 14px), 0)
+    rotate(calc((1 - var(--progress, 0)) * -12deg));
+}
+
+:root[data-motion='smooth'] .beranda #jurus .jurus-card img {
+  transform:
+    translate3d(0, calc((1 - var(--progress, 0)) * 10px), 0)
+    rotate(calc((1 - var(--progress, 0)) * -10deg));
+}
+
+/* ---------- transisi antar-rute: satu sapuan naik, 680ms ---------- */
+
+.route-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--color-cream);
+  transform: translate3d(0, -101%, 0);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.route-wipe.is-wiping {
+  animation: route-wipe 680ms var(--ease-motion) both;
+}
+
+/* 0-45% tutup dari bawah, 45-55% tahan (ganti halaman di sini), 100% buka ke atas */
+@keyframes route-wipe {
+  0% {
+    transform: translate3d(0, 100%, 0);
+  }
+  45%,
+  55% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -101%, 0);
+  }
+}
+
 /* ---------- art slot: SVG drop-in dari public/svg/art/ ---------- */
 
 .art-slot {
@@ -127,6 +201,13 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 @media (prefers-reduced-motion: reduce) {
   .preloader {
     transition: none;
+  }
+  .preloader-logo path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .route-wipe {
+    display: none;
   }
   .hero {
     height: auto;

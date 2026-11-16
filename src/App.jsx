@@ -38,17 +38,47 @@ function Home() {
 
 export default function App() {
   const [route, setRoute] = useState(() => window.location.hash.replace(/^#/, '') || '/')
+  const wipe = useRef(null)
   useEffect(() => { startMotion() }, [])
   // reveal & progress mencakup semua rute, bukan hanya Beranda
   usePop([route])
   useProgressVars([route])
   useEffect(() => {
+    let timer = 0
+    let refocus = 0
     const onHash = () => {
-      setRoute(window.location.hash.replace(/^#/, '') || '/')
-      jumpTo(0)
+      const next = window.location.hash.replace(/^#/, '') || '/'
+      const el = wipe.current
+      // reduced motion / tanpa overlay: pindah langsung, tanpa sapuan
+      if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setRoute(next)
+        jumpTo(0)
+        return
+      }
+      el.classList.remove('is-wiping')
+      void el.offsetWidth // restart animasi
+      el.classList.add('is-wiping')
+      window.clearTimeout(timer)
+      // 340ms = tengah animasi (45-55%), saat overlay menutup penuh
+      timer = window.setTimeout(() => {
+        setRoute(next)
+        jumpTo(0)
+        // commit React dulu baru pindahkan fokus ke heading halaman baru
+        refocus = window.setTimeout(() => {
+          const h = document.querySelector('main h1, main h2')
+          if (h) {
+            h.tabIndex = -1
+            h.focus({ preventScroll: true })
+          }
+        }, 90)
+      }, 340)
     }
     window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    return () => {
+      window.removeEventListener('hashchange', onHash)
+      window.clearTimeout(timer)
+      window.clearTimeout(refocus)
+    }
   }, [])
-  return <><Preloader/><Navbar route={route}/>{route === '/main' ? <><PlayPage/><CleanPark/></> : route === '/cerita' ? <StoryPage/> : route === '/tentang' ? <AboutPage/> : route === '/surat' ? <ContactPage/> : <Home/>}<Footer/></>
+  return <><Preloader/><div className="route-wipe" ref={wipe} aria-hidden="true"/><Navbar route={route}/>{route === '/main' ? <><PlayPage/><CleanPark/></> : route === '/cerita' ? <StoryPage/> : route === '/tentang' ? <AboutPage/> : route === '/surat' ? <ContactPage/> : <Home/>}<Footer/></>
 }
