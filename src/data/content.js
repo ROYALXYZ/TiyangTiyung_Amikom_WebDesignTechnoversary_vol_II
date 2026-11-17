@@ -98,22 +98,10 @@ export const ABOUT = {
     note: 'Seluruh data jenis sampah dan waktu penguraian di situs ini diadaptasi dari materi publik Waste4Change Indonesia.',
   },
   team: [
-    { name: 'Nama Anggota 1', role: 'UI/UX & Mascot Designer', emoji: '🎨' },
-    { name: 'Nama Anggota 2', role: 'Creative Frontend Developer', emoji: '💻' },
-    { name: 'Nama Anggota 3', role: 'Game Logic & Interactive Engineer', emoji: '🎮' },
+    { name: 'Laila Septiani Hidayat', role: 'UI/UX & Maskot Designer', emoji: '🎨' },
+    { name: 'Ramadhan Hari Nugroho', role: 'Creative Frontend Developer', emoji: '💻' },
+    { name: 'Rangga Pasha Cucu Wibisono', role: 'Game Logic & Interactive Engineer', emoji: '🎮' },
   ],
-}
-
-// Angka diambil langsung dari artikel Waste4Change (mengutip Antara & KLHK).
-export const STATS = {
-  title: 'Fakta sampah Indonesia',
-  lede: 'Bukan kira-kira. Ini angka asli dari negara kita.',
-  items: [
-    { value: '68,5 juta ton', label: 'Sampah nasional setahun', note: 'Data tahun 2022.' },
-    { value: '24,3 juta ton', label: 'Belum tertangani', note: 'Hampir 36 dari 100 bagian sampah tidak diurus.' },
-    { value: '0,7 kg', label: 'Sampah tiap orang, tiap hari', note: 'Seberat satu botol air minum besar.' },
-  ],
-  source: 'Waste4Change Indonesia, mengutip Antara dan KLHK (data 2020–2022).',
 }
 
 export const UPCYCLE = [

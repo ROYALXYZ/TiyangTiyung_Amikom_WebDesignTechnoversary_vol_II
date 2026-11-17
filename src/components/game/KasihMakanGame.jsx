@@ -191,13 +191,13 @@ export default function KasihMakanGame() {
 
       <div className="card-chunk mb-6 bg-cream p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div><span className="font-display text-xl sm:text-2xl">{level.stars} Level {level.id}: {level.title}</span><p className="text-sm">{level.subtitle} · {level.bins.length} tong sampah</p></div>
+          <div><span className="font-display text-xl sm:text-2xl">{level.stars} Level {level.id}: {level.title}</span><p className="text-sm">{level.subtitle}. {level.bins.length} tong sampah</p></div>
           <div className="flex flex-wrap items-center gap-3 font-display"><span>Terpilah: {level.items.length - remaining.length}/{level.items.length}</span><span aria-label={`Skor ${score} poin`}>Poin: <span key={score} className="pilah-score">{score}</span></span></div>
         </div>
         <div role="progressbar" aria-label="Kemajuan memilah sampah" aria-valuemin={0} aria-valuemax={level.items.length} aria-valuenow={level.items.length - remaining.length} className="mt-4 h-5 overflow-hidden rounded-full border-2 border-ink bg-mint">
           <div className="h-full bg-organic transition-[width] duration-300" style={{ width: `${100 * (level.items.length - remaining.length) / level.items.length}%` }} />
         </div>
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2"><span className="text-sm">Salah coba: {mistakes} · Total terkumpul: {progress.totalPoints} poin</span><button type="button" onClick={() => startLevel(levelIndex)} className="min-h-14 rounded-2xl border-2 border-ink bg-white px-4 font-display hover:-translate-y-0.5 active:translate-y-1 transition-all">↻ Ulangi Level</button></div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2"><span className="text-sm">Salah coba: {mistakes}. Total terkumpul: {progress.totalPoints} poin</span><button type="button" onClick={() => startLevel(levelIndex)} className="min-h-14 rounded-2xl border-2 border-ink bg-white px-4 font-display hover:-translate-y-0.5 active:translate-y-1 transition-transform">↻ Ulangi Level</button></div>
       </div>
 
       <p role="status" aria-live="polite" className="mb-5 min-h-14 rounded-2xl border-2 border-ink bg-mint p-3 font-medium">{toast || 'Ayo, lanjut pilah sampahnya!'}</p>

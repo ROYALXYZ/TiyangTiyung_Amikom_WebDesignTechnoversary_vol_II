@@ -47,6 +47,8 @@ export function startMotion() {
   if (started) return
   started = true
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+  // Hash routes are pages, not anchors. A restored scroll position can bury the mobile hero behind the sticky navbar.
+  window.scrollTo(0, 0)
   // CSS ikut tahu jalur mana yang aktif: pin stage hanya di jalur smooth.
   document.documentElement.dataset.motion = isReduced() ? 'reduced' : isTouch() ? 'touch' : 'smooth'
   bootPreloader()

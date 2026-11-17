@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { PLEDGES, STICKERS } from '../data/content'
 import { playFanfare, playPop } from '../lib/sfx'
 import SectionHeading from '../components/common/SectionHeading'
+import { ColorBandBackdrop, EdgePlant, PaperGrain, ScatterLayer } from '../components/art'
 
 const KEY = 'gengpilah:pledges'
 const samples = [
@@ -97,17 +98,17 @@ export default function ContactPage() {
 
   return <main id="surat" className="overflow-hidden bg-cream">
     <style>{`@keyframes janji-burst{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(var(--x),var(--y)) rotate(150deg) scale(1.1);opacity:0}}@keyframes janji-arrive{0%{transform:translateY(-14px) rotate(0deg);opacity:0}100%{transform:translateY(0) rotate(-2deg);opacity:1}}.janji-confetti{animation:janji-burst 900ms ease-out forwards}.janji-arrive{animation:janji-arrive 450ms ease-out both}@media(prefers-reduced-motion:reduce){.janji-confetti,.janji-arrive{animation:none}}`}</style>
-    <header className="section-shell !min-h-0 !pb-8 bg-mint"><div className="section-inner"><p className="font-display text-lg font-bold uppercase tracking-widest text-green-800">Suara pahlawan Bumi</p><h1 className="mt-5 font-display text-5xl font-bold sm:text-6xl lg:text-7xl">Surat Pahlawan</h1><p className="mt-5 max-w-2xl text-xl font-medium leading-relaxed">Tulis janjimu untuk Bumi, lalu lihat namamu di dinding pahlawan!</p></div></header>
+    <header className="section-shell !min-h-0 bg-mint"><ColorBandBackdrop variant={4} edge="bubbles" /><ScatterLayer density={2} seed={67} /><div className="section-inner"><h1 className="mt-5 font-display text-5xl font-bold sm:text-6xl lg:text-7xl">Surat Pahlawan</h1><p className="mt-5 max-w-2xl text-xl font-medium leading-relaxed">Tulis janjimu untuk Bumi, lalu lihat namamu di dinding pahlawan!</p></div></header>
 
-    <section className="section-shell !min-h-0 !pt-12"><div className="section-inner">
+    <section className="section-shell !min-h-0 !pt-12"><EdgePlant side="right" variant={2} /><div className="section-inner">
       <SectionHeading number="01" eyebrow="JANJI KECIL, BUMI GEMBIRA" title="Papan Janji Pahlawan Cilik" subtitle="Pilih stiker kesukaanmu dan janjikan satu hal baik untuk Bumi." />
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,38fr)_minmax(0,62fr)]">
-        <form onSubmit={submitPledge} className="card-chunk self-start bg-organic-soft p-5 sm:p-8">
+        <form onSubmit={submitPledge} className="pledge-form self-start bg-organic-soft p-5 sm:p-8">
           <h3 className="text-2xl font-bold">Tulis janjimu</h3>
           <div className="mt-6"><label htmlFor="pledge-name" className="mb-2 block font-display text-lg font-semibold">Nama panggilan *</label><input id="pledge-name" className={field} value={name} onChange={event => setName(event.target.value)} maxLength={20} required placeholder="Namamu" /></div>
           <div className="mt-5"><label htmlFor="pledge-school" className="mb-2 block font-display text-lg font-semibold">Sekolah atau usia (boleh kosong)</label><input id="pledge-school" className={field} value={school} onChange={event => setSchool(event.target.value)} maxLength={30} placeholder="Contoh: Kelas 2 SD" /></div>
-          <div className="mt-7"><p id="sticker-label" className="mb-3 font-display text-lg font-semibold">Pilih stiker</p><div className="flex flex-wrap gap-2" role="group" aria-labelledby="sticker-label">{STICKERS.map((item, index) => <button key={index} type="button" aria-label={`Stiker ${index + 1}: ${item}`} aria-pressed={sticker === item} onClick={() => { setSticker(item); playPop() }} className={`grid min-h-14 min-w-14 place-items-center rounded-2xl border-[3px] border-ink text-3xl transition-all hover:-translate-y-0.5 active:translate-y-1 ${sticker === item ? 'bg-anorganic shadow-chunk-sm' : 'bg-white'}`}>{item}</button>)}</div></div>
-          <fieldset className="mt-7"><legend className="mb-3 font-display text-lg font-semibold">Pilih janjimu</legend><div className="grid gap-3">{PLEDGES.map((item, index) => <label key={item} className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border-[3px] border-ink p-3 transition-all hover:-translate-y-0.5 ${pledge === item ? 'bg-anorganic-soft shadow-chunk-sm' : 'bg-white'}`}><input type="radio" name="janji" value={item} checked={pledge === item} onChange={() => { setPledge(item); playPop() }} className="h-6 w-6 shrink-0 accent-green-700" /><span className="font-medium leading-snug">{index + 1}. {item}</span></label>)}</div></fieldset>
+          <div className="mt-7"><p id="sticker-label" className="mb-3 font-display text-lg font-semibold">Pilih stiker</p><div className="flex flex-wrap gap-2" role="group" aria-labelledby="sticker-label">{STICKERS.map((item, index) => <button key={index} type="button" aria-label={`Stiker ${index + 1}: ${item}`} aria-pressed={sticker === item} onClick={() => { setSticker(item); playPop() }} className={`grid min-h-14 min-w-14 place-items-center rounded-2xl border-[3px] border-ink text-3xl transition-transform hover:-translate-y-0.5 active:translate-y-1 ${sticker === item ? 'bg-anorganic shadow-chunk-sm' : 'bg-white'}`}>{item}</button>)}</div></div>
+          <fieldset className="mt-7"><legend className="mb-3 font-display text-lg font-semibold">Pilih janjimu</legend><div className="grid gap-3">{PLEDGES.map((item, index) => <label key={item} className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border-b-2 border-ink p-3 transition-[transform,box-shadow] hover:-translate-y-0.5 ${pledge === item ? 'bg-anorganic-soft shadow-chunk-sm' : 'bg-white'}`}><input type="radio" name="janji" value={item} checked={pledge === item} onChange={() => { setPledge(item); playPop() }} className="h-6 w-6 shrink-0 accent-green-700" /><span className="font-medium leading-snug">{index + 1}. {item}</span></label>)}</div></fieldset>
           <div className="relative mt-8"><button type="submit" className="btn-chunk min-h-14 w-full bg-organic">Tempel Janjiku!</button>{celebrate && <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-visible">{Array.from({ length: 12 }, (_, i) => <span key={i} className="janji-confetti absolute left-1/2 top-1/2 h-3 w-3 rounded-sm" style={{ backgroundColor: ['#22c55e', '#f59e0b', '#3b82f6', '#ef4444'][i % 4], '--x': `${Math.cos(i * Math.PI / 6) * 120}px`, '--y': `${Math.sin(i * Math.PI / 6) * 90}px` }} />)}</div>}</div>
           <p role="status" aria-live="polite" className="mt-4 min-h-6 font-semibold">{pledgeMessage}</p>
         </form>
@@ -116,7 +117,7 @@ export default function ContactPage() {
       </div>
     </div></section>
 
-    <section className="section-shell !min-h-0 bg-mint"><div className="section-inner grid gap-10 lg:grid-cols-2">
+    <section className="section-shell !min-h-0 bg-mint"><ColorBandBackdrop variant={1} edge="foliage" /><PaperGrain /><div className="section-inner grid gap-10 lg:grid-cols-2">
       <div><SectionHeading number="02" eyebrow="UNTUK ORANG TUA DAN GURU" title="Kotak Kolaborasi" subtitle="Ingin memakai Geng Pilah di kelas? Siapkan pesan untuk kami." /><div className="card-chunk bg-anorganic-soft p-6"><h3 className="text-2xl font-bold">Hubungi kami</h3><ul className="mt-4 grid gap-3 break-words font-semibold"><li>Instagram: @hima.ti.uniku</li><li>Instagram: @technoversary</li><li>Email: <a className="underline underline-offset-4" href="mailto:technoversary@gmail.com">technoversary@gmail.com</a></li></ul></div></div>
       <form onSubmit={submitContact} className="card-chunk self-start bg-white p-5 sm:p-8">
         <h3 className="text-2xl font-bold">Tulis pesan kolaborasi</h3>

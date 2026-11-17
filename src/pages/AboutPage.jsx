@@ -2,10 +2,12 @@ import { ABOUT, THREE_R } from '../data/content'
 import { Orgi, Rino, Kiki } from '../components/mascots/Mascots'
 import SectionHeading from '../components/common/SectionHeading'
 import SpeakButton from '../components/common/SpeakButton'
+import { ColorBandBackdrop, EdgePlant, ScatterLayer } from '../components/art'
 
 export default function AboutPage() {
   return <main id="tentang" className="overflow-hidden bg-cream">
     <header className="section-shell !min-h-0 bg-mint">
+      <ColorBandBackdrop variant={1} edge="clouds" /><ScatterLayer density={2} seed={44} />
       <div className="section-inner grid items-center gap-8 lg:grid-cols-2">
         <div>
           <p className="mb-5 font-display text-lg font-bold uppercase tracking-widest text-green-800">Kenalan dengan kami</p>
@@ -22,6 +24,7 @@ export default function AboutPage() {
     </header>
 
     <section id="misi" className="section-shell !min-h-0">
+      <EdgePlant side="right" variant={2} />
       <div className="section-inner">
         <SectionHeading number="01" eyebrow="CERITA KAMI" title="Misi kecil, dampak besar!" subtitle="Setiap pahlawan Bumi bisa memulai dari satu sampah yang dipilah." />
          <div className="grid gap-6 md:grid-cols-2">{ABOUT.mission.map((paragraph, index) => <article key={paragraph} className={`card-chunk !border-4 !border-ink p-7 sm:p-9 ${index ? 'bg-anorganic-soft' : 'bg-organic-soft'}`}><span className="font-display text-5xl font-bold" aria-hidden="true">0{index + 1}</span><p className="mt-5 text-lg font-medium leading-relaxed">{paragraph}</p><div className="mt-6"><SpeakButton text={paragraph} /></div></article>)}</div>
@@ -38,15 +41,15 @@ export default function AboutPage() {
     <section className="section-shell !min-h-0">
       <div className="section-inner">
         <SectionHeading number="03" eyebrow="JURUS PAHLAWAN" title="Tiga jurus sakti 3R" subtitle="Mulai dari kebiasaan sederhana setiap hari." />
-        <div className="grid gap-6 md:grid-cols-3">{THREE_R.map(item => <article key={item.id} className="card-chunk p-7" style={{ borderTopColor: item.color, borderTopWidth: '12px' }}><span className="text-5xl" aria-hidden="true">{item.emoji}</span><h3 className="mt-5 text-3xl font-bold">{item.title}</h3><p className="font-display font-semibold text-slate-600">{item.en}</p><p className="mt-4 leading-relaxed">{item.kid}</p></article>)}</div>
+        <div className="grid gap-6 md:grid-cols-3">{THREE_R.map(item => <article key={item.id} className="about-three-r p-7" style={{ '--step-color': item.color }}><span className="text-5xl" aria-hidden="true">{item.emoji}</span><h3 className="mt-5 text-3xl font-bold">{item.title}</h3><p className="font-display font-semibold text-slate-600">{item.en}</p><p className="mt-4 leading-relaxed">{item.kid}</p></article>)}</div>
       </div>
     </section>
 
     <section className="section-shell !min-h-0 bg-mint">
       <div className="section-inner">
         <SectionHeading number="04" eyebrow="KREDIT DATA" title="Sumber data kami" subtitle="Bacaan tentang sampah untuk orang tua dan guru." />
-        <article className="card-chunk bg-mint p-6 sm:p-10">
-          <p className="font-display text-sm font-bold uppercase tracking-widest text-green-800">Atribusi data pendidikan lingkungan</p>
+        <article className="about-source bg-mint p-6 sm:p-10">
+          <p className="font-display text-base font-bold text-green-800">Atribusi data pendidikan lingkungan</p>
           <h3 className="mt-3 text-3xl font-bold">{ABOUT.attribution.source}</h3>
           <p className="mt-3 text-lg font-semibold">Artikel: “{ABOUT.attribution.article}”</p>
           <p className="mt-7 border-t-2 border-ink/30 pt-5 leading-relaxed">{ABOUT.attribution.note}</p>
@@ -57,7 +60,7 @@ export default function AboutPage() {
     <section className="section-shell !min-h-0">
       <div className="section-inner">
         <SectionHeading number="05" eyebrow="PAHLAWAN DI BALIK LAYAR" title="Tim Geng Pilah" subtitle="Orang-orang yang menyiapkan petualangan ini untukmu." />
-        <div className="grid gap-6 md:grid-cols-3">{ABOUT.team.map((member, index) => <article key={index} className="card-chunk p-7 text-center"><span className="mx-auto grid h-24 w-24 place-items-center rounded-3xl border-4 border-ink bg-anorganic-soft text-5xl" aria-hidden="true">{member.emoji}</span><h3 className="mt-5 text-2xl font-bold">{member.name}</h3><p className="mt-2 font-medium text-slate-700">{member.role}</p></article>)}</div>
+         <div className="grid gap-6 md:grid-cols-3">{ABOUT.team.map((member, index) => <article key={index} className="card-chunk min-w-0 p-7 text-center"><span className="mx-auto grid h-24 w-24 place-items-center rounded-3xl border-4 border-ink bg-anorganic-soft text-5xl" aria-hidden="true">{member.emoji}</span><h3 className="mt-5 break-words text-2xl font-bold leading-snug">{member.name}</h3><p className="mt-2 font-medium text-slate-700">{member.role}</p></article>)}</div>
         <div className="mt-16 text-center"><p className="mb-6 font-display text-2xl font-bold">Sudah siap jadi pahlawan Bumi?</p><a href="#/" className="btn-chunk min-h-14 bg-organic">Main Game Pilah Sampah</a></div>
       </div>
     </section>

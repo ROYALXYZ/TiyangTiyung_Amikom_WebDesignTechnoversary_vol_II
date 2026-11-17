@@ -1,72 +1,12 @@
 /* ===========================================================
-   Beranda — 8 infografis + satu garis hijau.
-   Tata letak mengalir (bukan papan absolut) supaya aman di 1024-1920px;
-   titik garis diukur dari elemen [data-jejak] saat runtime.
+   Beranda â€” 8 infografis, tanpa pita penggambar.
+   Tata letak mengalir (bukan papan absolut) supaya aman di 1024-1920px.
    =========================================================== */
 
 .beranda {
   position: relative;
   isolation: isolate;
   background: var(--color-cream);
-}
-
-.jejak {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.jejak-band, .jejak-core { transition: stroke-width 300ms ease; }
-.jejak.is-thin .jejak-band { stroke-width: 34px; }
-.jejak.is-thin .jejak-core { stroke-width: 20px; }
-
-/* Hanya selama pin: stub menutup ujung pita A, tanpa cap bertumpuk. */
-.jejak.is-in-pin [data-stroke='a'] { clip-path: url(#tong-entry-clip); }
-
-/* Kepala garis: penunjuk yang menyetir reveal kartu (lihat src/lib/pop.js).
-   Lapisan sendiri supaya pita tetap di bawah kartu, penunjuk di atasnya. */
-.jejak-headlayer {
-  z-index: 4;
-}
-
-.jejak-head { opacity: 0; }
-
-.jejak-head-pulse {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: jejak-pulse 2.2s ease-out infinite;
-}
-
-@keyframes jejak-pulse {
-  0% { scale: 0.72; opacity: 0.6; }
-  70%, 100% { scale: 1.3; opacity: 0; }
-}
-
-/* Kartu berada di depan pita; latar band tetap di belakangnya. */
-.asal-card, .panggung, .strip-tap, .jurus-card, .jadi-card, .alur-node, .alur-label, .alur-fork-label {
-  position: relative;
-  z-index: 3;
-}
-
-/* waypoint garis: titik jangkar tanpa ukuran, menempel di tepi band */
-.wp {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  pointer-events: none;
-}
-
-.wp-above {
-  top: 0;
-}
-
-.wp-below {
-  bottom: 0;
 }
 
 .text-link {
@@ -85,8 +25,6 @@
 }
 
 .band-in {
-  position: relative;
-  z-index: 3;
   width: 100%;
   max-width: 1248px;
   margin-inline: auto;
@@ -250,9 +188,6 @@
   [data-reveal].pop-in {
     animation: none;
   }
-  .jejak-head-pulse {
-    animation: none;
-  }
 }
 
 /* ===========================================================
@@ -356,7 +291,7 @@
 }
 
 /* ===========================================================
-   I1 — Sampah Itu Apa, Sih?
+   I1 â€” Sampah Itu Apa, Sih?
    =========================================================== */
 
 .asal-grid {
@@ -365,7 +300,7 @@
   align-items: start;
   gap: clamp(16px, 2.4vw, 34px);
   margin-top: clamp(24px, 3vw, 44px);
-  padding-bottom: 30px;
+  padding-bottom: 0;
 }
 
 .asal-card {
@@ -379,10 +314,10 @@
 }
 
 .asal-card:nth-child(2) {
-  margin-top: 180px;
+  margin-top: 26px;
 }
 .asal-card:nth-child(3) {
-  margin-top: 360px;
+  margin-top: 52px;
 }
 
 .asal-card h3 {
@@ -417,7 +352,7 @@
 .asal-mascot {
   position: absolute;
   right: 18px;
-  bottom: -34px;
+  bottom: 10px;
   width: 78px;
 }
 
@@ -429,7 +364,7 @@
 }
 
 /* ===========================================================
-   I2 — panggung + strip tap
+   I2 â€” panggung + strip tap
    =========================================================== */
 
 .panggung {
@@ -518,12 +453,12 @@
   margin-top: clamp(30px, 3vw, 44px);
 }
 
-/* ---------- PIN STAGE I2: garis menyapu kelima kartu ---------- */
+/* ---------- PIN STAGE I2: scroll memperkenalkan lima tong ---------- */
 
 /* Pin hanya di jalur smooth (atribut dipasang startMotion): tanpa Lenis,
    section kembali mengalir normal dan sapuan lokal tidak dipakai. */
 :root[data-motion='smooth'] .beranda .band.tong-stage {
-  min-height: 300svh;
+  min-height: 220svh;
   padding: 0;
 }
 
@@ -543,29 +478,6 @@
 :root[data-motion='smooth'] .tong-pin > .band-in {
   width: calc(100% - 2 * clamp(20px, 5vw, 96px));
 }
-
-.strip-guide {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 5;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.strip-guide-head {
-  opacity: 0;
-}
-
-/* Kepala berpindah lapisan tepat di sambungan, tanpa kilas ganda. */
-.jejak-head, .strip-guide-head { transition: none; }
-
-/* sapuan hanya ada di jalur smooth */
-:root:not([data-motion='smooth']) .strip-guide {
-  display: none;
-}
-
 /* panel masuk saat pertama kali muncul */
 .panggung-top {
   animation: none;
@@ -580,7 +492,7 @@
   100% { opacity: 1; translate: 0 0; }
 }
 
-/* tanpa pin: tinggi kembali normal, garis sapuan hanya untuk stage ter-pin */
+/* tanpa pin: tinggi kembali normal, kelima tong dipilih manual */
 @media (max-width: 1023px), (max-height: 719px), (prefers-reduced-motion: reduce) {
   :root[data-motion='smooth'] .beranda .band.tong-stage {
     min-height: 0;
@@ -592,7 +504,6 @@
     min-height: 0;
     display: block;
   }
-  .strip-guide { display: none; }
   .panggung-top { animation: none; }
 }
 
@@ -629,7 +540,7 @@
 }
 
 /* ===========================================================
-   I3 — Jalan Waktu
+   I3 â€” Jalan Waktu
    =========================================================== */
 
 .jalan {
@@ -787,7 +698,7 @@
 }
 
 /* ===========================================================
-   I4 — Tiga Jurus
+   I4 â€” Tiga Jurus
    =========================================================== */
 
 .jurus-grid {
@@ -824,7 +735,7 @@
 }
 
 /* ===========================================================
-   I5 — Alur sampah
+   I5 â€” Alur sampah
    =========================================================== */
 
 .alur {
@@ -942,7 +853,7 @@
 }
 
 /* ===========================================================
-   I6 — Jadi ini
+   I6 â€” Jadi ini
    =========================================================== */
 
 .jadi-grid {
@@ -1205,12 +1116,11 @@
 .beranda .asal-card h3, .beranda .jurus-card h3 { font-size: 23px; line-height: 1.2; }
 .beranda .asal-card p, .beranda .jurus-card p { font-size: 16px; line-height: 1.55; }
 .beranda .asal-items { margin-top: var(--space-4); }
-.beranda .asal-close { margin-top: var(--space-6); position: relative; z-index: 3; }
+.beranda .asal-close { margin-top: var(--space-5); }
 .beranda .asal-close .strong-line { margin: 0; max-width: 58ch; }
 .beranda .jurus-card { min-height: 0; display: flex; flex-direction: column; }
 .beranda .jurus-grid { align-items: start; }
-.beranda #jurus .strong-line { position: relative; z-index: 3; width: max-content; max-width: 100%; margin-left: 80px; margin-top: var(--space-4); }
-@media (max-width: 1023px) { .beranda #jurus .strong-line { margin-left: 0; } }
+.beranda #jurus .jurus-close { max-width: 100%; margin-top: var(--space-5); }
 .beranda .jurus-card h3 { margin-top: var(--space-3); }
 .beranda .jurus-grid { gap: var(--space-4); }
 .beranda .panggung { margin-top: var(--space-5); padding: var(--space-5); }
@@ -1223,8 +1133,7 @@
 .beranda .jadi-card { gap: var(--space-3); min-height: 270px; }
 .beranda .jadi-name { font-size: 16px; }
 .beranda .jadi-result { font-size: 15px; }
-.beranda .jadi-close { margin-top: var(--space-6); margin-left: 340px; width: max-content; max-width: calc(100% - 340px); font-size: 16px; position: relative; z-index: 3; }
-@media (max-width: 1023px) { .beranda .jadi-close { margin-left: 0; max-width: 100%; } }
+.beranda .jadi-close { margin-top: var(--space-5); max-width: 65ch; font-size: 16px; }
 
 /* I3: satu sumbu yang terbaca dari bahan cepat hancur ke botol kaca. */
 .beranda .jalan { margin-top: var(--space-6); padding: var(--space-4) 0; }
@@ -1269,7 +1178,7 @@
 .beranda .jalan-compare span { line-height: 1.35; padding: 12px 16px; }
 .beranda #fakta-2 > .band-in > .eyebrow,
 .beranda #fakta-2 > .band-in > .h2,
-.beranda #fakta-2 > .band-in > .lede { position: relative; z-index: 3; margin-left: 160px; }
+.beranda #fakta-2 > .band-in > .lede { margin-left: 160px; }
 .beranda #fakta-2 > .band-in > .eyebrow,
 .beranda #fakta-2 > .band-in > .h2 { margin-left: 0; }
 @media (max-width: 1023px) {
@@ -1279,53 +1188,67 @@
 }
 .beranda .jalan-compare { top: 42px; }
 
-/* Keep the full 64px halo inside the viewport at the right-hand gutter. */
-.beranda .alur-exit { left: calc(100% + 146px); }
-.beranda .alur { min-height: 0; padding-bottom: 32px; }
-.beranda .alur-step[data-side='down'] { margin-top: 0; }
-.beranda .alur-step:nth-child(1) { margin-top: 20px; }
-.beranda .alur-step:nth-child(2) { margin-top: 102px; }
-.beranda .alur-step:nth-child(3) { margin-top: 184px; }
-.beranda .alur-step:nth-child(4) { margin-top: 266px; }
-.beranda #fakta-3 { padding-bottom: 64px; }
-.beranda #fakta-3 .alur { margin-top: 128px; }
-.beranda #fakta-3 .alur { min-height: 730px; }
-.beranda #fakta-3 .alur-fork { top: 290px; gap: 170px; }
-.beranda #fakta-3 .alur-fork > div:nth-child(2) { transform: translateX(-360px); }
-.beranda #fakta-3 .alur-step:nth-child(4) .alur-label { transform: translateX(-130px); }
-.beranda #fakta-3 .alur-fork > div:nth-child(2) .alur-fork-label { transform: translateX(-50px); }
-.beranda #fakta-3 .eyebrow { position: relative; z-index: 3; }
-.beranda #fakta-3 > .band-in > .eyebrow,
-.beranda #fakta-3 > .band-in > .h2,
-.beranda #fakta-3 > .band-in > .lede { margin-left: 0; }
-.beranda #fakta-3 > .band-in > .lede { margin-left: 140px; }
-.beranda #fakta-3 .alur-fork > div:first-child { transform: translateY(-176px); }
-.beranda #fakta-3 .alur-fork > div:first-child .alur-fork-label { transform: translateX(28px); }
-@media (max-width: 1023px) {
-  .beranda #fakta-3 > .band-in > .eyebrow,
-  .beranda #fakta-3 > .band-in > .h2,
-  .beranda #fakta-3 > .band-in > .lede { margin-left: 0; }
-  .beranda #fakta-3 .alur { margin-top: var(--space-5); min-height: 0; }
-  .beranda #fakta-3 .alur-fork > div:first-child { transform: none; }
-  .beranda #fakta-3 .alur-fork > div:first-child .alur-fork-label { transform: none; }
-  .beranda #fakta-3 .alur-fork > div:nth-child(2) { transform: none; }
-  .beranda #fakta-3 .alur-step:nth-child(4) .alur-label { transform: none; }
-  .beranda #fakta-3 .alur-fork { top: 0; gap: 20px; }
-  .beranda #fakta-3 .alur-fork > div:nth-child(2) .alur-fork-label { transform: none; }
-  .beranda #fakta-3 .alur-step:nth-child(n) { margin-top: 0; min-height: 0; }
-  .beranda #fakta-3 .alur { padding-bottom: 0; }
-  .beranda #fakta-3 .alur-row { gap: 16px; }
-  .beranda #fakta-3 .alur-fork { margin-top: 0; }
-  .beranda #fakta-3 .alur-fork::before {
-    content: '';
-    position: absolute;
-    left: 43px;
-    top: -16px;
-    bottom: 38px;
-    border-left: 3px dashed var(--color-organic);
-  }
+/* I5: one technical inset, intentionally separate from the site's chunky story cards. */
+.beranda #fakta-3 .station-card { margin: 30px 0 0; padding: 19px 23px 24px; max-width: 100%; overflow: hidden; border: 4px solid var(--color-ink); border-radius: 25px; background: #fafaf7; box-shadow: 0 6px 0 var(--color-ink); color: #334155; }
+.beranda #fakta-3 .station-card.iso[data-theme='light'] {
+  --anatomy-paper: #fafaf7; --anatomy-face: #f8f3e7;
+  --anatomy-shade-0: #9d8d77; --anatomy-shade-1: #b5a691;
+  --anatomy-shade-2: #cbbda7; --anatomy-shade-3: #dfd2bd;
+  --anatomy-top: #f4ebda; --anatomy-lit-top: #fff4d9;
+  --anatomy-lit-shade: #edc775;
+  --anatomy-hi: #463d32; --anatomy-mid: #6b604f;
+  --anatomy-lo: #857763; --anatomy-faint: #c6bba9;
+  --anatomy-lit: #a9680c;
+  --anatomy-halo: #71604e; --anatomy-halo-opacity: .22;
 }
-.beranda .alur-exit { left: calc(100% + 90px); }
+/* Distinct material ramps: dark plate, satin structure, pale bins, recessed bin floors. */
+.beranda #fakta-3 .station-card [data-station-part='stand.base'] {
+  --anatomy-paper: #aca08b; --anatomy-shade-0: #847763;
+  --anatomy-shade-1: #968872; --anatomy-shade-2: #a99b85;
+  --anatomy-shade-3: #bbad96; --anatomy-top: #c9bba4;
+}
+.beranda #fakta-3 .station-card [data-station-part^='hopper.'],
+.beranda #fakta-3 .station-card [data-station-part^='chute.'],
+.beranda #fakta-3 .station-card .iso-part[data-name^='carousel.'] {
+  --anatomy-paper: #c9bda9; --anatomy-shade-0: #a3947d;
+  --anatomy-shade-1: #b3a48d; --anatomy-shade-2: #c6b8a2;
+  --anatomy-shade-3: #d5c9b4; --anatomy-top: #e5d9c4;
+}
+.beranda #fakta-3 .station-card .iso-part[data-name^='bin.'] {
+  --anatomy-paper: #f1e8d7; --anatomy-shade-0: #c5b69e;
+  --anatomy-shade-1: #d3c4ab; --anatomy-shade-2: #e0d1b9;
+  --anatomy-shade-3: #ede0cb; --anatomy-top: #fff7e9;
+}
+.beranda #fakta-3 .station-card .iso-part[data-name$='.floor'] {
+  --anatomy-paper: #b6a489; --anatomy-shade-0: #ab987d;
+  --anatomy-shade-1: #b7a488; --anatomy-shade-2: #c5b294;
+  --anatomy-shade-3: #d0bea0; --anatomy-top: #c3ae8d;
+}
+.beranda #fakta-3 .station-heading, .beranda #fakta-3 .station-footer { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; font: 600 12px/1.5 'Plus Jakarta Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.beranda #fakta-3 .station-heading { border-bottom: 1px solid #cbd5e1; padding-bottom: 10px; }
+.beranda #fakta-3 .station-stage { position: relative; width: min(100%, 740px); aspect-ratio: 640/450; margin: auto; touch-action: pan-y; }
+.beranda #fakta-3 .station-stage:focus-visible { outline: 2px solid #475569; outline-offset: -5px; }
+.beranda #fakta-3 .station-stage > .iso-svg, .beranda #fakta-3 .station-stage > div > .iso-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.beranda #fakta-3 .station-stage > div { position: absolute; inset: 0; pointer-events: none; }
+.beranda #fakta-3 .station-face { pointer-events: none; }
+.beranda #fakta-3 .station-footer { border-top: 1px solid #cbd5e1; padding-top: 12px; text-transform: none; letter-spacing: 0; align-items: flex-start; }
+.beranda #fakta-3 .station-footer output { font-weight: 700; text-align: right; max-width: 65%; }
+.beranda #fakta-3 .station-footer output strong, .beranda #fakta-3 .station-footer output small { display: block; }
+.beranda #fakta-3 .station-footer output small { margin-top: 4px; color: #64748b; font-size: 11px; font-weight: 500; }
+.beranda #fakta-3 .station-item-icon path,
+.beranda #fakta-3 .station-item-icon rect { stroke-width: 1.4; vector-effect: none; }
+.beranda #fakta-3 .station-choices { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.beranda #fakta-3 .station-choices button { min-height: 44px; border: 1px solid #a9b5c2; border-radius: 9px; background: #fff; color: #334155; padding: 9px 12px; font: 700 12px/1.2 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
+.beranda #fakta-3 .station-choices button[aria-pressed='true'] { border-color: var(--station-color); box-shadow: inset 0 -3px 0 var(--station-color); }
+.beranda #fakta-3 .station-choices button:focus-visible { outline: 2px solid #334155; outline-offset: 3px; }
+.beranda #fakta-3 .station-card figcaption { margin-top: 20px; color: #64748b; font: 500 12px/1.6 'Plus Jakarta Sans', sans-serif; }
+@media (max-width: 600px) {
+  .beranda #fakta-3 .station-card { padding: 14px 12px 18px; }
+  .beranda #fakta-3 .station-heading { font-size: 9px; }
+  .beranda #fakta-3 .station-footer { display: block; font-size: 11px; }
+  .beranda #fakta-3 .station-footer output { display: block; max-width: none; margin-top: 8px; text-align: left; }
+  .beranda #fakta-3 .station-choices { justify-content: flex-start; }
+}
 
 /* One fixed slot per piece: icon, name, arrow, destination, result. */
 .beranda .jadi-card {
@@ -1345,20 +1268,8 @@
   .beranda .jadi-disc { grid-column: 3; grid-row: 1 / 3; }
   .beranda .jadi-result { grid-column: 2; grid-row: 2; }
 }
-.beranda .jalan-orgi { max-width: 540px; margin-top: var(--space-4); }
-.beranda .jalan-orgi { margin-left: 280px; }
-.beranda .trail-marker-row { position: relative; display: flex; align-items: center; gap: 28px; min-height: 150px; margin: 26px 0 0; padding: 18px 38px; border-radius: 32px; background: var(--color-cream); border: 2px solid rgba(30,41,59,.12); }
-.beranda .trail-marker { position: relative; z-index: 2; flex: none; width: 94px; height: 94px; border: 3px solid #1e293b; border-radius: 50%; background: var(--tint); box-shadow: 0 6px 0 #1e293b; display: grid; place-items: center; }
-.beranda .trail-marker img { width: 56px; height: 56px; object-fit: contain; }
-.beranda .trail-marker-row > p { position: relative; z-index: 2; width: max-content; max-width: calc(100% - 130px); }
-.beranda .trail-marker-i3 { margin: 36px 0 0 16px; width: max-content; max-width: calc(100% - 16px); padding-right: 32px; }
-.beranda .trail-marker-i4 { margin: 36px 0 0 -61px; width: max-content; max-width: 100%; padding-left: 0; padding-right: 32px; }
-@media (max-width: 1023px) { .beranda .trail-marker-i4 { margin-left: 0; padding-left: 16px; } }
-.beranda .trail-marker-i6 { margin: 86px 0 0 16px; width: max-content; max-width: calc(100% - 16px); padding-right: 32px; }
-.beranda .trail-marker-i6 .jadi-close { margin: 0; max-width: calc(100% - 130px); transform: none; }
-@media (max-width: 1023px) { .beranda .trail-marker-row { margin-left: 0; padding: 16px; gap: 14px; min-height: 110px; } .beranda .trail-marker { width: 70px; height: 70px; } .beranda .trail-marker img { width: 42px; height: 42px; } .beranda .trail-marker-row > p { max-width: calc(100% - 84px); } .beranda .trail-marker-i6 .jadi-close { transform: none; } }
-.beranda #fakta-2 .strong-line { margin-top: 85px !important; margin-left: 170px; width: max-content; max-width: calc(100% - 170px); }
-.beranda #fakta-2 .strong-line + .lede { margin-left: 170px !important; margin-top: 12px !important; width: max-content; max-width: calc(100% - 170px); }
+.beranda #fakta-2 .strong-line { margin-top: var(--space-5) !important; max-width: 70ch; }
+.beranda #fakta-2 .strong-line + .lede { margin-top: 12px !important; }
 @media (max-width: 1023px) {
   .beranda .jalan-step:first-child .jalan-tag { margin-left: 0; width: auto; transform: none; }
   .beranda .jalan-orgi, .beranda #fakta-2 .strong-line,
@@ -1411,13 +1322,6 @@
   .beranda .jalan-bubble { font-size: 14px; padding: var(--space-3); }
   .beranda .jadi-card { min-height: 0; }
 }
-@media (max-width: 1023px) {
-  .beranda .band { padding-left: 64px; padding-right: 20px; }
-  .beranda .trail-marker { margin-left: -72px; margin-right: 0; }
-  .beranda .trail-marker-row > p { max-width: none; }
-  .beranda .trail-marker-i6 { margin-top: 32px; }
-}
-
 /* ===========================================================
    MARQUEE - rail tong sampah di atas footer.
    Track berisi 2 salinan; satu salinan digeser per frame (src/components/home/Marquee.jsx).
@@ -1466,3 +1370,5 @@
     transform: none !important;
   }
 }
+
+

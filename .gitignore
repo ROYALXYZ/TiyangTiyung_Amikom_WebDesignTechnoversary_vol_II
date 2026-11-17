@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Capture artifacts (not part of the submission)
+/*.png
+anatomy-figure/*.png
+anatomy-figure/page.html
+anatomy-figure/build-log.txt
+.slim/
+.hallmark/

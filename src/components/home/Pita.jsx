@@ -1,11 +1,13 @@
 import KasihMakanGame from '../game/KasihMakanGame'
 import HeroCertificate from '../certificate/HeroCertificate'
+import { ColorBandBackdrop, PaperGrain } from '../art'
 
 // Dua pita penutup Beranda: game 3 level, lalu sertifikat.
 // Komponennya dipakai ulang apa adanya dari halaman #/main.
 export function PitaGame() {
   return (
     <section className="band band-mint" id="main-game" aria-labelledby="game-title">
+      <ColorBandBackdrop variant={1} edge="clouds" />
       <div className="band-in">
         <p className="eyebrow">Waktunya bermain</p>
         <h2 className="h2" id="game-title">
@@ -25,6 +27,7 @@ export function PitaGame() {
 export function PitaSertifikat() {
   return (
     <section className="band" id="sertifikat" aria-labelledby="sert-title">
+      <PaperGrain />
       <div className="band-in">
         <p className="eyebrow">Misimu selesai</p>
         <h2 className="h2" id="sert-title">

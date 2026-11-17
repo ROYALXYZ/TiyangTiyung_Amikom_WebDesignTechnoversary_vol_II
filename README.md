@@ -54,7 +54,7 @@ Prasyarat: Node.js 18 atau lebih baru, dan npm.
 
 ```bash
 # 1. masuk ke folder proyek
-cd webdesign_gengpilah_technoversary_vol.II
+cd webdesign_tiyangtiyung_technoversary_vol.II
 
 # 2. pasang dependensi
 npm install
@@ -88,25 +88,33 @@ src/
   lib/                    # efek suara, suara Bahasa Indonesia, canvas
 ```
 
-## Sumber Data & Kurikulum
+## Sumber Data
 
-Seluruh materi jenis sampah, waktu penguraian, dan angka nasional diadaptasi dari:
+Materi jenis sampah, waktu penguraian, dan jurus 3R diadaptasi dari:
 
-- **Waste4Change Indonesia** — *"Sampah: Pengertian, Jenis, Hingga Peraturannya di Indonesia"*,
-  termasuk angka 68,5 juta ton sampah nasional (2022), 24,3 juta ton belum tertangani, dan
-  0,7 kg sampah per orang per hari (Waste4Change mengutip Antara dan KLHK).
+- **Waste4Change Indonesia** — *"Sampah: Pengertian, Jenis, Hingga Peraturannya di Indonesia"*.
+
+Situs ini **tidak memuat angka nasional apa pun**. Angka timbulan sampah Indonesia yang beredar
+luas tidak dapat kami lacak ke sumber primer, jadi kami memilih tidak menampilkannya daripada
+menampilkan angka yang tidak bisa kami pertanggungjawabkan. Yang kami tampilkan hanya waktu
+penguraian per jenis benda, yang bisa diuji sendiri di rumah.
 
 ## Tim
 
-Nama Tim: **[NAMA TIM]**
+Nama Tim: **Tiyang Tiyung**
 
 | Nama | Peran |
 | --- | --- |
-| [Nama Anggota 1] | UI/UX & Maskot Designer |
-| [Nama Anggota 2] | Creative Frontend Developer |
-| [Nama Anggota 3] | Game Logic & Interactive Engineer |
+| Laila Septiani Hidayat | UI/UX & Maskot Designer |
+| Ramadhan Hari Nugroho | Creative Frontend Developer |
+| Rangga Pasha Cucu Wibisono | Game Logic & Interactive Engineer |
 
 ## Lisensi Aset
 
 Maskot, ilustrasi, dan ikon dibuat sendiri untuk kompetisi ini. Font Fredoka & Plus Jakarta
 Sans memakai lisensi SIL Open Font License. Tidak ada aset berbayar yang digunakan.
+
+Figure isometrik di bagian "Ke Mana Sampah Setelah Kamu Buang?" dibangun dengan
+**Anatomy** (https://github.com/wheresryan22/anatomy, MIT License, Copyright (c) 2026 Ryan).
+Berkas yang dipakai disalin ke `src/vendor/anatomy/` beserta salinan lisensinya; geometri
+figur, tata letak, dan interaksinya ditulis sendiri di proyek ini.

@@ -5,7 +5,7 @@ import { isReduced, onFrame, scrollPos } from './smooth'
 // Reveal sekali per elemen saat ujung garis (tour guide) menyentuhnya.
 // Attribute data-reveal dipasang dari JS, jadi CSS tidak pernah menyembunyikan
 // apa pun kalau JS gagal. Stagger lewat --pop-i.
-const SELECTOR = '[data-pop], .eyebrow, .h2, .lede, .strong-line, .doodle, .trail-marker'
+const SELECTOR = '[data-pop], .eyebrow, .h2, .lede, .strong-line, .doodle'
 const LEAD = 8
 
 export function usePop(deps = []) {
