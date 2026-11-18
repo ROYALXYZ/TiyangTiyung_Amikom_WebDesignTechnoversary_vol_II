@@ -337,27 +337,33 @@
   top: calc(var(--knot-y, 0px) - var(--knot-size) / 2);
   width: var(--knot-size);
   height: var(--knot-size);
+  /* Simpul hanya "menyala" saat garis tiba: itu yang membuatnya terasa
+     pemandu, bukan hiasan yang sudah ada sejak awal. */
+  opacity: calc(.18 + var(--knot-on, 1) * .82);
+  transform: scale(calc(.72 + var(--knot-on, 1) * .28));
+  transition: opacity .2s linear, transform .2s ease-out;
 }
 .trail-knot-dot,
 .trail-knot-ring { position: absolute; inset: 0; border-radius: 999px; }
 .trail-knot-dot {
-  background: var(--color-cream, #FFFDF7);
+  background: var(--knot-tint, var(--color-cream, #FFFDF7));
   border: 2px solid var(--color-ink, #1E293B);
 }
 .trail-knot-ring {
   inset: -4px;
   border: 2px solid var(--color-ink, #1E293B);
   border-style: dashed;
-  opacity: calc(.15 + var(--trail-draw, 1) * .55);
-  transform: scale(calc(.5 + var(--trail-draw, 1) * .5));
+  opacity: .7;
 }
 @media (prefers-reduced-motion: reduce) {
-  .trail-knot-ring { transform: none; opacity: .6; }
+  /* Statis dan terlihat semua: tanpa gerak, tidak ada yang disembunyikan. */
+  .trail-knot { opacity: 1; transform: none; transition: none; }
+  .trail-knot-ring { display: none; }
 }
 @media (max-width: 760px) {
-  /* Lintasan selebar layar ponsel jadi tumpukan kurva: sisakan simpulnya saja. */
-  .trail-line { display: none; }
-  .trail-knot { left: 12px; }
+  /* Ponsel: lintasan tetap ada tetapi ditarik ke gutter sempit supaya tidak
+     menumpuk di tengah teks. Kurvanya dirapatkan, bukan dihilangkan. */
+  .trail-knot { left: 10px; --knot-size: 11px; }
 }
 /* Tablet: gutter menyempit, jadi lintasan ditarik lebih dekat ke tepi. */
 @media (max-width: 1100px) {

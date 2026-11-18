@@ -111,8 +111,8 @@ export function ColorBandBackdrop({ variant = 1, edge = 'clouds', side = 'bottom
   const fill = colors[bg]
   const silhouette = bg === 'cream' || bg === 'mint' ? colors.green : colors.cream
   const z = flat ? -1 : 0
-  return <div {...rest} className={`art-band${flat ? ' art-band--flat' : ''} ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'clip', pointerEvents: 'none', background: fill, zIndex: z, ...style }}>
-    <svg aria-hidden="true" style={{ position: 'absolute', width: '100%', height: 100, left: 0, [side === 'top' ? 'top' : 'bottom']: -1, zIndex: z, transform: side === 'top' ? 'scaleY(-1)' : undefined }}>
+  return <div {...rest} className={`art-band${flat ? ' art-band--flat' : ''} ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: fill, zIndex: z, ...style }}>
+    <svg aria-hidden="true" style={{ position: 'absolute', width: '100%', height: 100, left: 0, [side === 'top' ? 'top' : 'bottom']: -1, zIndex: z, overflow: 'hidden', transform: side === 'top' ? 'scaleY(-1)' : undefined }}>
       <defs><pattern id={`art-band-${id}`} width="500" height="100" patternUnits="userSpaceOnUse"><path d={edges[edge] || edges.clouds} fill={silhouette}/><path d={(edges[edge] || edges.clouds).split(' L500 100')[0]} fill="none" stroke={ink} strokeWidth="3" strokeLinejoin="round"/>{edge === 'clouds' && <path d="M283 24Q292 10 304 18Q309 6 321 13Q329 21 322 27Z" fill={silhouette} stroke={ink} strokeWidth="3"/>}</pattern></defs>
       <rect width="100%" height="100" fill={`url(#art-band-${id})`} />
     </svg>
