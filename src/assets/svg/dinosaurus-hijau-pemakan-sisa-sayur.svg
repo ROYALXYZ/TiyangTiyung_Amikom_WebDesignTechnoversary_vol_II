@@ -2,11 +2,11 @@
   <style>
 @keyframes art-bob {
   0%, 100% { transform: scale(1, 1) rotate(0deg); }
-  30% { transform: scale(1.16, 0.86) rotate(-3deg); }
-  55% { transform: scale(0.89, 1.13) rotate(3deg); }
-  75% { transform: scale(1.05, 0.96) rotate(-1deg); }
+  30% { transform: scale(1.035, 0.968) rotate(-1.4deg); }
+  55% { transform: scale(0.972, 1.03) rotate(1.4deg); }
+  75% { transform: scale(1.012, 0.99) rotate(-0.6deg); }
 }
-.art-bob { animation: art-bob 2.1s ease-in-out 0s infinite normal; transform-origin: 0px 0px;  }
+.art-bob { animation: art-bob 7s cubic-bezier(.45,0,.55,1) 0s infinite alternate; transform-box: fill-box; transform-origin: center;  }
   </style>
   <g transform="translate(400, 270) rotate(0)">
     <g class="art-bob">

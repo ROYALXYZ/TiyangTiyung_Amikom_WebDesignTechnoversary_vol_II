@@ -4,7 +4,7 @@
   0%, 100% { transform: translate(0px, 0px); }
   50% { transform: translate(0px, -6px); }
 }
-.art-bob { animation: art-bob 2.2s ease-in-out 0s infinite normal; transform-origin: 0px 0px;  }
+.art-bob { animation: art-bob 8.5s cubic-bezier(.45,0,.55,1) 0s infinite alternate; transform-box: fill-box; transform-origin: center;  }
   </style>
   <g transform="translate(400, 270) rotate(0)">
     <g class="art-bob">
