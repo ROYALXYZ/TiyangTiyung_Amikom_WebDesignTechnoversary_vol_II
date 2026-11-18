@@ -459,7 +459,7 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
   overflow: hidden;
 }
 .beranda #fakta-1 .band-in { position: relative; }
-.beranda #fakta-1 .fakta-intro { max-width: 810px; position: relative; z-index: 1; }
+.beranda #fakta-1 .fakta-intro { max-width: 810px; position: relative; z-index: 3; }
 .beranda #fakta-1 .fakta-intro .lede { max-width: 43ch; margin-top: 44px; }
 .beranda #fakta-1 .asal-grid {
   position: relative;
@@ -642,8 +642,8 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
    sections trap their text below .trail; flow supplies shared stacking. */
 .beranda :is(.hero, #main-game, #sertifikat) { isolation: isolate; }
 .beranda :is(#fakta-1, #kenalan, #fakta-2, #jurus, #jadi-ini, #main-game, #sertifikat) > .band-in,
-.beranda #kenalan .tong-pin { position: relative; z-index: 1; }
-.beranda #kenalan .tong-pin .band-in { position: relative; z-index: 1; }
+.beranda #kenalan .tong-pin { position: relative; z-index: 3; }
+.beranda #kenalan .tong-pin .band-in { position: relative; z-index: 3; }
 .beranda #fakta-1 > .art-band { background: var(--color-soft-lime, #dff8cf) !important; }
 .beranda #kenalan > .art-band { background: var(--color-soft-sand, #f5f2dc) !important; }
 .beranda #jurus > .art-band { background: var(--color-soft-meadow, #e9f6df) !important; }

@@ -102,9 +102,8 @@
 .beranda #jadi-ini > .band-in,
 .beranda #kenalan > :is(.band-in, .tong-pin) {
   position: relative;
-  /* Above `.trail` (1): sungai tetap terlihat di sela konten tanpa
-     menggambar di atas teks atau tombol. */
-  z-index: 2;
+  /* Konten di atas sungai dan latar; teks serta tombol tetap terbaca. */
+  z-index: 3;
 }
 
 @media (max-width: 700px) {
@@ -349,9 +348,8 @@
 
 .trail {
   position: absolute;
-  /* Di atas .art-band (-1), di bawah .band-in (2). .band dalam aliran
-     tidak boleh memakai isolation: isolate; itu memerangkap teks di bawah
-     sungai sekalipun .band-in punya z-index lebih tinggi. */
+  /* Di atas .art-band (-1), di bawah konten (3). Band dalam aliran tidak
+     diisolasi supaya teks tetap berada di depan jalur. */
   z-index: 1;
   inset: 0;
   pointer-events: none;
@@ -361,8 +359,15 @@
   width: 100%;
   /* Tinggi ditulis inline oleh Trail.jsx dan HARUS sama dengan tinggi
      viewBox-nya: preserveAspectRatio="none" memetakan viewBox penuh ke
-     kotak elemen, jadi selisih 10% saja sudah menggeser seluruh sungai. */
-  overflow: visible;
+     kotak elemen, jadi selisih 10% saja sudah menggeser seluruh sungai.
+     `overflow: hidden` (bukan visible): garis yang ditarik ke luar kotak
+     5.481px memaksa Chromium membuat layer raksasa yang memotong pita. */
+  overflow: hidden;
+  /* Hulu masuk dari y negatif (di atas `.beranda-flow`) supaya air datang
+     dari luar layar. Dengan `overflow: hidden` bagian itu terpotong, dan
+     itulah yang diinginkan — tapi batas bawah viewBox tidak boleh ikut
+     memotong: jalur digambar ulang tiap resize, jadi simpan ruang. */
+  overflow-clip-margin: 0;
 }
 /* Lima path dengan dashoffset yang berubah tiap frame: beri tahu compositor
    supaya perubahannya tidak memicu repaint berulang. */

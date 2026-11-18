@@ -45,7 +45,7 @@
    pita cukup turun ke z-index -1 (lihat ColorBandBackdrop `flat`) dan
    lintasan di 0 tetap tergambar di depan warnanya. */
 
-.beranda .band > .panggung { position: relative; z-index: 2; }
+.beranda .band > .panggung { position: relative; z-index: 3; }
 
 /* Pembungkus jejak: satu konteks posisi supaya SVG lintasan bisa
    melebar setinggi seluruh rangkaian seksi. Latar cream dipasang di sini,
