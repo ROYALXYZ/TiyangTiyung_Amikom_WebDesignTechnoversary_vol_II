@@ -512,6 +512,22 @@
   color: #4a5a70;
 }
 
+.panggung-warning {
+  max-width: 48ch;
+  margin: 12px 0 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--color-b3);
+  border-radius: 0 10px 10px 0;
+  background: #fffdf7;
+  color: #682b22;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* Reserve note space across five tabs so Tong Merah does not move choices. */
+.panggung-note { min-height: 132px; }
+
 .strip {
   position: relative;
   display: grid;
@@ -567,7 +583,7 @@
   width: 38px;
 }
 
-.strip-tap[aria-pressed='true'] {
+.strip-tap[aria-selected='true'] {
   box-shadow: 0 4px 0 var(--color-ink), 0 0 0 5px var(--tint);
   background: var(--tint);
 }

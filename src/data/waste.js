@@ -25,7 +25,7 @@ export const BINS = {
     emoji: '🤖',
     tagline: 'Robot daur ulang',
     kid:
-      'Sampah buatan mesin yang sangat awet dan tidak bisa membusuk sendiri, tapi bisa disulap jadi barang baru!',
+      'Botol dan kaleng yang dipilah dan diolah bisa menjadi bahan barang baru!',
     examples: 'Botol plastik, kaleng minuman, gelas plastik',
     parent:
       'Sampah yang tidak membusuk (undegradable) dan membutuhkan waktu puluhan hingga ratusan tahun untuk terurai, namun bernilai daur ulang tinggi.',
@@ -53,7 +53,7 @@ export const BINS = {
     emoji: '📘',
     tagline: 'Kutu buku pintar',
     kid:
-      'Semua sampah kertas dan kardus bersih! Bisa dibuat jadi buku gambar baru, jadi kita tidak perlu menebang pohon lagi!',
+      'Kertas dan kardus bersih bisa dikumpulkan untuk didaur ulang menjadi kertas baru!',
     examples: 'Kardus bekas, koran lama, kertas tulis',
     parent:
       'Dipisahkan khusus dari anorganik agar serat selulosanya tidak terkontaminasi minyak/air dan mudah masuk industri daur ulang kertas.',
@@ -77,17 +77,17 @@ export const BINS = {
 export const MASCOTS = Object.values(BINS)
 
 export const ITEMS = [
-  { id: 'kulit-pisang', name: 'Kulit Pisang', emoji: '🍌', type: 'organik', fact: 'Hancur dalam 2 minggu - 1 bulan.' },
-  { id: 'apel-sisa', name: 'Sisa Apel', emoji: '🍎', type: 'organik', fact: 'Hancur dalam 2 bulan.' },
-  { id: 'daun-kering', name: 'Daun Kering', emoji: '🍂', type: 'organik', fact: 'Hancur dalam 2 - 4 minggu.' },
+  { id: 'kulit-pisang', name: 'Kulit Pisang', emoji: '🍌', type: 'organik', fact: 'Perkiraan sekitar 1 bulan untuk terurai; kondisi lingkungan berpengaruh.' },
+  { id: 'apel-sisa', name: 'Sisa Apel', emoji: '🍎', type: 'organik', fact: 'Perkiraan sekitar 2 bulan untuk terurai; kondisi lingkungan berpengaruh.' },
+  { id: 'daun-kering', name: 'Daun Kering', emoji: '🍂', type: 'organik', fact: 'Daun dapat terurai dan dijadikan kompos; waktunya bergantung pada kondisi.' },
   { id: 'botol-plastik', name: 'Botol Plastik', emoji: '🥤', type: 'anorganik', fact: 'Perkiraan populer: 450 tahun untuk terurai; plastik bisa jadi mikroplastik.' },
-  { id: 'kaleng-susu', name: 'Kaleng Susu', emoji: '🥫', type: 'anorganik', fact: 'Butuh 80 - 100 tahun untuk hancur.' },
-  { id: 'gelas-plastik', name: 'Gelas Plastik', emoji: '🧋', type: 'anorganik', fact: 'Butuh 50 - 80 tahun untuk hancur.' },
+  { id: 'kaleng-susu', name: 'Kaleng Susu', emoji: '🥫', type: 'anorganik', fact: 'Kaleng bersih dapat dikumpulkan untuk didaur ulang.' },
+  { id: 'gelas-plastik', name: 'Gelas Plastik', emoji: '🧋', type: 'anorganik', fact: 'Waktu terurai bergantung pada jenis plastik dan kondisi lingkungan.' },
   { id: 'baterai-bekas', name: 'Baterai Bekas', emoji: '🔋', type: 'b3', fact: 'Zat kimianya bisa mencemari tanah dan air.' },
-  { id: 'lampu-pecah', name: 'Lampu Pecah', emoji: '💡', type: 'b3', fact: 'Pecahannya tajam dan mengandung merkuri.' },
+  { id: 'lampu-pecah', name: 'Lampu Pecah', emoji: '💡', type: 'b3', fact: 'Pecahannya tajam; beberapa jenis lampu juga mengandung merkuri. Minta bantuan orang dewasa.' },
   { id: 'obat-nyamuk', name: 'Kaleng Obat Nyamuk', emoji: '🦟', type: 'b3', fact: 'Berisi bahan kimia beracun.' },
-  { id: 'kardus-bekas', name: 'Kardus Bekas', emoji: '📦', type: 'kertas', fact: 'Hancur 2 - 6 minggu, bisa jadi kertas baru.' },
-  { id: 'koran-lama', name: 'Koran Lama', emoji: '📰', type: 'kertas', fact: 'Butuh 2 - 6 minggu untuk hancur.' },
+  { id: 'kardus-bekas', name: 'Kardus Bekas', emoji: '📦', type: 'kertas', fact: 'Kardus bersih dapat didaur ulang menjadi kertas baru.' },
+  { id: 'koran-lama', name: 'Koran Lama', emoji: '📰', type: 'kertas', fact: 'Koran bersih dapat dikumpulkan untuk didaur ulang.' },
   { id: 'tisu-kotor', name: 'Tisu Kotor', emoji: '🧻', type: 'residu', fact: 'Terlalu kotor untuk didaur ulang.' },
   { id: 'bungkus-permen', name: 'Bungkus Permen', emoji: '🍬', type: 'residu', fact: 'Lapisan aluminiumnya sulit didaur ulang.' },
 ]

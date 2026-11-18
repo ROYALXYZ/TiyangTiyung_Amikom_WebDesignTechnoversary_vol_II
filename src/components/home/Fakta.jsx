@@ -129,9 +129,9 @@ const TONG = [
     tint: 'var(--color-organic-soft)',
     accent: 'var(--color-organic)',
     accentText: 'var(--color-organic-ink)',
-    say: 'Sisa makanan masuk ke aku. Aku ubah jadi kompos, vitamin untuk tanaman.',
+    say: 'Sisa makanan masuk ke aku. Dengan bantuan orang dewasa, sisa ini bisa jadi kompos untuk tanaman.',
     items: ['banana-peel', 'veggie-scraps', 'dry-leaf'],
-    facts: 'Sampah organik membusuk sendiri, cepat. Paling lama beberapa bulan.',
+    facts: 'Sisa makanan lebih mudah terurai, tetapi waktunya bergantung pada bahan dan kondisi lingkungan.',
   },
   {
     id: 'anorganik',
@@ -140,9 +140,9 @@ const TONG = [
     tint: 'var(--color-anorganic-soft)',
     accent: 'var(--color-anorganic)',
     accentText: 'var(--color-anorganic-ink)',
-    say: 'Botol dan kaleng masuk ke sini. Mereka disulap jadi mainan baru.',
+    say: 'Botol dan kaleng bersih masuk ke sini. Jika diolah, bahannya bisa jadi barang baru.',
     items: ['plastic-bottle', 'milk-can', 'plastic-cup'],
-    facts: 'Itu perkiraan, bukan waktu pasti plastik hilang. Pilah agar bisa didaur ulang.',
+    facts: 'ialah perkiraan untuk botol plastik, bukan waktu pasti plastik hilang. Pilah agar bisa diolah.',
   },
   {
     id: 'b3',
@@ -153,7 +153,7 @@ const TONG = [
     accentText: 'var(--color-b3-ink)',
     say: 'Hati-hati. Aku isi barang berbahaya. Jangan dipegang sendiri, panggil Ayah atau Ibu.',
     items: ['battery', 'broken-bulb', 'mosquito-coil-can'],
-    facts: 'Sampah B3 punya racun. Kalau masuk tanah, tanaman bisa mati.',
+    facts: 'Baterai bekas dan benda berbahaya perlu ditangani terpisah. Jangan sentuh lampu pecah; minta bantuan orang dewasa.',
   },
   {
     id: 'kertas',
@@ -162,9 +162,9 @@ const TONG = [
     tint: 'var(--color-paper-soft)',
     accent: 'var(--color-paper)',
     accentText: 'var(--color-paper-ink)',
-    say: 'Kertas dan kardus bersih masuk ke aku. Aku lahir lagi jadi buku baru.',
+    say: 'Kertas dan kardus bersih masuk ke aku. Seratnya bisa dipakai lagi untuk membuat kertas.',
     items: ['test-paper', 'cardboard-box', 'old-newspaper'],
-    facts: 'Kertas dan kardus bersih bisa lahir lagi sebagai kertas baru — tanpa menebang pohon tambahan.',
+    facts: 'Kertas dan kardus yang bersih lebih mudah dikumpulkan untuk didaur ulang.',
   },
   {
     id: 'residu',
@@ -175,7 +175,7 @@ const TONG = [
     accentText: 'var(--color-muted)',
     say: 'Aku simpan yang tidak bisa didaur ulang. Kurangi aku, ya.',
     items: ['used-tissue', 'candy-wrapper', 'cigarette-butt'],
-    facts: 'Sampah residu berakhir di TPA. Tidak semua bisa diolah lagi.',
+    facts: 'Tisu kotor dan bungkus campuran sulit didaur ulang. Kurangi pemakaiannya bila memungkinkan.',
   },
 ]
 
@@ -219,7 +219,7 @@ export function KenalanTong() {
         <h2 className="h2" id="i2-title">
           Kenalan Sama Tong-Tongnya
         </h2>
-        <p className="lede">Tap satu tong, buka kelimanya, ya.</p>
+        <p className="lede" id="kenalan-instruction">Ketuk tong. Pakai keyboard? Tab ke tong, lalu ← →.</p>
 
         <div className="panggung" style={{ '--panggung-bg': tong.tint }}>
           <div className="panggung-top" ref={panel} role="tabpanel" id={`tong-panel-${tong.id}`} aria-labelledby={`tong-tab-${tong.id}`} tabIndex={0}>
@@ -245,17 +245,21 @@ export function KenalanTong() {
                 className="text-link"
                 onClick={() => {
                   playPop()
-                  speak(`${tong.name}. ${tong.say}`)
+                  speak(`${tong.name}. ${tong.say} ${tong.facts}`)
                 }}
               >
                 Bacakan
               </button>
-              {tong.id === 'anorganik' && <p className="source-line">450 tahun ialah perkiraan populer untuk botol plastik, bukan waktu pasti hingga hilang. Sumber: <a href="https://waste4change.com/blog/contoh-sampah-anorganik-pengertian-jenis-manfaat" target="_blank" rel="noopener noreferrer">Waste4Change</a> · <a href={ABOUT.attribution.noaaUrl} target="_blank" rel="noopener noreferrer">Penjelasan NOAA</a>.</p>}
+              <div className="panggung-note">
+                {tong.id === 'b3' && <p className="panggung-warning"><strong>Jangan ambil sendiri.</strong> Jauhi baterai bocor dan lampu pecah; beri tahu orang dewasa untuk menangani dan membuangnya terpisah.</p>}
+                {tong.id === 'anorganik' && <p className="source-line">Angka perkiraan, bukan waktu pasti. Sumber: <a href={ABOUT.attribution.timeUrl} target="_blank" rel="noopener noreferrer">Waste4Change</a> · <a href={ABOUT.attribution.noaaUrl} target="_blank" rel="noopener noreferrer">Penjelasan NOAA</a>.</p>}
+                {tong.id === 'b3' && <p className="source-line">Pedoman pemilahan sampah berbahaya: <a href="https://peraturan.go.id/id/pp-no-81-tahun-2012" target="_blank" rel="noopener noreferrer">PP 81/2012 Pasal 17</a>.</p>}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="strip" role="tablist" aria-label="Pilih tong">
+        <div className="strip" role="tablist" aria-label="Pilih tong" aria-describedby="kenalan-instruction">
           {TONG.map((t, i) => (
             <button
               type="button"

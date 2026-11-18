@@ -59,13 +59,13 @@ export const COMIC = {
     },
     {
       id: 'riono',
-      text: 'Si Rino menelan Bobi dengan riang. Di pabrik daur ulang, Bobi dicuci, dilelehkan, dan dicetak ulang. Beberapa minggu kemudian, Bobi kembali sebagai tas sekolah baru untuk Rio!',
+      text: 'Si Rino menelan Bobi dengan riang. Setelah dipilah dan dikumpulkan, plastik Bobi bisa diolah menjadi bahan barang baru. Rio membayangkan Bobi kembali sebagai tas sekolah!',
       mood: 'happy',
       choices: [{ label: '🔁 Coba jalan cerita lain', next: 'start' }],
     },
   ],
   moral:
-    'Satu botol plastik bisa mencemari laut selama ratusan tahun, atau berubah jadi barang baru kalau kita pilah dengan benar.',
+    'Botol plastik yang dibuang sembarangan bisa bertahan lama dan menjadi serpihan kecil. Kalau dipilah, peluang untuk didaur ulang lebih besar.',
 }
 
 export const PLEDGES = [
@@ -113,7 +113,8 @@ export const ABOUT = {
       id: 'pp-81-2012',
       nama: 'PP No. 81 Tahun 2012',
       tentang: 'Pengelolaan Sampah Rumah Tangga dan Sampah Sejenis Sampah Rumah Tangga',
-      isi: 'Mewajibkan produsen dan masyarakat memilah sampah sejak dari sumbernya, sebelum sampah diangkut dan diolah.',
+      isi: 'Pasal 17 mengatur pemilahan oleh setiap orang pada sumbernya, pengelola kawasan, dan pemerintah kabupaten/kota; jenis pemilahan mencakup sampah berbahaya.',
+      url: 'https://peraturan.go.id/id/pp-no-81-tahun-2012',
     },
     {
       id: 'perpres-97-2017',

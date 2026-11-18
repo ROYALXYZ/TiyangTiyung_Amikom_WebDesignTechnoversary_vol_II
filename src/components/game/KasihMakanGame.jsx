@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { BINS, LEVELS, itemById } from '../../data/waste'
+import { ABOUT } from '../../data/content'
 import { playCorrect, playFanfare, playWrong } from '../../lib/sfx'
 
 const STORAGE_KEY = 'gengpilah:game'
@@ -39,6 +40,7 @@ export default function KasihMakanGame() {
   const mistakesRef = useRef(0)
   const [score, setScore] = useState(0)
   const [toast, setToast] = useState('Pilih sampah, lalu sentuh tongnya. Bisa juga seret sampah ke tong!')
+  const [lastCorrect, setLastCorrect] = useState(null)
   const [completed, setCompleted] = useState(false)
   const [earnedStars, setEarnedStars] = useState(0)
   const dragRef = useRef(null)
@@ -90,6 +92,7 @@ export default function KasihMakanGame() {
     setCompleted(false)
     setEarnedStars(0)
     setToast('Pilih sampah, lalu sentuh tongnya. Bisa juga seret sampah ke tong!')
+    setLastCorrect(null)
   }
 
   function sortItem(itemId, binId) {
@@ -97,6 +100,7 @@ export default function KasihMakanGame() {
     const item = itemById(itemId)
     if (item.type !== binId) {
       playWrong()
+      setLastCorrect(null)
       mistakesRef.current += 1
       setMistakes(mistakesRef.current)
       animateBin(binId, 'wrong')
@@ -112,7 +116,8 @@ export default function KasihMakanGame() {
     setRemaining(nextRemaining)
     setSelected(null)
     setScore((current) => current + 10)
-    showToast(`🎉 Hebat! ${item.name} masuk ke ${BINS[binId].name} (${BINS[binId].bin}). ${item.fact}`)
+    setLastCorrect(item)
+    showToast(`🎉 Hebat! ${item.name} masuk ke ${BINS[binId].name} (${BINS[binId].bin}).`)
     const stars = mistakesRef.current === 0 ? 3 : mistakesRef.current <= 2 ? 2 : 1
     saveProgress({
       ...progressRef.current,
@@ -201,6 +206,20 @@ export default function KasihMakanGame() {
       </div>
 
       <p role="status" aria-live="polite" className="mb-5 min-h-14 rounded-2xl border-2 border-ink bg-mint p-3 font-medium">{toast || 'Ayo, lanjut pilah sampahnya!'}</p>
+      {lastCorrect && (
+        <div className="mb-5 rounded-2xl border-2 border-ink bg-cream p-4" aria-live="polite">
+          <p className="font-medium"><strong>Fakta {lastCorrect.name}:</strong> {lastCorrect.fact}</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-700">
+            {lastCorrect.id === 'botol-plastik'
+              ? 'Angka 450 tahun hanya perkiraan populer, bukan waktu pasti plastik hilang; plastik bisa pecah menjadi mikroplastik. Rujukan: '
+              : ['kulit-pisang', 'apel-sisa', 'daun-kering', 'gelas-plastik'].includes(lastCorrect.id)
+                ? 'Waktu terurai bergantung pada bahan dan kondisi lingkungan. Rujukan: '
+                : 'Rujukan pemilahan: '}
+            <a className="underline underline-offset-4" href={['baterai-bekas', 'lampu-pecah', 'obat-nyamuk'].includes(lastCorrect.id) ? 'https://peraturan.go.id/id/pp-no-81-tahun-2012' : ['botol-plastik', 'kulit-pisang', 'apel-sisa', 'daun-kering', 'gelas-plastik'].includes(lastCorrect.id) ? ABOUT.attribution.timeUrl : ABOUT.attribution.articleUrl} target="_blank" rel="noopener noreferrer">{['baterai-bekas', 'lampu-pecah', 'obat-nyamuk'].includes(lastCorrect.id) ? 'PP 81/2012 Pasal 17' : 'Waste4Change'}</a>
+            {lastCorrect.id === 'botol-plastik' && <> · <a className="underline underline-offset-4" href={ABOUT.attribution.noaaUrl} target="_blank" rel="noopener noreferrer">NOAA</a></>}.
+          </p>
+        </div>
+      )}
 
       {completed ? (
         <div className="relative overflow-hidden rounded-3xl border-4 border-ink bg-mint p-6 text-center shadow-chunk-sm sm:p-10">
@@ -221,7 +240,7 @@ export default function KasihMakanGame() {
             {level.bins.map((binId) => {
               const bin = BINS[binId]
               const currentReaction = reaction?.binId === binId ? reaction : null
-               return <button key={binId} type="button" data-game-bin={binId} aria-label={`${bin.name}, ${bin.bin}. ${selected ? `Masukkan ${itemById(selected).name} ke sini` : 'Pilih sampah terlebih dahulu'}`} onClick={() => sortItem(selected, binId)} className={`relative min-h-32 min-w-[calc(50%-0.375rem)] flex-1 rounded-3xl border-4 border-ink p-3 text-center font-display shadow-chunk-sm transition-[box-shadow,filter] sm:min-w-36 sm:max-w-48 ${hovered === binId ? 'ring-4 ring-ink ring-offset-2 brightness-105' : ''} ${selected && !currentReaction ? 'pilah-awaiting' : ''}`} style={{ background: bin.soft }}><span key={currentReaction?.key || 'idle'} className={`block text-4xl ${currentReaction?.kind === 'correct' ? 'pilah-hop' : currentReaction?.kind === 'wrong' ? 'pilah-shake' : ''}`} aria-hidden="true">{bin.emoji}</span><span className="block text-lg">{bin.name}</span><span className="block text-sm">{bin.bin}</span><span className="mx-auto mt-2 block h-2 w-16 rounded-full border border-ink" style={{ background: bin.color }} /></button>
+                return <button key={binId} type="button" data-game-bin={binId} onClick={() => sortItem(selected, binId)} className={`relative min-h-32 min-w-[calc(50%-0.375rem)] flex-1 rounded-3xl border-4 border-ink p-3 text-center font-display shadow-chunk-sm transition-[box-shadow,filter] sm:min-w-36 sm:max-w-48 ${hovered === binId ? 'ring-4 ring-ink ring-offset-2 brightness-105' : ''} ${selected && !currentReaction ? 'pilah-awaiting' : ''}`} style={{ background: bin.soft }}><span key={currentReaction?.key || 'idle'} className={`block text-4xl ${currentReaction?.kind === 'correct' ? 'pilah-hop' : currentReaction?.kind === 'wrong' ? 'pilah-shake' : ''}`} aria-hidden="true">{bin.emoji}</span><span className="block text-lg">{bin.name}</span><span className="block text-sm">{bin.bin}</span><span className="mx-auto mt-2 block h-2 w-16 rounded-full border border-ink" style={{ background: bin.color }} aria-hidden="true" /></button>
             })}
           </div>
         </>

@@ -496,6 +496,8 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #kenalan .panggung {
   max-width: none;
   padding: clamp(24px, 4vw, 64px);
+  /* Jejak tetap tampak di balik panel, bukan menimpa teks atau tombol. */
+  background: color-mix(in srgb, var(--panggung-bg) 70%, transparent);
   border: 0;
   border-block: 3px solid var(--color-forest);
   border-radius: 0;
@@ -504,7 +506,7 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 }
 .beranda #kenalan .panggung-top { grid-template-columns: minmax(170px, .65fr) minmax(0, 1fr); align-items: center; gap: clamp(25px, 6vw, 100px); }
 @media (min-width: 1024px) {
-  .beranda #kenalan .panggung-top { min-height: 390px; }
+  .beranda #kenalan .panggung-top { min-height: 510px; }
 }
 .beranda #kenalan .panggung-bin { width: min(100%, 340px); border: 0; border-radius: 0; box-shadow: none; background: transparent; }
 .beranda #kenalan .panggung-bin img { width: 100%; height: auto; max-height: 350px; object-fit: contain; transform: scale(1.18) rotate(-4deg); }
@@ -512,19 +514,19 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #kenalan .tong-stat { display: inline-block; margin-right: 10px; color: var(--color-anorganic-ink); font: 700 1.3em/1.2 var(--font-display); }
 /* Sisakan ruang untuk teks terpanjang; strip pilihan tidak melompat saat tong berganti. */
 @media (min-width: 701px) and (max-width: 1023px) {
-  .beranda #kenalan .panggung-top { min-height: 445px; }
+  .beranda #kenalan .panggung-top { min-height: 565px; }
 }
 @media (min-width: 600px) and (max-width: 700px) {
-  .beranda #kenalan .panggung-top { min-height: 545px; }
+  .beranda #kenalan .panggung-top { min-height: 665px; }
 }
 @media (min-width: 400px) and (max-width: 599px) {
-  .beranda #kenalan .panggung-top { min-height: 620px; }
+  .beranda #kenalan .panggung-top { min-height: 740px; }
 }
 @media (min-width: 360px) and (max-width: 399px) {
-  .beranda #kenalan .panggung-top { min-height: 710px; }
+  .beranda #kenalan .panggung-top { min-height: 830px; }
 }
 @media (max-width: 359px) {
-  .beranda #kenalan .panggung-top { min-height: 750px; }
+  .beranda #kenalan .panggung-top { min-height: 870px; }
 }
 .beranda #kenalan .strip { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 0; border-bottom: 3px solid var(--color-forest); }
 .beranda #kenalan .strip-tap {
@@ -542,7 +544,8 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
   font-size: clamp(13px, 1.5vw, 19px);
 }
 .beranda #kenalan .strip-tap:last-child { border-right: 0; }
-.beranda #kenalan .strip-tap[aria-pressed='true'] { background: var(--tint); }
+.beranda #kenalan .strip-tap[aria-selected='true'] { background: var(--tint); box-shadow: inset 0 -5px 0 var(--color-forest); }
+.beranda #kenalan .strip-tap:focus-visible { outline: 3px solid var(--color-forest); outline-offset: -5px; }
 .beranda #kenalan .strip-tap img { width: 64px; height: 68px; object-fit: contain; }
 
 /* Infographic, not three tiles: a continuous route with open annotations.
@@ -635,7 +638,9 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 }
 
 /* Shared illustration kit: full-width SVG bands live below interactive content. */
-.beranda :is(.hero, #fakta-1, #kenalan, #fakta-2, #jurus, #jadi-ini, #main-game, #sertifikat) { isolation: isolate; }
+/* Only sections outside .beranda-flow need isolation. Inside flow, isolated
+   sections trap their text below .trail; flow supplies shared stacking. */
+.beranda :is(.hero, #main-game, #sertifikat) { isolation: isolate; }
 .beranda :is(#fakta-1, #kenalan, #fakta-2, #jurus, #jadi-ini, #main-game, #sertifikat) > .band-in,
 .beranda #kenalan .tong-pin { position: relative; z-index: 1; }
 .beranda #kenalan .tong-pin .band-in { position: relative; z-index: 1; }
@@ -685,8 +690,10 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
   .beranda #fakta-1 .fakta-intro { max-width: none; display: grid; grid-template-columns: minmax(0, 760px) minmax(250px, 1fr); gap: 25px 70px; align-items: start; }
   .beranda #fakta-1 .fakta-intro .h2 { grid-column: 1; }
   .beranda #fakta-1 .fakta-intro .lede { grid-column: 2; grid-row: 1; margin-top: 20px; padding: 20px 0 0 26px; border-left: 4px solid var(--color-organic); font-size: clamp(20px, 1.8vw, 28px); color: var(--color-ink); }
+  .beranda #kenalan .band-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 34%); column-gap: clamp(28px, 4vw, 72px); }
   .beranda #kenalan .band-in > .h2 { max-width: 12ch; }
-  .beranda #kenalan .band-in > .lede { position: absolute; top: 90px; right: 0; width: min(34%, 360px); font: 600 clamp(26px, 2.7vw, 42px)/1.2 var(--font-display); color: var(--color-forest); }
+  .beranda #kenalan .band-in > .lede { position: static; align-self: center; width: auto; margin: 0 clamp(32px, 5vw, 80px) 0 0; font: 600 clamp(22px, 2vw, 30px)/1.3 var(--font-display); color: var(--color-forest); }
+  .beranda #kenalan .band-in > :is(.panggung, .strip) { grid-column: 1 / -1; }
 }
 
 @media (max-width: 700px) {

@@ -102,8 +102,8 @@
 .beranda #jadi-ini > .band-in,
 .beranda #kenalan > :is(.band-in, .tong-pin) {
   position: relative;
-  /* 2, di atas `.trail` (1): sungai membentang di belakang isi, termasuk
-     judul, persis garis peta di balik legenda. */
+  /* Above `.trail` (1): sungai tetap terlihat di sela konten tanpa
+     menggambar di atas teks atau tombol. */
   z-index: 2;
 }
 
@@ -349,11 +349,9 @@
 
 .trail {
   position: absolute;
-  /* z-index 1: `.band` memakai `isolation: isolate`, jadi `.art-band` (z=-1)
-     terkurung di dalam stacking context band itu sendiri dan band-nya dicat
-     sebagai satu blok di z=auto — dengan trail di 0, band opaque menutupi
-     sungai di seksi mana pun yang punya .art-band. Satu level di atas band,
-     dan isi seksi di atasnya lewat .band-in/.panggung (2). */
+  /* Di atas .art-band (-1), di bawah .band-in (2). .band dalam aliran
+     tidak boleh memakai isolation: isolate; itu memerangkap teks di bawah
+     sungai sekalipun .band-in punya z-index lebih tinggi. */
   z-index: 1;
   inset: 0;
   pointer-events: none;
