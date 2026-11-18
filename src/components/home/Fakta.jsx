@@ -1,9 +1,15 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react'
 import { playPop } from '../../lib/sfx'
 import { speak } from '../../lib/speech'
-import { useTongSweep } from '../../lib/sweep'
-import SortingStation from './SortingStation'
-import { ColorBandBackdrop, PaperGrain, EdgePlant } from '../art'
+// 350 kB geometri + JSON stasiun: diunduh saat bagian ini mendekat, bukan di
+// muat pertama beranda.
+const SortingStation = lazy(() => import('./SortingStation'))
+import { ColorBandBackdrop, PaperGrain, EdgePlant, NumberBadge, RawArt } from '../art'
+import dinoOrganik from '../../assets/svg/dinosaurus-hijau-pemakan-sisa-sayur.svg?raw'
+import pelangiAwan from '../../assets/svg/pelangi-awan-bersahabat.svg?raw'
+import matahariKacamata from '../../assets/svg/matahari-kacamata-ceria.svg?raw'
+import awanTiup from '../../assets/svg/awan-tiup-angin-segar.svg?raw'
+import tulangIkan from '../../assets/svg/tulang-ikan-bekas.svg?raw'
 import recyclingBottles from '../../../assets/recycling-bottles.jpg'
 
 const ICON = (name) => `/svg/items/${name}.svg`
@@ -42,7 +48,7 @@ export function SampahApa() {
     'Kalau dibuang sembarangan, sampah bikin Bumi sakit. Kalau dipilah, sampah bisa jadi barang baru.'
   return (
     <section className="band" id="fakta-1" data-progress aria-labelledby="i1-title">
-      <ColorBandBackdrop variant={1} edge="foliage" />
+      <ColorBandBackdrop variant={1} edge="foliage" flat />
       <div className="band-in">
         <div className="fakta-intro" data-pop>
           <p className="eyebrow">Fakta 1 dari 5</p>
@@ -62,7 +68,7 @@ export function SampahApa() {
               Bacakan
             </button>
           </p>
-        </div>
+          </div>
         <div className="asal-grid">
           {ASAL.map((card) => (
             <article
@@ -89,6 +95,7 @@ export function SampahApa() {
         </div>
         <p className="sampah-statis"><img src={ICON('plastic-bottle')} alt="" width="44" height="44" /> Botol ini tertiup angin. Bantu dia sampai ke tong yang tepat: kenali jenisnya, lihat dampaknya, lalu coba pilah.</p>
       </div>
+      <RawArt svg={dinoOrganik} className="band-art band-art--dino" label="Dinosaurus hijau makan sisa sayur" />
     </section>
   )
 }
@@ -103,6 +110,7 @@ const TONG = [
     kind: 'Organik',
     tint: 'var(--color-organic-soft)',
     accent: 'var(--color-organic)',
+    accentText: 'var(--color-organic-ink)',
     say: 'Sisa makanan masuk ke aku. Aku ubah jadi kompos, vitamin untuk tanaman.',
     items: ['banana-peel', 'veggie-scraps', 'dry-leaf'],
     facts: 'Sampah organik membusuk sendiri, cepat. Paling lama beberapa bulan.',
@@ -113,6 +121,7 @@ const TONG = [
     kind: 'Anorganik',
     tint: 'var(--color-anorganic-soft)',
     accent: 'var(--color-anorganic)',
+    accentText: 'var(--color-anorganic-ink)',
     say: 'Botol dan kaleng masuk ke sini. Mereka disulap jadi mainan baru.',
     items: ['plastic-bottle', 'milk-can', 'plastic-cup'],
     facts: 'Sampah anorganik awet. Botol plastik butuh 450 tahun untuk hancur.',
@@ -123,6 +132,7 @@ const TONG = [
     kind: 'B3',
     tint: 'var(--color-b3-soft)',
     accent: 'var(--color-b3)',
+    accentText: 'var(--color-b3-ink)',
     say: 'Hati-hati. Aku isi barang berbahaya. Jangan dipegang sendiri, panggil Ayah atau Ibu.',
     items: ['battery', 'broken-bulb', 'mosquito-coil-can'],
     facts: 'Sampah B3 punya racun. Kalau masuk tanah, tanaman bisa mati.',
@@ -133,9 +143,10 @@ const TONG = [
     kind: 'Kertas',
     tint: 'var(--color-paper-soft)',
     accent: 'var(--color-paper)',
+    accentText: 'var(--color-paper-ink)',
     say: 'Kertas dan kardus bersih masuk ke aku. Aku lahir lagi jadi buku baru.',
     items: ['test-paper', 'cardboard-box', 'old-newspaper'],
-    facts: 'Satu ton kertas daur ulang menyelamatkan sekitar 17 pohon.',
+    facts: 'Kertas dan kardus bersih bisa lahir lagi sebagai kertas baru — tanpa menebang pohon tambahan.',
   },
   {
     id: 'residu',
@@ -143,6 +154,7 @@ const TONG = [
     kind: 'Residu',
     tint: 'var(--color-residu-soft)',
     accent: 'var(--color-residu)',
+    accentText: 'var(--color-muted)',
     say: 'Aku simpan yang tidak bisa didaur ulang. Kurangi aku, ya.',
     items: ['used-tissue', 'candy-wrapper', 'cigarette-butt'],
     facts: 'Sampah residu berakhir di TPA. Tidak semua bisa diolah lagi.',
@@ -169,11 +181,9 @@ const ITEM_NAME = {
 
 export function KenalanTong() {
   const [active, setActive] = useState(0)
-  const stage = useRef(null)
   const panel = useRef(null)
   const firstCard = useRef(true)
-  // Scroll pada panggung memperkenalkan lima tong; tombol tetap dapat dipilih langsung.
-  const holdSweep = useTongSweep(stage, TONG.length, setActive)
+  // Kelima tong dipilih lewat tap; tidak ada sapuan yang mengikuti scroll.
   useLayoutEffect(() => {
     if (firstCard.current) { firstCard.current = false; return }
     if (document.documentElement.dataset.motion !== 'smooth' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -184,67 +194,78 @@ export function KenalanTong() {
   }, [active])
   const tong = TONG[active]
   return (
-    <section className="band band-mint tong-stage" id="kenalan" ref={stage} aria-labelledby="i2-title">
-      <ColorBandBackdrop variant={4} edge="bubbles" />
-      <div className="tong-pin" data-pin>
-        <div className="band-in">
-          <h2 className="h2" id="i2-title">
-            Kenalan Sama Tong-Tongnya
-          </h2>
-          <p className="lede">Pilih tong untuk mengenalinya. Di layar besar, gulir untuk melihat kelimanya.</p>
+    <section className="band band-mint" id="kenalan" aria-labelledby="i2-title">
+      <ColorBandBackdrop variant={4} edge="bubbles" flat />
+      <RawArt svg={awanTiup} className="band-art band-art--awan" label="Awan meniup angin segar" />
+      <div className="band-in">
+        <h2 className="h2" id="i2-title">
+          Kenalan Sama Tong-Tongnya
+        </h2>
+        <p className="lede">Tap satu tong, buka kelimanya, ya.</p>
 
-          <div className="panggung" style={{ '--panggung-bg': tong.tint }}>
-            <div className="panggung-top" ref={panel}>
-              <div className="panggung-bin" data-pop>
-                <img src={`/svg/mascots/${tong.id === 'anorganik' ? 'rino' : tong.id === 'organik' ? 'orgi' : tong.id === 'b3' ? 'bebe' : tong.id === 'kertas' ? 'kiki' : 'resi'}-happy.svg`} alt={`${tong.name}, tempat sampah ${tong.kind}`} width="140" height="140" />
-              </div>
-              <div data-pop>
-                <h3 className="panggung-title">
-                  {tong.name}<span className="tong-kind" style={{ color: tong.accent }}>{tong.kind}</span>
-                </h3>
-                <p className="panggung-say">“{tong.say}”</p>
-                <ul className="panggung-makan">
-                  {tong.items.map((it) => (
-                    <li key={it}>
-                      <img src={ICON(it)} alt="" width="26" height="26" loading="lazy" />
-                      {ITEM_NAME[it]}
-                    </li>
-                  ))}
-                </ul>
-                <p className="panggung-fact">{tong.facts}</p>
-                <button
-                  type="button"
-                  className="text-link"
-                  onClick={() => {
-                    playPop()
-                    speak(`${tong.name}. ${tong.say}`)
-                  }}
-                >
-                  Bacakan
-                </button>
-              </div>
+        <div className="panggung" style={{ '--panggung-bg': tong.tint }}>
+          <div className="panggung-top" ref={panel} role="tabpanel" id={`tong-panel-${tong.id}`} aria-labelledby={`tong-tab-${tong.id}`} tabIndex={0}>
+            <div className="panggung-bin" data-pop>
+              <img src={`/svg/mascots/${tong.id === 'anorganik' ? 'rino' : tong.id === 'organik' ? 'orgi' : tong.id === 'b3' ? 'bebe' : tong.id === 'kertas' ? 'kiki' : 'resi'}-happy.svg`} alt={`${tong.name}, tempat sampah ${tong.kind}`} width="140" height="140" />
             </div>
-          </div>
-
-          <div className="strip" role="group" aria-label="Pilih tong">
-            {TONG.map((t, i) => (
+            <div data-pop>
+              <h3 className="panggung-title">
+                {tong.name}<span className="tong-kind" style={{ color: tong.accentText }}>{tong.kind}</span>
+              </h3>
+              <p className="panggung-say">“{tong.say}”</p>
+              <ul className="panggung-makan">
+                {tong.items.map((it) => (
+                  <li key={it}>
+                    <img src={ICON(it)} alt="" width="26" height="26" loading="lazy" />
+                    {ITEM_NAME[it]}
+                  </li>
+                ))}
+              </ul>
+              {tong.id === 'anorganik' && <NumberBadge className="tong-stat" value="450" unit="tahun" />}
+              <p className="panggung-fact">{tong.facts}</p>
               <button
                 type="button"
-                key={t.id}
-                className="strip-tap"
-                style={{ '--tint': t.tint }}
-                aria-pressed={i === active}
+                className="text-link"
                 onClick={() => {
                   playPop()
-                  holdSweep()
-                  setActive(i)
+                  speak(`${tong.name}. ${tong.say}`)
                 }}
               >
-                <img src={`/svg/bins/${t.id}.svg`} alt="" width="38" height="38" loading="lazy" />
-                {t.name.replace('Tong ', '')}
+                Bacakan
               </button>
-            ))}
+            </div>
           </div>
+        </div>
+
+        <div className="strip" role="tablist" aria-label="Pilih tong">
+          {TONG.map((t, i) => (
+            <button
+              type="button"
+              key={t.id}
+              role="tab"
+              id={`tong-tab-${t.id}`}
+              aria-selected={i === active}
+              aria-controls={`tong-panel-${t.id}`}
+              tabIndex={i === active ? 0 : -1}
+              className="strip-tap"
+              style={{ '--tint': t.tint }}
+              onClick={() => {
+                playPop()
+                setActive(i)
+              }}
+              onKeyDown={(event) => {
+                const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0
+                if (!step) return
+                event.preventDefault()
+                const next = (i + step + TONG.length) % TONG.length
+                setActive(next)
+                document.getElementById(`tong-tab-${TONG[next].id}`)?.focus()
+              }}
+            >
+              <img src={`/svg/bins/${t.id}.svg`} alt="" width="38" height="38" loading="lazy" />
+              {t.name.replace('Tong ', '')}
+            </button>
+          ))}
         </div>
       </div>
     </section>
@@ -255,9 +276,9 @@ export function KenalanTong() {
    I3 — Ada Sampah yang Lebih Tua dari Kakek Nenekmu
    ========================================================= */
 const WAKTU = [
-  { items: ['banana-peel', 'test-paper'], name: 'Kulit pisang & kertas', time: '2 sampai 6 minggu', accent: 'var(--color-organic)', rise: 0 },
-  { items: ['cigarette-butt', 'plastic-bag'], name: 'Puntung rokok & kantong plastik', time: '10 sampai 20 tahun', accent: 'var(--color-anorganic)', rise: 46 },
-  { items: ['milk-can', 'plastic-bottle', 'styrofoam-box'], name: 'Kaleng, botol, styrofoam', time: '200 sampai 500 tahun', accent: 'var(--color-b3)', rise: 118 },
+  { items: ['banana-peel', 'test-paper'], name: 'Kulit pisang & kertas', time: '2 sampai 6 minggu', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)', rise: 0 },
+  { items: ['cigarette-butt', 'plastic-bag'], name: 'Puntung rokok & kantong plastik', time: '10 sampai 20 tahun', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)', rise: 46 },
+  { items: ['milk-can', 'plastic-bottle', 'styrofoam-box'], name: 'Kaleng, botol, styrofoam', time: '200 sampai 500 tahun', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)', rise: 118 },
 ]
 
 export function JalanWaktu() {
@@ -286,7 +307,7 @@ export function JalanWaktu() {
         </p>
 
         <div className="jalan">
-          <div className="jalan-compare" aria-hidden="true">
+          <div className="jalan-compare">
             <span>kakek nenekmu 80 tahun</span>
           </div>
           <div className="jalan-row">
@@ -298,7 +319,7 @@ export function JalanWaktu() {
                   ))}
                 </div>
                 <span className="jalan-node" />
-                <div className="jalan-tag" style={{ '--accent': m.accent }}>
+                <div className="jalan-tag" style={{ '--accent': m.accent, '--accent-text': m.accentText }}>
                   <small>{m.name}</small>
                   <strong>{m.time}</strong>
                   <i />
@@ -310,7 +331,7 @@ export function JalanWaktu() {
                 <img src={ICON('glass-bottle')} alt="" width="52" height="52" loading="lazy" />
               </div>
               <span className="jalan-node" />
-              <div className="jalan-tag" style={{ '--accent': 'var(--color-b3)' }}>
+              <div className="jalan-tag" style={{ '--accent': 'var(--color-anorganic)', '--accent-text': 'var(--color-anorganic-ink)' }}>
                 <small>Botol kaca</small>
                 <strong>tidak pernah habis</strong>
                 <i />
@@ -325,7 +346,9 @@ export function JalanWaktu() {
         <p className="lede" style={{ marginTop: 6 }}>
           Dan botol kaca? Dia tidak pernah habis. Sampai kapan pun.
         </p>
+        <p className="source-line">Sumber angka: Waste4Change Indonesia — “Sampah: Pengertian, Jenis-Jenis, dan Cara Menanganinya”.</p>
       </div>
+      <RawArt svg={pelangiAwan} className="band-art band-art--pelangi" label="Pelangi dan awan bersahabat" />
     </section>
   )
 }
@@ -337,7 +360,7 @@ const JURUS = [
   {
     id: 'kurangi',
     title: 'Kurangi',
-    text: 'Bawa botol minum dan kotak bekal sendiri. Satu tumbler menahan ratusan botol plastik.',
+    text: 'Bawa botol minum dan kotak bekal sendiri. Botol sekali pakai yang tidak kamu beli berarti sampah yang tidak pernah dibuat.',
     tint: 'var(--color-organic-soft)',
     icon: 'lunch-box',
   },
@@ -360,7 +383,7 @@ const JURUS = [
 export function JurusR() {
   return (
     <section className="band band-mint" id="jurus" data-progress aria-labelledby="i4-title">
-      <ColorBandBackdrop variant={1} edge="foliage" />
+      <ColorBandBackdrop variant={1} edge="foliage" flat />
       <div className="band-in">
         <p className="eyebrow">Fakta 3 dari 5</p>
         <h2 className="h2" id="i4-title">
@@ -388,6 +411,7 @@ export function JurusR() {
         </div>
         <p className="strong-line jurus-close">Urutannya penting. Kurangi dulu, baru daur ulang.</p>
       </div>
+      <RawArt svg={matahariKacamata} className="band-art band-art--matahari" label="Matahari berkacamata" />
     </section>
   )
 }
@@ -410,7 +434,9 @@ export function AlurSampah() {
           <figcaption>Contoh nyata: botol plastik terkumpul untuk didaur ulang di Xochimilco, Mexico City. Foto: <a href="https://commons.wikimedia.org/wiki/File:Recycling_bottles.JPG" target="_blank" rel="noopener noreferrer">Celinebj / Wikimedia Commons</a>, CC BY-SA 4.0.</figcaption>
         </figure>
 
-        <SortingStation />
+        <Suspense fallback={<div className="station-placeholder" aria-hidden="true" />}>
+          <SortingStation />
+        </Suspense>
       </div>
     </section>
   )
@@ -420,17 +446,17 @@ export function AlurSampah() {
    I6 — Objek yang Sering Kamu Pakai, Ternyata Bisa Jadi Ini
    ========================================================= */
 const JADI = [
-  { from: 'plastic-bottle', name: 'Botol plastik', to: 'ui/recycle', result: 'jadi serat baju', tint: 'var(--color-anorganic-soft)', accent: 'var(--color-anorganic)' },
-  { from: 'milk-can', name: 'Kaleng aluminium', to: 'doodles/can', result: 'jadi kaleng baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)' },
-  { from: 'cardboard-box', name: 'Kardus', to: 'ui/book-open', result: 'jadi buku', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)' },
-  { from: 'glass-bottle', name: 'Kaca', to: 'doodles/bottle', result: 'jadi botol baru', tint: 'var(--color-anorganic-soft)', accent: 'var(--color-anorganic)' },
-  { from: 'veggie-scraps', name: 'Sisa sayur', to: 'doodles/sprout', result: 'jadi kompos', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)' },
+  { from: 'plastic-bottle', name: 'Botol plastik', to: 'ui/recycle', result: 'jadi serat baju', tint: 'var(--color-anorganic-soft)', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)' },
+  { from: 'milk-can', name: 'Kaleng aluminium', to: 'doodles/can', result: 'jadi kaleng baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)', accentText: 'var(--color-paper-ink)' },
+  { from: 'cardboard-box', name: 'Kardus', to: 'ui/book-open', result: 'jadi buku', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)' },
+  { from: 'glass-bottle', name: 'Kaca', to: 'doodles/bottle', result: 'jadi botol baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)', accentText: 'var(--color-paper-ink)' },
+  { from: 'veggie-scraps', name: 'Sisa sayur', to: 'doodles/sprout', result: 'jadi kompos', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)' },
 ]
 
 export function JadiIni() {
   return (
     <section className="band" id="jadi-ini" aria-labelledby="i6-title">
-      <ColorBandBackdrop variant={2} edge="clouds" />
+      <ColorBandBackdrop variant={2} edge="clouds" flat />
       <div className="band-in">
         <p className="eyebrow">Fakta 5 dari 5</p>
         <h2 className="h2" id="i6-title">
@@ -441,7 +467,7 @@ export function JadiIni() {
             <article
               className="jadi-card"
               key={j.name}
-              style={{ '--tint': j.tint, '--accent': j.accent, '--accent-text': j.accent }}
+              style={{ '--tint': j.tint, '--accent': j.accent, '--accent-text': j.accentText }}
               data-pop
             >
               <img className="jadi-from" src={ICON(j.from)} alt="" width="62" height="62" loading="lazy" />
@@ -456,6 +482,7 @@ export function JadiIni() {
         </div>
         <p className="jadi-close">Sampah yang kamu pilah bukan berakhir sebagai gunung sampah. Dia dapat pekerjaan baru.</p>
       </div>
+      <RawArt svg={tulangIkan} className="band-art band-art--tulang" label="Tulang ikan bekas" />
     </section>
   )
 }

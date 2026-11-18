@@ -28,5 +28,6 @@ dist-ssr
 anatomy-figure/*.png
 anatomy-figure/page.html
 anatomy-figure/build-log.txt
+verify/*.png
 .slim/
 .hallmark/

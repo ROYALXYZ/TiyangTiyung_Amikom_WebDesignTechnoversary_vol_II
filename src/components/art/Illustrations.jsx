@@ -1,4 +1,13 @@
-import React, { useId } from 'react'
+import React, { useEffect, useId, useRef } from 'react'
+import { onFrame, isReduced } from '../../lib/smooth'
+import fish from '../../assets/ocean/fish-bone.svg?raw'
+import bottle from '../../assets/ocean/plastic-bottle.svg?raw'
+import bag from '../../assets/ocean/plastic-bag.svg?raw'
+import glass from '../../assets/ocean/glass-bottle.svg?raw'
+import cup from '../../assets/ocean/plastic-cup.svg?raw'
+import cigarette from '../../assets/ocean/cigarette-butt.svg?raw'
+import foam from '../../assets/ocean/styrofoam-box.svg?raw'
+import wrapper from '../../assets/ocean/candy-wrapper.svg?raw'
 
 const ink = 'var(--art-ink, var(--color-ink, #1e293b))'
 const colors = {
@@ -9,6 +18,50 @@ const colors = {
   red: 'var(--art-red, var(--color-b3, #EF4444))',
   blue: 'var(--art-blue, var(--color-paper, #3B82F6))',
   grey: 'var(--art-grey, var(--color-residu, #64748B))',
+}
+
+// Original illustrations live in public/svg/items; local copies let Vite inline
+// their real paths at build time, keeping the sea visible without JavaScript.
+const oceanItems = [fish, bottle, bag, foam, glass, cup, wrapper, cigarette]
+const debrisPositions = [[48, 62, 72], [12, 40, 48], [29, 15, 47], [79, 15, 48], [67, 52, 47], [88, 88, 38], [5, 78, 42], [38, 30, 34]]
+
+export function WasteOcean() {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node || isReduced()) return
+    const hero = node.closest('.hero')
+    if (!hero) return
+    let visible = false
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+      node.classList.toggle('ocean-active', visible)
+    })
+    observer.observe(hero)
+    const remove = onFrame(y => {
+      if (!visible) return
+      const start = hero.getBoundingClientRect().top + y
+      const range = Math.max(hero.offsetHeight - window.innerHeight, window.innerHeight * .65)
+      const progress = Math.min(1, Math.max(0, (y - start) / range))
+      node.style.setProperty('--ocean-recede', `${progress}`)
+    })
+    return () => { observer.disconnect(); remove() }
+  }, [])
+
+  return <div ref={ref} className="waste-ocean" aria-hidden="true">
+    <svg viewBox="0 0 1200 400" preserveAspectRatio="none" className="waste-ocean-waves">
+      <path className="ocean-wave ocean-wave-back" d="M-100 100Q50 65 200 99T500 99T800 99T1100 99T1400 99V400H-100Z" />
+      <path className="ocean-wave ocean-wave-mid" d="M-100 158Q50 116 200 156T500 156T800 156T1100 156T1400 156V400H-100Z" />
+      <path className="ocean-wave ocean-wave-front" d="M-100 232Q50 196 200 230T500 230T800 230T1100 230T1400 230V400H-100Z" />
+    </svg>
+    <div className="ocean-debris">
+      {oceanItems.map((item, index) => {
+        const [x, y, size] = debrisPositions[index]
+        return <span key={index} className={`ocean-item ocean-item-${index}`} style={{ '--ocean-x': `${x}%`, '--ocean-y': `${y}%`, '--ocean-size': `${size}px` }} dangerouslySetInnerHTML={{ __html: item }} />
+      })}
+    </div>
+  </div>
 }
 
 const marks = [
@@ -47,15 +100,19 @@ const edges = {
   bubbles: 'M0 55 L18 55 C18 30 50 26 60 50 C72 45 80 48 84 55 L128 55 C127 6 200 -2 215 44 C238 32 262 40 267 55 L304 55 C310 40 331 41 337 55 L365 55 C364 20 412 13 421 48 C437 39 458 46 461 55 L500 55 L500 100 H0Z',
 }
 
-/** Cover the section with this absolute layer; edge repeats every 500px without seams. */
-export function ColorBandBackdrop({ variant = 1, edge = 'clouds', side = 'bottom', className = '', style, ...rest }) {
+/** Torn-edge band behind a section; the edge repeats every 500px without seams.
+    `flat` sinks the fill and the torn edge to z-index -1 so a layer at 0 in the
+    same stacking context (the Jejak trail) draws in front of the colour but
+    behind everything else. Every `edges` path ends with a literal " L500 100…"
+    closing run; the outline strips it so the silhouette keeps its own stroke. */
+export function ColorBandBackdrop({ variant = 1, edge = 'clouds', side = 'bottom', flat = false, className = '', style, ...rest }) {
   const id = useId().replaceAll(':', '')
   const bg = ['mint', 'cream', 'green', 'yellow', 'blue'][(Number(variant) - 1 + 5) % 5]
   const fill = colors[bg]
   const silhouette = bg === 'cream' || bg === 'mint' ? colors.green : colors.cream
-  return <div {...rest} className={`art-band ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'clip', pointerEvents: 'none', background: fill, zIndex: 0, ...style }}>
-    <svg preserveAspectRatio="none" style={{ position: 'absolute', width: '100%', height: 100, left: 0, [side === 'top' ? 'top' : 'bottom']: -1, transform: side === 'top' ? 'scaleY(-1)' : undefined }} aria-hidden="true">
-      {/* every `edges` path must end with the literal " L500 100..." closing run: the outline below strips it with split() */}
+  const z = flat ? -1 : 0
+  return <div {...rest} className={`art-band${flat ? ' art-band--flat' : ''} ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: fill, zIndex: z, ...style }}>
+    <svg aria-hidden="true" style={{ position: 'absolute', width: '100%', height: 100, left: 0, [side === 'top' ? 'top' : 'bottom']: -1, zIndex: z, overflow: 'hidden', transform: side === 'top' ? 'scaleY(-1)' : undefined }}>
       <defs><pattern id={`art-band-${id}`} width="500" height="100" patternUnits="userSpaceOnUse"><path d={edges[edge] || edges.clouds} fill={silhouette}/><path d={(edges[edge] || edges.clouds).split(' L500 100')[0]} fill="none" stroke={ink} strokeWidth="3" strokeLinejoin="round"/>{edge === 'clouds' && <path d="M283 24Q292 10 304 18Q309 6 321 13Q329 21 322 27Z" fill={silhouette} stroke={ink} strokeWidth="3"/>}</pattern></defs>
       <rect width="100%" height="100" fill={`url(#art-band-${id})`} />
     </svg>

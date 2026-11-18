@@ -1,0 +1,397 @@
+/* ===========================================================
+   RawArt + ambient motion.
+   Artwork from src/assets/svg (inline, so its own @keyframes run).
+   Rule of restraint: one ambient loop per section, all >= 2.2s.
+   =========================================================== */
+
+.raw-art {
+  display: block;
+  pointer-events: none;
+}
+
+.raw-art > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Generator output anchors rotation at the viewBox origin, which swings the
+   whole drawing. Re-anchor to the artwork's own box so it bobs in place. */
+.raw-art svg g g {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- section-corner art ---------- */
+/* viewBox is cropped to the figure at mount, so the wrapper only sets size. */
+.band-art {
+  position: absolute;
+  z-index: 0;
+  width: clamp(120px, 15vw, 230px);
+  /* Ilustrasi sudut sengaja diayun sedikit. Tanpa ruang gerak ini, ayunan
+     yang cuma 3° langsung terpotong oleh overflow section. */
+  padding: 14px;
+  margin: -14px;
+  /* SVG-nya menulis transform-origin 0 0, jadi rotasinya berpusat di pojok
+     kanvas dan badannya ikut bergeser jauh. fill-box + center mengunci
+     porosnya ke badan gambar. */
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.band-art svg {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.band-art--dino {
+  right: clamp(8px, 2vw, 36px);
+  bottom: clamp(90px, 12vw, 190px);
+  rotate: -4deg;
+}
+
+.band-art--pelangi {
+  right: clamp(12px, 4vw, 64px);
+  top: clamp(72px, 7vw, 110px);
+  width: clamp(110px, 13vw, 200px);
+}
+
+.band-art--matahari {
+  right: clamp(8px, 3vw, 48px);
+  top: clamp(68px, 6.5vw, 100px);
+  width: clamp(110px, 12vw, 185px);
+}
+
+.band-art--awan {
+  right: clamp(8px, 3vw, 52px);
+  top: clamp(96px, 8vw, 132px);
+  width: clamp(120px, 14vw, 210px);
+}
+
+/* Pita kuning I2 mulai tinggi; awan di sini dijangkar ke bawah supaya
+   tidak pernah menyelinap di bawah header lengket saat digulir. */
+.beranda #kenalan .band-art--awan {
+  top: auto;
+  bottom: clamp(120px, 14vw, 200px);
+}
+
+.band-art--bebek {
+  display: none;
+}
+
+.band-art--tulang {
+  right: clamp(8px, 3vw, 44px);
+  bottom: clamp(150px, 18vw, 260px);
+  width: clamp(92px, 10vw, 150px);
+}
+
+/* Headline owns the top-left of these sections; keep art clear of the text lane. */
+.beranda #fakta-1,
+.beranda #fakta-2,
+.beranda #fakta-3,
+.beranda #jurus,
+.beranda #jadi-ini,
+.beranda #kenalan {
+  overflow: hidden;
+}
+
+.beranda #fakta-1 > .band-in,
+.beranda #fakta-2 > .band-in,
+.beranda #fakta-3 > .band-in,
+.beranda #jurus > .band-in,
+.beranda #jadi-ini > .band-in,
+.beranda #kenalan > :is(.band-in, .tong-pin) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 700px) {
+  .band-art {
+    width: 92px;
+    opacity: 0.9;
+  }
+  .band-art--dino {
+    right: 4px;
+    bottom: 34px;
+  }
+
+  .band-art--pelangi,
+  .band-art--matahari,
+  .band-art--awan {
+    top: auto;
+    right: 4px;
+    bottom: 10px;
+    width: 84px;
+  }
+
+  .band-art--tulang {
+    bottom: 10px;
+    width: 72px;
+  }
+}
+
+/* ---------- page art (Story / About / Play) ---------- */
+/* These pages use `.section-shell` + `.section-inner`, and motion.css caps
+   `.section-inner` at 1050-1240px. The gutter is thin for most viewports, so
+   art is anchored to the *section viewport* edge, not the text column, and
+   only shown where a gutter actually exists. */
+
+.page-art {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.page-art--kresek,
+.page-art--bumi,
+.page-art--kaleng {
+  right: clamp(12px, 3vw, 56px);
+}
+
+/* Play header carries Rino on the right; the bottle balances him on the left.
+   Bottle sits in the left gutter, so the copy column is padded clear of it —
+   otherwise the 90–140px art overlaps the h1/paragraph at desktop widths. */
+.page-art--botol {
+  left: clamp(12px, 3vw, 56px);
+  bottom: clamp(20px, 2.5vw, 52px);
+  width: clamp(90px, 8vw, 140px);
+  display: block;
+  opacity: 0.9;
+}
+
+@media (min-width: 1024px) {
+  [data-page='main'] > header .section-inner {
+    padding-left: clamp(120px, 12vw, 190px);
+  }
+}
+
+/* Below 1024px the art would eat the text column: drop it entirely. */
+@media (max-width: 1023px) {
+  .page-art--botol {
+    display: none;
+  }
+}
+
+.page-art--kresek { top: clamp(90px, 9vw, 150px); width: clamp(120px, 12vw, 180px); }
+.page-art--apel { top: clamp(70px, 7vw, 110px); width: clamp(100px, 9vw, 150px); right: clamp(12px, 3vw, 56px); }
+.page-art--kaleng {
+  bottom: auto;
+  top: clamp(70px, 7vw, 110px);
+  width: clamp(100px, 9vw, 150px);
+}
+.page-art--bumi { top: clamp(70px, 7vw, 110px); width: clamp(110px, 10vw, 165px); }
+
+/* Text column on these headers is capped at 1240px, so art in the gutter
+   collides with the illustration. Push it fully outside the column. */
+.page-art--bumi,
+.page-art--kresek {
+  right: clamp(2px, 0.6vw, 16px);
+}
+
+/* Only surfaces where the 1240px column leaves >= 120px of gutter each side. */
+@media (min-width: 1500px) {
+  .page-art { display: block; }
+}
+/* The 3R connector is a solid rule drawn behind the numbered discs.
+   A repeating gradient sweeps along it so the section never sits still. */
+
+.beranda #jurus .jurus-grid::after {
+  background-image: repeating-linear-gradient(
+    90deg,
+    currentColor 0 14px,
+    transparent 14px 28px
+  );
+  background-color: transparent;
+  border-top: 0;
+  height: 4px;
+  color: var(--color-forest);
+  opacity: 0.35;
+  animation: dashed-flow 9s linear infinite;
+}
+
+@keyframes dashed-flow {
+  to {
+    background-position: 280px 0;
+  }
+}
+
+/* Alur Sampah: the dashed route under the timeline drifts rightward. */
+.beranda .jalan-row::before {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #a8bdad 0 12px,
+    transparent 12px 24px
+  );
+  border-top: 0;
+  height: 4px;
+  animation: dashed-flow 11s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Gambar sudut berhenti di pose netral; gambarnya tetap terlihat penuh. */
+  .band-art svg * {
+    animation: none !important;
+  }
+
+  .beranda #jurus .jurus-grid::after,
+  .beranda .jalan-row::before {
+    animation: none !important;
+  }
+
+  .beranda #jurus .jurus-grid::after {
+    background-image: none;
+    background-color: var(--color-forest);
+  }
+
+  .beranda .jalan-row::before {
+    background-image: none;
+    background-color: #a8bdad;
+  }
+}
+
+/* Hero tide: one scroll variable controls all depth layers; illustration stays
+   visible in static/no-JS mode. The front band reads as dirty water, the pale
+   rear band as the clean water revealed while scrolling. */
+.waste-ocean {
+  position: absolute;
+  z-index: 0;
+  inset: auto 0 0;
+  height: clamp(200px, 28vw, 360px);
+  overflow: hidden;
+  pointer-events: none;
+  transform: translate3d(0, calc(var(--ocean-recede, 0) * 44%), 0);
+  opacity: calc(1 - var(--ocean-recede, 0) * .7);
+}
+/* The sea has to break the fold, not sit under it. Pull the pin's bottom
+   padding into the ocean's own band so the waterline and its debris read on
+   the first screen at every width. */
+.hero-pin { padding-bottom: max(clamp(24px, 3vw, 40px), clamp(200px, 28vw, 360px)); }
+@media (max-width: 1023px) {
+  .hero-pin { padding-bottom: max(96px, clamp(150px, 36vw, 220px)); }
+}
+.hero-pin > .hero-grid { position: relative; z-index: 1; }
+.waste-ocean-waves { display: block; width: 100%; height: 100%; }
+.ocean-wave-back { fill: var(--color-park-clear, #a6e4f9); }
+.ocean-wave-mid { fill: var(--color-park-sky, #afcee0); opacity: .9; }
+.ocean-wave-front { fill: var(--color-ocean-depth, #7597a8); opacity: .75; }
+.ocean-debris { position: absolute; inset: 0; opacity: calc(1 - var(--ocean-recede, 0)); }
+.ocean-item {
+  position: absolute;
+  left: var(--ocean-x);
+  top: var(--ocean-y);
+  width: var(--ocean-size);
+  transform: translate(-50%, -50%);
+}
+.ocean-item svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 0 rgb(30 41 59 / .16)); }
+.ocean-item-0 { width: clamp(58px, 6vw, 84px); }
+.waste-ocean.ocean-active { will-change: transform, opacity; }
+.waste-ocean.ocean-active .ocean-item:nth-child(2n) svg { animation: ocean-drift 11s cubic-bezier(.37,0,.63,1) infinite alternate; }
+.waste-ocean.ocean-active .ocean-item:nth-child(2n + 1) svg { animation: ocean-drift 14s cubic-bezier(.37,0,.63,1) -5s infinite alternate-reverse; }
+@keyframes ocean-drift { to { transform: translate3d(5px, -3px, 0) rotate(3deg); } }
+
+/* Inline mascot art: group-local pivot, never the SVG viewBox origin. */
+.living-mascot :is(.mascot-arm, .mascot-body, .mascot-lid, .mascot-tell, .mascot-eyes) {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.living-mascot .mascot-arm--right { transform-origin: 15% 25%; animation: mascot-wave 6.5s cubic-bezier(.37,0,.63,1) infinite; }
+.living-mascot .mascot-body { animation: mascot-breathe 7.5s cubic-bezier(.37,0,.63,1) infinite; }
+.living-mascot .mascot-eyes { animation: blink 8.5s cubic-bezier(.37,0,.63,1) infinite; }
+.living-mascot .mascot-tell { transform-origin: center bottom; animation: mascot-tell 8s cubic-bezier(.37,0,.63,1) infinite alternate; }
+.living-mascot--anorganik .mascot-tell { animation-duration: 6.4s; }
+.living-mascot--b3 .mascot-tell { animation-name: mascot-glint; animation-duration: 9s; }
+.living-mascot--kertas .mascot-tell { animation-duration: 7.2s; }
+.living-mascot--residu .mascot-tell { animation-name: mascot-rubble; animation-duration: 7.8s; }
+.living-mascot--happy .mascot-lid { animation: mascot-cheer .55s ease-in-out 2; }
+.living-mascot--oops .mascot-lid { animation: mascot-oops .42s ease-in-out 2; }
+/* Amplitudo kecil, siklus panjang: maskotnya bernapas, bukan melambai panik. */
+@keyframes mascot-wave { 50% { transform: rotate(-7deg); } }
+@keyframes mascot-breathe { 50% { transform: translateY(-1.5px) scale(1.012); } }
+@keyframes mascot-tell { to { transform: rotate(3.5deg); } }
+@keyframes mascot-glint { 50% { filter: brightness(1.1); } }
+@keyframes mascot-rubble { 50% { transform: rotate(1.2deg); } }
+@keyframes mascot-cheer { 50% { transform: translateY(-5px) rotate(-4deg); } }
+@keyframes mascot-oops { 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+
+:is(.btn-chunk, .nav-controls button, .info-button):is(:hover, :focus-visible) svg {
+  transform: translate3d(2px, -2px, 0) rotate(-7deg);
+}
+:is(.btn-chunk, .nav-controls button, .info-button) svg { transition: transform .22s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .waste-ocean { transform: none !important; opacity: 1 !important; }
+  .ocean-debris { opacity: 1 !important; }
+  .waste-ocean .ocean-item svg,
+  .living-mascot :is(.mascot-arm, .mascot-body, .mascot-lid, .mascot-tell, .mascot-eyes) { animation: none !important; transform: none !important; }
+  .living-mascot--happy .mascot-lid { filter: brightness(1.15); }
+  .living-mascot--oops .mascot-lid { opacity: .7; }
+  :is(.btn-chunk, .nav-controls button, .info-button) svg { transition: none; transform: none !important; }
+}
+
+/* ===========================================================
+   Jejak Petualangan Pahlawan Bumi: pelangi tipis yang tergambar mengikuti
+   guliran, dari Fakta 1 sampai ajakan terakhir. Bentuknya dihitung JS
+   (Trail.jsx) karena mengikuti tinggi seksi sungguhan; tanpa JS, tanpa
+   gerak, atau saat hemat data, garisnya tampil utuh.
+
+   Garisnya digambar di ruang SVG (viewBox 100 x tinggi seksi, dengan
+   preserveAspectRatio="none"), jadi koordinat di sini bersatuan viewBox —
+   bukan piksel. Ketebalan datang dari atribut strokeWidth, bukan CSS:
+   CSS menafsirkan nilai tanpa satuan sebagai px dan garisnya hilang.
+   =========================================================== */
+
+.trail {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+}
+.trail-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.trail-line {
+  fill: none;
+  stroke-linecap: round;
+  /* ketebalan diatur sebagai atribut strokeWidth di Trail.jsx (satuan
+     viewBox); CSS di sini tidak boleh menimpanya dengan nilai px.
+     Tanpa dasharray: tanda hubungnya ikut melar vertikal dan pecah. */
+  opacity: .9;
+}
+.trail-knot {
+  --knot-size: clamp(12px, 1.2vw, 18px);
+  position: absolute;
+  left: calc(var(--knot-x, 25%) - var(--knot-size) / 2);
+  top: calc(var(--knot-y, 0px) - var(--knot-size) / 2);
+  width: var(--knot-size);
+  height: var(--knot-size);
+  /* Simpul hanya "menyala" saat garis tiba: itu yang membuatnya terasa
+     pemandu, bukan hiasan yang sudah ada sejak awal. */
+  opacity: calc(.18 + var(--knot-on, 1) * .82);
+  transform: scale(calc(.72 + var(--knot-on, 1) * .28));
+  transition: opacity .2s linear, transform .2s ease-out;
+}
+.trail-knot-dot,
+.trail-knot-ring { position: absolute; inset: 0; border-radius: 999px; }
+.trail-knot-dot {
+  background: var(--knot-tint, var(--color-cream, #FFFDF7));
+  border: 2px solid var(--color-ink, #1E293B);
+}
+.trail-knot-ring {
+  inset: -4px;
+  border: 2px solid var(--color-ink, #1E293B);
+  border-style: dashed;
+  opacity: .7;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Statis dan terlihat semua: tanpa gerak, tidak ada yang disembunyikan. */
+  .trail-knot { opacity: 1; transform: none; transition: none; }
+  .trail-knot-ring { display: none; }
+}
+@media (max-width: 760px) {
+  /* Ponsel: lintasan tetap ada tetapi ditarik ke gutter sempit supaya tidak
+     menumpuk di tengah teks. Kurvanya dirapatkan, bukan dihilangkan. */
+  .trail-knot { left: 10px; --knot-size: 11px; }
+}
+/* Tablet: gutter menyempit, jadi lintasan ditarik lebih dekat ke tepi. */
+@media (max-width: 1100px) {
+  .trail-knot { --knot-size: 12px; }
+}

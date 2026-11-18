@@ -2,12 +2,13 @@ import { ABOUT, THREE_R } from '../data/content'
 import { Orgi, Rino, Kiki } from '../components/mascots/Mascots'
 import SectionHeading from '../components/common/SectionHeading'
 import SpeakButton from '../components/common/SpeakButton'
-import { ColorBandBackdrop, EdgePlant, ScatterLayer } from '../components/art'
+import { ColorBandBackdrop, EdgePlant, ScatterLayer, RawArt } from '../components/art'
+import bumiPeluk from '../assets/svg/bumi-senyum-peluk-hati.svg?raw'
 
 export default function AboutPage() {
-  return <main id="tentang" className="overflow-hidden bg-cream">
+  return <main data-page="tentang" id="main-content" className="overflow-hidden bg-cream">
     <header className="section-shell !min-h-0 bg-mint">
-      <ColorBandBackdrop variant={1} edge="clouds" /><ScatterLayer density={2} seed={44} />
+      <ColorBandBackdrop variant={1} edge="clouds" /><ScatterLayer density={2} seed={44} /><RawArt svg={bumiPeluk} className="page-art page-art--bumi" label="Bumi tersenyum memeluk hati" />
       <div className="section-inner grid items-center gap-8 lg:grid-cols-2">
         <div>
           <p className="mb-5 font-display text-lg font-bold uppercase tracking-widest text-green-800">Kenalan dengan kami</p>

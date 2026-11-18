@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" width="100%" height="100%">
+  <style>
+@keyframes art-bob {
+  0%, 100% { transform: translate(0px, 0px); }
+  50% { transform: translate(0px, -6px); }
+}
+.art-bob { animation: art-bob 2.2s ease-in-out 0s infinite normal; transform-origin: 0px 0px;  }
+  </style>
+  <g transform="translate(400, 270) rotate(0)">
+    <g class="art-bob">
+      <g transform="scale(0.76)">
+        <circle cx="0" cy="0" r="56" fill="#38BDF8" stroke="#1E1E1E" stroke-width="2.8" />
+        <path d="M -38 -28 C -16 -38, 4 -18, -14 4 C -28 20, -48 12, -38 -28 Z" fill="#8AD859" />
+        <path d="M 18 -36 C 46 -28, 48 16, 22 34 C 6 42, 4 12, 18 -36 Z" fill="#8AD859" />
+        <path d="M 0 22 C -12 10, -28 22, 0 42 C 28 22, 12 10, 0 22 Z" fill="#FF6B5B" stroke="#1E1E1E" stroke-width="2.2" stroke-linejoin="round" />
+        <g transform="translate(0, -6) scale(1)">
+    <ellipse cx="-22" cy="6" rx="7" ry="4" fill="#FDA4AF" />
+    <ellipse cx="22" cy="6" rx="7" ry="4" fill="#FDA4AF" />
+    <circle cx="-14" cy="-5" r="6" fill="#1E1E1E" />
+    <circle cx="14" cy="-5" r="6" fill="#1E1E1E" />
+    <circle cx="-16" cy="-7" r="2" fill="#FFFFFF" />
+    <circle cx="12" cy="-7" r="2" fill="#FFFFFF" />
+    <path d="M -9 5 Q 0 15 9 5" fill="none" stroke="#1E1E1E" stroke-width="2.8" stroke-linecap="round" />
+  </g>
+      </g>
+    </g>
+  </g>
+</svg>
