@@ -24,13 +24,6 @@ const STROKE_WIDTH = 0.34
 const SPREAD = 0.55
 const RAINBOW = ['#EF4444', '#F59E0B', '#22C55E', '#3B82F6', '#8B5CF6']
 
-// Setengah-lebar loop dalam PIKSEL di layar 1440. Dikonversi ke unit viewBox
-// lewat lebar elemen saat diukur.
-const LOOP_RX_PX = 34
-// Setengah-tinggi loop. Pipa pelangi hanya ~11px per pita, jadi loop 68x52px
-// sudah terbaca sebagai lingkaran.
-const LOOP_RY = 26
-
 /**
  * Aliran hulu→hilir di LAJUR KIRI.
  *
@@ -40,11 +33,10 @@ const LOOP_RY = 26
  * aman di pita padding atas seksi, dan tidak semua seksi punya pita itu
  * (`#kenalan` simpulnya di tengah kartu). Jadi air tetap di satu lajur.
  *
- * Variasinya dari KEDALAMAN: tiap simpul duduk di kedalaman berbeda di dalam
- * gutter, dan saat kedalaman berubah air memutar satu loop dulu. Terbaca
- * sebagai sungai yang melebar-menyempit, bukan dua batang lurus.
+ * Pada desktop lebar, aliran meliuk kiri-kanan dalam gutter kosong saja;
+ * jangan menyeberang kolom teks. Pada layar sempit, pertahankan jalur tepi.
  */
-function buildRiver(marks, w) {
+function buildRiver(marks, w, wander = null) {
   if (marks.length < 2) return ''
   let d = `M ${marks[0].x} ${marks[0].y}`
   for (let i = 0; i < marks.length - 1; i += 1) {
@@ -53,26 +45,23 @@ function buildRiver(marks, w) {
     const span = b.y - a.y
     if (span <= 0) continue
 
-    const dx = b.x - a.x
-    const hasLoop = Math.abs(dx) > 0.05 && span >= 240
-
-    if (hasLoop) {
-      const rx = (LOOP_RX_PX / w) * 100
-      const loopY = a.y + span * 0.45
-      d += ` C ${a.x} ${a.y + (loopY - LOOP_RY - a.y) * 0.6} ${a.x} ${loopY - LOOP_RY * 0.9} ${a.x} ${loopY - LOOP_RY}`
-      // Satu putaran penuh: dua busur setengah. Busur menutup tepat di titik
-      // awal; cubic yang berangkat dan pulang ke titik sama menyatu jadi
-      // busur halus dan lingkarannya lenyap.
-      d += ` A ${rx} ${LOOP_RY} 0 1 1 ${a.x + rx * 2} ${loopY}`
-      d += ` A ${rx} ${LOOP_RY} 0 1 1 ${a.x} ${loopY}`
-      const rest = b.y - (loopY + LOOP_RY)
-      if (rest > 1) {
-        d += ` C ${b.x} ${loopY + LOOP_RY + rest * 0.25} ${b.x} ${b.y - rest * 0.4} ${b.x} ${b.y}`
+    if (wander) {
+      const near = wander.left / w * 100
+      const far = wander.right / w * 100
+      const turns = Math.max(2, Math.round(span / 260))
+      const step = span / turns
+      let x = a.x
+      // Beberapa ayunan di gutter; ujung setiap ruas tegak dan halus.
+      for (let j = 1; j <= turns; j += 1) {
+        const next = j === turns ? b.x : (i + j) % 2 ? far : near
+        const y = a.y + j * step
+        d += ` C ${x} ${y - step * 0.65} ${next} ${y - step * 0.35} ${next} ${y}`
+        x = next
       }
       continue
     }
 
-    // Pergeseran kedalaman kecil: cubic lembut, seperti air menyusur tepi.
+    // Lebar sempit: garis menyusur tepi tanpa loop yang memasuki teks.
     d += ` C ${a.x} ${a.y + span * 0.55} ${b.x} ${b.y - span * 0.35} ${b.x} ${b.y}`
   }
   return d
@@ -114,16 +103,17 @@ export default function Trail() {
 
     const measure = () => {
       const flowTop = flow.getBoundingClientRect().top + window.scrollY
-      // Gutter 4%: isi seksi memakai kolom 1248px (96..1344 di layar 1440),
-      // jadi satu-satunya jalur vertikal bebas adalah 0..96.
       // Di layar sempit, teks mulai pada x=20px. Jalur tetap di 0..12px.
       const narrow = window.innerWidth <= 700
-      const gutter = narrow ? 6 : Math.max(16, Math.round(window.innerWidth * 0.04))
       const w = ellipse.clientWidth || window.innerWidth
-      // Tiga kedalaman berbeda per lajur: kalau semua x identik, aliran
-      // terbaca sebagai dua batang lurus di tepi layar. Rentangnya harus
-      // kecil — gutter bebas hanya 0..96px di layar 1440.
-      const DEPTH = [8, 22, 0]
+      const contentLeft = Math.min(...[...flow.querySelectorAll('.band > .band-in')].map((el) => el.getBoundingClientRect().left))
+      // Lima pita dan simpul perlu ruang ~18px dari awal kolom teks.
+      const wander = w >= 1200 && contentLeft >= 90
+        ? { left: 28, right: Math.min(76, contentLeft - 20) }
+        : null
+      // Di lebar menengah, loop lama meluas melewati gutter dan mengenai
+      // judul. Pakai satu x aman sampai gutter desktop cukup lebar untuk ayunan.
+      const edgeX = narrow ? 6 : Math.max(8, Math.min(24, contentLeft - 25))
 
       // Satu simpul per TARGETS. Jumlah simpul di JSX tetap 6, jadi kalau ada
       // target yang tak ketemu, satu simpul tetap tergambar di luar jalur
@@ -132,12 +122,11 @@ export default function Trail() {
         const el = flow.querySelector(sel)
         if (!el) return null
         const r = el.getBoundingClientRect()
-        const depth = narrow ? 0 : DEPTH[Math.floor(i / 2) % DEPTH.length]
         const top = Math.round(r.top + window.scrollY - flowTop)
         return {
           y: top + 44,
           top,
-          x: r.left + gutter + depth,
+          x: wander ? (i % 2 ? wander.right - 9 : wander.left + 9) : edgeX,
         }
       }).filter(Boolean)
       if (marks.length < 2) return
@@ -154,7 +143,7 @@ export default function Trail() {
       ellipse.setAttribute('preserveAspectRatio', 'none')
       ellipse.style.height = `${vh}px`
       // Hulu di y=0: tepi atas `.beranda-flow`.
-      const d = buildRiver([{ ...head, y: 0 }, ...all.slice(1)], w)
+      const d = buildRiver([{ ...head, y: 0 }, ...all.slice(1)], w, wander)
       for (const stroke of strokes) {
         stroke.setAttribute('d', d)
         const len = stroke.getTotalLength()
