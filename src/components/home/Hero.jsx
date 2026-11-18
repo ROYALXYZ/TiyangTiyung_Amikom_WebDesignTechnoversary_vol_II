@@ -52,7 +52,9 @@ export default function Hero() {
           </div>
           <div className="hero-art">
             <div className="hero-blob" aria-hidden="true" />
-            <img className="hero-orgi" src="/svg/mascots/orgi-happy.svg" alt="Si Orgi, tong sampah organik, melambaikan tangan" width="300" height="300" />
+            <span className="hero-orgi-shell">
+              <img className="hero-orgi" src="/svg/mascots/orgi-happy.svg" alt="Si Orgi, tong sampah organik, melambai tangan" width="300" height="300" />
+            </span>
             <div className="hero-bins" aria-hidden="true">
               {BINS.map((bin) => (
                 <img key={bin} src={`/svg/bins/${bin}.svg`} alt="" width="54" height="54" />

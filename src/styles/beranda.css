@@ -321,19 +321,31 @@
 
 .hero-orgi {
   width: min(300px, 46vw);
-  filter: drop-shadow(0 10px 0 rgba(30, 41, 59, 0.12));
+  /* Elemen ini bergerak terus (mascot-bob) dan dipasangi filter. Filter
+     drop-shadow di elemen yang beranimasi harus dihitung ulang tiap frame,
+     jadi bayangan dipindah ke pembungkus statis di Hero.jsx. */
   animation: mascot-bob 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+.hero-orgi-shell {
+  display: inline-block;
+  filter: drop-shadow(0 10px 0 rgba(30, 41, 59, 0.12));
 }
 
 .hero-bins {
   display: flex;
   gap: clamp(6px, 1.2vw, 14px);
   align-items: flex-end;
+  /* Tong duduk tepat di garis ombak; tanpa kontak ia terbaca melayang dan
+     menutupi air. Bayangan kontak tipis saja — pita/alas berwarna membuat
+     kotak baru yang bersaing dengan ilustrasi. */
+  padding-bottom: 2px;
 }
 
 .hero-bins img {
   width: clamp(34px, 4.4vw, 54px);
   height: auto;
+  filter: drop-shadow(0 4px 0 rgba(255, 253, 247, 0.85)) drop-shadow(0 6px 3px rgba(30, 41, 59, 0.22));
 }
 
 .hero-bins img:nth-child(2n) {

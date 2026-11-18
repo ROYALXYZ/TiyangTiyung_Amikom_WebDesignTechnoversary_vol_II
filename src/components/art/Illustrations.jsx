@@ -18,6 +18,10 @@ const colors = {
   red: 'var(--art-red, var(--color-b3, #EF4444))',
   blue: 'var(--art-blue, var(--color-paper, #3B82F6))',
   grey: 'var(--art-grey, var(--color-residu, #64748B))',
+  /* Pita lembut: latar saturasi penuh hanya aman untuk pita tanpa teks.
+     Header halaman memuat judul dan paragraf, jadi dipakai tint pastel
+     `-soft` — ink di atasnya lolos AA dengan lega. */
+  soft: 'var(--art-blue-soft, var(--color-paper-soft, #DBEAFE))',
 }
 
 // Original illustrations live in public/svg/items; local copies let Vite inline
@@ -85,7 +89,7 @@ export function ScatterLayer({ density = 1, seed = 1, className = '', style, ...
   const next = random(seed)
   const count = ({ 1: 12, 2: 16, 3: 24 })[density] || 12
   return <div {...rest} data-density={density} className={`art-scatter ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'clip', pointerEvents: 'none', zIndex: 0, ...style }}>
-    <style>{`@media(max-width:639px){.art-scatter .art-mark{width:min(8vw,32px)!important;left:calc((var(--art-safe, 12%) - min(8vw, 32px)) * var(--art-x))!important;right:auto!important}.art-scatter .art-mark[data-side="right"]{left:auto!important;right:calc((var(--art-safe, 12%) - min(8vw, 32px)) * var(--art-x))!important}.art-scatter[data-density="1"] .art-mark:nth-of-type(n+9),.art-scatter[data-density="2"] .art-mark:nth-of-type(n+13),.art-scatter[data-density="3"] .art-mark:nth-of-type(n+17){display:none}}`}</style>
+    <style>{`@media(max-width:639px){.art-scatter .art-mark{width:min(8vw,32px)!important;left:calc((var(--art-safe, 12%) - min(8vw, 32px)) * var(--art-x))!important;right:auto!important}.art-scatter .art-mark[data-side="right"]{left:auto!important;right:calc((var(--art-safe, 12%) - min(8vw, 32px)) * var(--art-x))!important}.art-scatter[data-density="1"] .art-mark:nth-of-type(n+9),.art-scatter[data-density="2"] .art-mark:nth-of-type(n+13),.art-scatter[data-density="3"] .art-mark:nth-of-type(n+17){display:none}}@media(max-width:760px){.art-scatter .art-mark{display:none}}`}</style>
     {Array.from({ length: count }, (_, i) => {
       const x = next(), y = next(), rotation = next() * 100 - 50
       const width = 28 + next() * 44
@@ -107,9 +111,9 @@ const edges = {
     closing run; the outline strips it so the silhouette keeps its own stroke. */
 export function ColorBandBackdrop({ variant = 1, edge = 'clouds', side = 'bottom', flat = false, className = '', style, ...rest }) {
   const id = useId().replaceAll(':', '')
-  const bg = ['mint', 'cream', 'green', 'yellow', 'blue'][(Number(variant) - 1 + 5) % 5]
+  const bg = ['mint', 'cream', 'green', 'yellow', 'blue', 'soft'][(Number(variant) - 1 + 6) % 6]
   const fill = colors[bg]
-  const silhouette = bg === 'cream' || bg === 'mint' ? colors.green : colors.cream
+  const silhouette = bg === 'cream' || bg === 'mint' || bg === 'soft' ? colors.green : colors.cream
   const z = flat ? -1 : 0
   return <div {...rest} className={`art-band${flat ? ' art-band--flat' : ''} ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: fill, zIndex: z, ...style }}>
     <svg aria-hidden="true" style={{ position: 'absolute', width: '100%', height: 100, left: 0, [side === 'top' ? 'top' : 'bottom']: -1, zIndex: z, overflow: 'hidden', transform: side === 'top' ? 'scaleY(-1)' : undefined }}>
@@ -140,13 +144,15 @@ export function NumberBadge({ value = '', unit = '', variant = 1, className = ''
   </div>
 }
 
+// Butir kertas: satu PNG noise yang sama untuk semua seksi. Sebelumnya tiap
+// instance menjalankan feTurbulence di rect selebar layar — raster mahal yang
+// harus dihitung ulang setiap kali seksi itu bergerak, untuk opacity 0.06.
+const NOISE =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)'/%3E%3C/svg%3E\")"
+
 export function PaperGrain({ off = false, className = '', style, ...rest }) {
-  const id = useId().replaceAll(':', '')
   if (off) return null
-  return <svg {...rest} className={`art-grain ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', opacity: 0.12, zIndex: 0, ...style }} preserveAspectRatio="none">
-    <defs><filter id={`art-paper-noise-${id}`} x="0" y="0" width="128" height="128" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="1" stitchTiles="stitch"/></filter><pattern id={`art-paper-tile-${id}`} width="128" height="128" patternUnits="userSpaceOnUse"><rect width="128" height="128" filter={`url(#art-paper-noise-${id})`}/></pattern></defs>
-    <rect width="100%" height="100%" fill={`url(#art-paper-tile-${id})`} />
-  </svg>
+  return <div {...rest} className={`art-grain ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.12, zIndex: 0, backgroundImage: NOISE, backgroundSize: '96px 96px', ...style }} />
 }
 
 export function EdgePlant({ side = 'left', variant = 1, className = '', style, ...rest }) {
