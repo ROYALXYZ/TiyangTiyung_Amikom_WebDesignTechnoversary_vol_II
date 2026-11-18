@@ -331,6 +331,13 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #jadi-ini { background: linear-gradient(160deg, var(--color-cream) 15%, var(--color-mint) 100%); }
 .beranda #jurus { background: linear-gradient(155deg, var(--color-mint) 40%, var(--color-cream)); }
 
+/* Kecuali di Beranda: di sana latar pita disediakan ColorBandBackdrop
+   (z-index -1) supaya sungai pelangi di z-index 0 tidak tertutup lapisan
+   opaque. Tanpa ini, gradien di atas memotong lintasan jadi beberapa segmen
+   — sungai tampak "hilang" di seksi mint. */
+.beranda-flow > .band { background: transparent; }
+.beranda-flow > .band.band-mint { background: transparent; }
+
 @keyframes rhythm-enter {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -481,8 +488,11 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #fakta-1 .asal-next { margin: 18px 0 0; font: 600 clamp(16px, 1.4vw, 20px)/1.5 'Plus Jakarta Sans', sans-serif; }
 .beranda #fakta-1 .strong-line { font-size: clamp(24px, 3vw, 39px); line-height: 1.17; }
 
-/* Five characters form a cast. The selected character escapes its column. */
-.beranda #kenalan { background: #f5f2dc; }
+/* Five characters form a cast. The selected character escapes its column.
+   Latar sand-nya dipasang di `.art-band` (z-index -1) lewat aturan di
+   bawah, bukan di sini: latar opaque pada `.band` menutupi sungai pelangi
+   (`.trail`, z-index 0) karena band dicat sesudahnya. */
+.beranda #kenalan { background: transparent; }
 .beranda #kenalan .panggung {
   max-width: none;
   padding: clamp(24px, 4vw, 64px);
@@ -535,8 +545,10 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #kenalan .strip-tap[aria-pressed='true'] { background: var(--tint); }
 .beranda #kenalan .strip-tap img { width: 64px; height: 68px; object-fit: contain; }
 
-/* Infographic, not three tiles: a continuous route with open annotations. */
-.beranda #jurus { background: #e9f6df; }
+/* Infographic, not three tiles: a continuous route with open annotations.
+   Latar mint dipasang di `.art-band` (z-index -1) supaya sungai pelangi
+   tetap terlihat; latar opaque di `.band` memotongnya. */
+.beranda #jurus { background: transparent; }
 .beranda #jurus .jurus-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0,1fr));
@@ -699,7 +711,10 @@ main:not(.beranda) .section-inner > .reveal { margin-bottom: 42px; }
 main:not(.beranda) > section > .art-band { opacity: .9; }
 main:not(.beranda) .route-hero-blobs { left: auto !important; opacity: .32; }
 main:not(.beranda) > header .art-scatter { opacity: .5; }
-/* Marks belong beyond the headline's reading lane, never on its first letters. */
+/* Marks belong beyond the headline's reading lane, never on its first letters.
+   Di layar sempit lane itu tidak ada: padding konten 20px menyisakan <20px,
+   jadi ikon pasti menimpa teks. Di sana scatter dimatikan seluruhnya
+   (lihat aturan display:none di Illustrations.jsx). */
 main:not(.beranda) > header .art-scatter { clip-path: polygon(0 0, 100% 0, 100% 100%, 96% 100%, 96% 0, 4% 0, 4% 100%, 0 100%); }
 main:not(.beranda) > header .art-scatter .art-mark { max-width: 45px; }
 main:not(.beranda) > header .art-scatter .art-mark:first-of-type { visibility: hidden; }

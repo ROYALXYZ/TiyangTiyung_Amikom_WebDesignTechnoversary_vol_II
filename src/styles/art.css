@@ -102,7 +102,9 @@
 .beranda #jadi-ini > .band-in,
 .beranda #kenalan > :is(.band-in, .tong-pin) {
   position: relative;
-  z-index: 1;
+  /* 2, di atas `.trail` (1): sungai membentang di belakang isi, termasuk
+     judul, persis garis peta di balik legenda. */
+  z-index: 2;
 }
 
 @media (max-width: 700px) {
@@ -282,8 +284,12 @@
   top: var(--ocean-y);
   width: var(--ocean-size);
   transform: translate(-50%, -50%);
+  /* Bayangan di wadah yang tidak pernah bergerak. Kalau dipasang di <svg>-nya,
+     filter itu harus dihitung ulang setiap kali ocean-drift menggeser gambar
+     (repaint penuh per frame). */
+  filter: drop-shadow(0 3px 0 rgb(30 41 59 / .16));
 }
-.ocean-item svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 0 rgb(30 41 59 / .16)); }
+.ocean-item svg { display: block; width: 100%; height: auto; }
 .ocean-item-0 { width: clamp(58px, 6vw, 84px); }
 .waste-ocean.ocean-active { will-change: transform, opacity; }
 .waste-ocean.ocean-active .ocean-item:nth-child(2n) svg { animation: ocean-drift 11s cubic-bezier(.37,0,.63,1) infinite alternate; }
@@ -343,14 +349,29 @@
 
 .trail {
   position: absolute;
-  z-index: 0;
+  /* z-index 1: `.band` memakai `isolation: isolate`, jadi `.art-band` (z=-1)
+     terkurung di dalam stacking context band itu sendiri dan band-nya dicat
+     sebagai satu blok di z=auto — dengan trail di 0, band opaque menutupi
+     sungai di seksi mana pun yang punya .art-band. Satu level di atas band,
+     dan isi seksi di atasnya lewat .band-in/.panggung (2). */
+  z-index: 1;
   inset: 0;
   pointer-events: none;
 }
-.trail-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.trail-svg {
+  display: block;
+  width: 100%;
+  /* Tinggi ditulis inline oleh Trail.jsx dan HARUS sama dengan tinggi
+     viewBox-nya: preserveAspectRatio="none" memetakan viewBox penuh ke
+     kotak elemen, jadi selisih 10% saja sudah menggeser seluruh sungai. */
+  overflow: visible;
+}
+/* Lima path dengan dashoffset yang berubah tiap frame: beri tahu compositor
+   supaya perubahannya tidak memicu repaint berulang. */
 .trail-line {
   fill: none;
   stroke-linecap: round;
+  will-change: stroke-dashoffset;
   /* ketebalan diatur sebagai atribut strokeWidth di Trail.jsx (satuan
      viewBox); CSS di sini tidak boleh menimpanya dengan nilai px.
      Tanpa dasharray: tanda hubungnya ikut melar vertikal dan pecah. */
@@ -364,10 +385,12 @@
   width: var(--knot-size);
   height: var(--knot-size);
   /* Simpul hanya "menyala" saat garis tiba: itu yang membuatnya terasa
-     pemandu, bukan hiasan yang sudah ada sejak awal. */
+     pemandu, bukan hiasan yang sudah ada sejak awal. Dua-duanya transform/
+     opacity, jadi transisinya tidak memicu layout. */
   opacity: calc(.18 + var(--knot-on, 1) * .82);
   transform: scale(calc(.72 + var(--knot-on, 1) * .28));
-  transition: opacity .2s linear, transform .2s ease-out;
+  transition: opacity .35s linear, transform .35s cubic-bezier(.45,0,.55,1);
+  will-change: opacity, transform;
 }
 .trail-knot-dot,
 .trail-knot-ring { position: absolute; inset: 0; border-radius: 999px; }

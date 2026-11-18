@@ -1,6 +1,6 @@
 ﻿import { playPop } from '../../lib/sfx'
 import { speak } from '../../lib/speech'
-import { WasteOcean } from '../art'
+import { BlobField, WasteOcean } from '../art'
 
 const BINS = ['organik', 'anorganik', 'b3', 'kertas', 'residu']
 const HERO_TEXT =
@@ -9,6 +9,7 @@ const HERO_TEXT =
 export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title" data-progress>
+      <BlobField variant={2} className="hero-art-field" />
       <div className="hero-pin" data-pin>
         <WasteOcean />
         <div className="hero-overlay" aria-hidden="true" />
