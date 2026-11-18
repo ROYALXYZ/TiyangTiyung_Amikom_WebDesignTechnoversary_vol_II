@@ -34,6 +34,18 @@
   background: var(--color-mint);
 }
 
+/* Pembungkus jejak: satu konteks posisi supaya SVG lintasan bisa
+   melebar setinggi seluruh rangkaian seksi. Latar cream dipasang di sini,
+   bukan di tiap band, supaya lintasan tidak tertutup lapisan opaque. */
+.beranda-flow {
+  position: relative;
+  z-index: 0;
+  background: var(--color-cream);
+}
+.beranda-flow > .band { position: relative; z-index: 1; }
+/* Teks seksi duduk di atas lintasan; lapisan dekorasi lain tetap di bawahnya. */
+.beranda-flow > .band > .band-in { position: relative; z-index: 3; }
+
 /* ---------- primitif ---------- */
 
 .eyebrow {

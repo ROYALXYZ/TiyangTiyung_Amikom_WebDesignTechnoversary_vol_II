@@ -302,3 +302,61 @@
   .living-mascot--oops .mascot-lid { opacity: .7; }
   :is(.btn-chunk, .nav-controls button, .info-button) svg { transition: none; transform: none !important; }
 }
+
+/* ===========================================================
+   Jejak Petualangan Pahlawan Bumi: satu lintasan yang tergambar mengikuti
+   guliran, dari Fakta 1 sampai ajakan terakhir. Bentuknya dihitung JS
+   (Trail.jsx) karena mengikuti tinggi seksi sungguhan; tanpa JS, tanpa
+   gerak, atau saat hemat data, garisnya tampil utuh.
+
+   Garisnya digambar di ruang SVG (viewBox 1000 x tinggi seksi, dengan
+   preserveAspectRatio="none"), jadi koordinat di sini harus memakai satuan
+   itu — bukan piksel. `vector-effect: non-scaling-stroke` menjaga
+   ketebalannya tetap sama walau SVG-nya melar.
+   =========================================================== */
+
+.trail {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+.trail-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.trail-line {
+  fill: none;
+  stroke: rgba(74, 90, 112, .42);
+  /* viewBox 100 satuan lebar dilar ke lebar layar, jadi ketebalan di sini
+     bersatuan viewBox, bukan piksel. ~0.16 unit ≈ 2.5px di 1440px. */
+  stroke-width: .16;
+  stroke-linecap: round;
+  /* sengaja tanpa dasharray: tanda hubungnya ikut melar vertikal dan
+     pecah jadi garis putus-putus yang tidak terbaca. */
+}
+.trail-knot {
+  --knot-size: clamp(16px, 1.9vw, 28px);
+  position: absolute;
+  left: calc(var(--knot-x, 25%) - var(--knot-size) / 2);
+  top: calc(var(--knot-y, 0px) - var(--knot-size) / 2);
+  width: var(--knot-size);
+  height: var(--knot-size);
+}
+.trail-knot-dot,
+.trail-knot-ring { position: absolute; inset: 0; border-radius: 999px; }
+.trail-knot-dot {
+  background: var(--color-organic, #22C55E);
+  border: 3px solid var(--color-ink, #1E293B);
+}
+.trail-knot-ring {
+  border: 3px solid var(--color-anorganic, #F59E0B);
+  transform: scale(calc(.4 + var(--trail-draw, 1) * .6));
+  opacity: calc(.25 + var(--trail-draw, 1) * .75);
+}
+@media (prefers-reduced-motion: reduce) {
+  .trail-knot-ring { transform: none; opacity: .8; }
+}
+@media (max-width: 760px) {
+  /* Lintasan selebar layar ponsel jadi tumpukan kurva: sisakan simpulnya saja. */
+  .trail-line { display: none; }
+  .trail-knot { left: 12px; }
+}
+

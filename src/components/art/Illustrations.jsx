@@ -100,13 +100,15 @@ const edges = {
   bubbles: 'M0 55 L18 55 C18 30 50 26 60 50 C72 45 80 48 84 55 L128 55 C127 6 200 -2 215 44 C238 32 262 40 267 55 L304 55 C310 40 331 41 337 55 L365 55 C364 20 412 13 421 48 C437 39 458 46 461 55 L500 55 L500 100 H0Z',
 }
 
-/** Cover the section with this absolute layer; edge repeats every 500px without seams. */
-export function ColorBandBackdrop({ variant = 1, edge = 'clouds', side = 'bottom', className = '', style, ...rest }) {
+/** Cover the section with this absolute layer; edge repeats every 500px without seams.
+    `flat` drops the solid fill so the Jejak trail behind the band stays visible
+    through it — the torn edge still carries the section's colour. */
+export function ColorBandBackdrop({ variant = 1, edge = 'clouds', side = 'bottom', flat = false, className = '', style, ...rest }) {
   const id = useId().replaceAll(':', '')
   const bg = ['mint', 'cream', 'green', 'yellow', 'blue'][(Number(variant) - 1 + 5) % 5]
   const fill = colors[bg]
   const silhouette = bg === 'cream' || bg === 'mint' ? colors.green : colors.cream
-  return <div {...rest} className={`art-band ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'clip', pointerEvents: 'none', background: fill, zIndex: 0, ...style }}>
+  return <div {...rest} className={`art-band ${className}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'clip', pointerEvents: 'none', background: flat ? 'none' : fill, zIndex: 0, ...style }}>
     <svg preserveAspectRatio="none" style={{ position: 'absolute', width: '100%', height: 100, left: 0, [side === 'top' ? 'top' : 'bottom']: -1, transform: side === 'top' ? 'scaleY(-1)' : undefined }} aria-hidden="true">
       {/* every `edges` path must end with the literal " L500 100..." closing run: the outline below strips it with split() */}
       <defs><pattern id={`art-band-${id}`} width="500" height="100" patternUnits="userSpaceOnUse"><path d={edges[edge] || edges.clouds} fill={silhouette}/><path d={(edges[edge] || edges.clouds).split(' L500 100')[0]} fill="none" stroke={ink} strokeWidth="3" strokeLinejoin="round"/>{edge === 'clouds' && <path d="M283 24Q292 10 304 18Q309 6 321 13Q329 21 322 27Z" fill={silhouette} stroke={ink} strokeWidth="3"/>}</pattern></defs>

@@ -48,7 +48,7 @@ export function SampahApa() {
     'Kalau dibuang sembarangan, sampah bikin Bumi sakit. Kalau dipilah, sampah bisa jadi barang baru.'
   return (
     <section className="band" id="fakta-1" data-progress aria-labelledby="i1-title">
-      <ColorBandBackdrop variant={1} edge="foliage" />
+      <ColorBandBackdrop variant={1} edge="foliage" flat />
       <div className="band-in">
         <div className="fakta-intro" data-pop>
           <p className="eyebrow">Fakta 1 dari 5</p>
@@ -196,7 +196,7 @@ export function KenalanTong() {
   const tong = TONG[active]
   return (
     <section className="band band-mint tong-stage" id="kenalan" ref={stage} aria-labelledby="i2-title">
-      <ColorBandBackdrop variant={4} edge="bubbles" />
+      <ColorBandBackdrop variant={4} edge="bubbles" flat />
       <RawArt svg={awanTiup} className="band-art band-art--awan" label="Awan meniup angin segar" />
       <div className="tong-pin" data-pin>
         <div className="band-in">
@@ -374,7 +374,7 @@ const JURUS = [
 export function JurusR() {
   return (
     <section className="band band-mint" id="jurus" data-progress aria-labelledby="i4-title">
-      <ColorBandBackdrop variant={1} edge="foliage" />
+      <ColorBandBackdrop variant={1} edge="foliage" flat />
       <div className="band-in">
         <p className="eyebrow">Fakta 3 dari 5</p>
         <h2 className="h2" id="i4-title">
@@ -442,7 +442,7 @@ const JADI = [
 export function JadiIni() {
   return (
     <section className="band" id="jadi-ini" aria-labelledby="i6-title">
-      <ColorBandBackdrop variant={2} edge="clouds" />
+      <ColorBandBackdrop variant={2} edge="clouds" flat />
       <div className="band-in">
         <p className="eyebrow">Fakta 5 dari 5</p>
         <h2 className="h2" id="i6-title">

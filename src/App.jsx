@@ -4,6 +4,7 @@ import Footer from './components/layout/Footer'
 import Preloader from './components/layout/Preloader'
 import Hero from './components/home/Hero'
 import CleanPark from './components/home/CleanPark'
+import Trail from './components/home/Trail'
 import { SampahApa, KenalanTong, JalanWaktu, JurusR, AlurSampah, JadiIni } from './components/home/Fakta'
 import { PitaGame, PitaSertifikat } from './components/home/Pita'
 import { focusRoute } from './lib/reveal'
@@ -26,17 +27,21 @@ const TITLES = {
   '/surat': 'Surat Pahlawan — Geng Pilah',
 }
 
-// Beranda: delapan infografis berturut-turut, tanpa pita penggambar.
+// Beranda: delapan infografis berturut-turut, dirangkai satu jejak yang
+// tergambar mengikuti guliran (Trail), bukan pita penggambar.
 function Home() {
   return (
     <main className="beranda" id="main-content">
       <Hero />
-      <SampahApa />
-      <KenalanTong />
-      <JalanWaktu />
-      <JurusR />
-      <AlurSampah />
-      <JadiIni />
+      <div className="beranda-flow">
+        <Trail />
+        <SampahApa />
+        <KenalanTong />
+        <JalanWaktu />
+        <JurusR />
+        <AlurSampah />
+        <JadiIni />
+      </div>
       <PitaGame />
       <PitaSertifikat />
     </main>
