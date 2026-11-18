@@ -3,7 +3,8 @@ import { playPop } from '../../lib/sfx'
 import { speak } from '../../lib/speech'
 import { useTongSweep } from '../../lib/sweep'
 import SortingStation from './SortingStation'
-import { ColorBandBackdrop, PaperGrain, EdgePlant, NumberBadge } from '../art'
+import { ColorBandBackdrop, PaperGrain, EdgePlant } from '../art'
+import recyclingBottles from '../../../assets/recycling-bottles.jpg'
 
 const ICON = (name) => `/svg/items/${name}.svg`
 
@@ -86,6 +87,7 @@ export function SampahApa() {
         <div className="asal-close">
           <p className="strong-line">{tutup}</p>
         </div>
+        <p className="sampah-statis"><img src={ICON('plastic-bottle')} alt="" width="44" height="44" /> Botol ini tertiup angin. Bantu dia sampai ke tong yang tepat: kenali jenisnya, lihat dampaknya, lalu coba pilah.</p>
       </div>
     </section>
   )
@@ -171,7 +173,7 @@ export function KenalanTong() {
   const panel = useRef(null)
   const firstCard = useRef(true)
   // Scroll pada panggung memperkenalkan lima tong; tombol tetap dapat dipilih langsung.
-  useTongSweep(stage, TONG.length, setActive)
+  const holdSweep = useTongSweep(stage, TONG.length, setActive)
   useLayoutEffect(() => {
     if (firstCard.current) { firstCard.current = false; return }
     if (document.documentElement.dataset.motion !== 'smooth' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -189,7 +191,7 @@ export function KenalanTong() {
           <h2 className="h2" id="i2-title">
             Kenalan Sama Tong-Tongnya
           </h2>
-          <p className="lede">Tap satu tong, buka kelimanya, ya.</p>
+          <p className="lede">Pilih tong untuk mengenalinya. Di layar besar, gulir untuk melihat kelimanya.</p>
 
           <div className="panggung" style={{ '--panggung-bg': tong.tint }}>
             <div className="panggung-top" ref={panel}>
@@ -209,7 +211,6 @@ export function KenalanTong() {
                     </li>
                   ))}
                 </ul>
-                {tong.id === 'anorganik' && <NumberBadge className="tong-stat" value="450" unit="tahun" />}
                 <p className="panggung-fact">{tong.facts}</p>
                 <button
                   type="button"
@@ -235,6 +236,7 @@ export function KenalanTong() {
                 aria-pressed={i === active}
                 onClick={() => {
                   playPop()
+                  holdSweep()
                   setActive(i)
                 }}
               >
@@ -401,7 +403,12 @@ export function AlurSampah() {
         <h2 className="h2" id="i5-title">
           Ke Mana Sampah Setelah Kamu Buang?
         </h2>
-        <p className="lede">Ikuti perjalanan sampah sampai ujung, di sana dia bercabang dua.</p>
+        <p className="lede">Setelah kamu memilih tong, sampah bisa diolah atau berakhir sebagai residu. Coba pilih tujuan di stasiun ini.</p>
+
+        <figure className="foto-konteks">
+          <img src={recyclingBottles} alt="Kumpulan botol plastik yang dikumpulkan untuk daur ulang di pusat pendidikan lingkungan Xochimilco, Mexico City" width="960" height="636" loading="lazy" />
+          <figcaption>Contoh nyata: botol plastik terkumpul untuk didaur ulang di Xochimilco, Mexico City. Foto: <a href="https://commons.wikimedia.org/wiki/File:Recycling_bottles.JPG" target="_blank" rel="noopener noreferrer">Celinebj / Wikimedia Commons</a>, CC BY-SA 4.0.</figcaption>
+        </figure>
 
         <SortingStation />
       </div>

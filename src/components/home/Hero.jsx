@@ -52,7 +52,14 @@ export default function Hero() {
           </div>
           <div className="hero-art">
             <div className="hero-blob" aria-hidden="true" />
+            <div className="hero-bottle-scene">
+              <svg className="hero-bottle-wind" viewBox="0 0 124 88" fill="none" aria-hidden="true">
+                <path d="M4 19C27 10 48 13 71 22M17 44C37 33 59 36 86 43M6 71C29 59 55 62 69 67" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+              <img src="/svg/items/plastic-bottle.svg" alt="" width="78" height="78" />
+            </div>
             <img className="hero-orgi" src="/svg/mascots/orgi-happy.svg" alt="Si Orgi, tong sampah organik, melambaikan tangan" width="300" height="300" />
+            <p className="hero-bottle-hint">Ups, botolnya tertiup angin! Bantu cari tongnya ↓</p>
             <div className="hero-bins" aria-hidden="true">
               {BINS.map((bin) => (
                 <img key={bin} src={`/svg/bins/${bin}.svg`} alt="" width="54" height="54" loading="lazy" />

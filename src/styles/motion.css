@@ -7,6 +7,86 @@
   --ease-motion: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.sampah-statis { display: flex; align-items: center; gap: 12px; margin: 28px 0 0; max-width: 55ch; font-weight: 700; line-height: 1.5; }
+.sampah-statis img { flex: none; }
+
+/* Botol punya asal dan tujuan dalam adegan hero; tidak ada penanda mengambang di tepi layar. */
+.hero-bottle-scene {
+  position: absolute;
+  z-index: 2;
+  top: -5%;
+  right: 0;
+  width: 164px;
+  height: 90px;
+  pointer-events: none;
+}
+.hero-bottle-wind {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 124px;
+  height: 88px;
+  color: #318da4;
+}
+.hero-bottle-scene img { position: absolute; left: 90px; top: 6px; width: 72px; height: 72px; transform: rotate(-18deg); }
+.bottle-route { display: none; }
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+  :root[data-motion='smooth'] .beranda.has-bottle-route .hero-bottle-scene { visibility: hidden; }
+  :root[data-motion='smooth'] .beranda.has-bottle-route .sampah-statis img { display: none; }
+  :root[data-motion='smooth'] .beranda.has-bottle-route .bottle-route {
+    position: absolute;
+    z-index: 5;
+    display: block;
+    width: 164px;
+    height: 90px;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    color: #318da4;
+    will-change: transform;
+  }
+  .bottle-route svg { position: absolute; width: 124px; height: 88px; }
+  .bottle-route img { position: absolute; left: 90px; top: 6px; width: 72px; height: 72px; transform: rotate(-18deg); }
+}
+.hero-bottle-hint {
+  position: absolute;
+  z-index: 2;
+  top: -8%;
+  right: 180px;
+  max-width: 20ch;
+  margin: 0;
+  font: 700 clamp(15px, 1.25vw, 19px)/1.25 var(--font-display);
+  color: var(--color-ink);
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  :root[data-motion='smooth'] .hero-bottle-scene {
+    transform: translate3d(calc(var(--progress, 0) * -200px), calc(var(--progress, 0) * 380px), 0) rotate(calc(var(--progress, 0) * 20deg));
+  }
+}
+@media (max-width: 1023px) {
+  .beranda .hero-bottle-hint {
+    position: relative;
+    grid-row: 1;
+    justify-self: start;
+    top: auto;
+    right: auto;
+    max-width: 23ch;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+  .beranda .hero-orgi { grid-row: 2; }
+  .beranda .hero-bins { grid-row: 3; }
+  .hero-bottle-scene { top: 26%; right: 0; transform: scale(.64); transform-origin: right top; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bottle-scene { transform: none !important; }
+}
+
+.foto-konteks { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); align-items: center; gap: 20px; margin: 28px 0; max-width: 780px; }
+.foto-konteks img { display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 16px; }
+.foto-konteks figcaption { font-size: 14px; line-height: 1.55; }
+.foto-konteks a { color: var(--color-forest); text-decoration: underline; }
+@media (max-width: 700px) { .foto-konteks { grid-template-columns: 1fr; } }
+
 /* ---------- preloader: wipe 1s, dilepas pada 1.25s ---------- */
 
 .preloader {
@@ -432,6 +512,9 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
   overflow: visible;
 }
 .beranda #kenalan .panggung-top { grid-template-columns: minmax(170px, .65fr) minmax(0, 1fr); align-items: center; gap: clamp(25px, 6vw, 100px); }
+@media (min-width: 1024px) and (min-height: 900px) and (prefers-reduced-motion: no-preference) {
+  :root[data-motion='smooth'] .beranda #kenalan .panggung-top { min-height: 350px; }
+}
 .beranda #kenalan .panggung-bin { width: min(100%, 340px); border: 0; border-radius: 0; box-shadow: none; background: transparent; }
 .beranda #kenalan .panggung-bin img { width: 100%; height: auto; max-height: 350px; object-fit: contain; transform: scale(1.18) rotate(-4deg); }
 .beranda #kenalan .panggung-title { font-size: clamp(32px, 3.9vw, 59px); line-height: 1; }

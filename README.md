@@ -46,7 +46,7 @@ Fitur yang dirancang khusus untuk anak:
 | Suara | Web Audio API + Web Speech API |
 | Font | Fredoka & Nunito (Google Fonts, gratis) |
 
-Seluruh aset gratis dan dibuat sendiri; tidak ada template atau komponen berbayar.
+Maskot, ikon, dan ilustrasi dibuat sendiri. Foto pendukung memakai lisensi terbuka dengan kredit di bawah.
 
 ## Petunjuk Instalasi & Cara Menjalankan
 
@@ -113,6 +113,13 @@ Nama Tim: **Tiyang Tiyung**
 
 Maskot, ilustrasi, dan ikon dibuat sendiri untuk kompetisi ini. Font Fredoka & Plus Jakarta
 Sans memakai lisensi SIL Open Font License. Tidak ada aset berbayar yang digunakan.
+
+- `assets/recycling-bottles.jpg`: foto **Celinebj**, *Recycling bottles.JPG*, Wikimedia Commons,
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+  [Sumber dan foto asli](https://commons.wikimedia.org/wiki/File:Recycling_bottles.JPG).
+  Menampilkan botol terkumpul di Centro de Educación Ambiental Acuexcomatl,
+  Xochimilco, Mexico City; bukan dokumentasi lokasi di Indonesia. Versi situs
+  diunduh pada lebar 960 piksel (ubah ukuran dari foto asli); kredit juga tercantum di halaman.
 
 Figure isometrik di bagian "Ke Mana Sampah Setelah Kamu Buang?" dibangun dengan
 **Anatomy** (https://github.com/wheresryan22/anatomy, MIT License, Copyright (c) 2026 Ryan).

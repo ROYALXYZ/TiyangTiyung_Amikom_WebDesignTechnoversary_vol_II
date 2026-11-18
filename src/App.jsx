@@ -3,6 +3,7 @@ import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Preloader from './components/layout/Preloader'
 import Hero from './components/home/Hero'
+import BotolBerjalan from './components/home/BotolBerjalan'
 import CleanPark from './components/home/CleanPark'
 import { SampahApa, KenalanTong, JalanWaktu, JurusR, AlurSampah, JadiIni } from './components/home/Fakta'
 import { PitaGame, PitaSertifikat } from './components/home/Pita'
@@ -21,6 +22,7 @@ function Home() {
   return (
     <main className="beranda">
       <Hero />
+      <BotolBerjalan />
       <SampahApa />
       <KenalanTong />
       <JalanWaktu />
