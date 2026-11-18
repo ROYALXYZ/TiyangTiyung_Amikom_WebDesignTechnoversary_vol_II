@@ -1,6 +1,6 @@
 ﻿import { playPop } from '../../lib/sfx'
 import { speak } from '../../lib/speech'
-import { BlobField, WasteOcean } from '../art'
+import { WasteOcean } from '../art'
 
 const BINS = ['organik', 'anorganik', 'b3', 'kertas', 'residu']
 const HERO_TEXT =
@@ -9,7 +9,6 @@ const HERO_TEXT =
 export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title" data-progress>
-      <BlobField variant={2} className="hero-art-field" />
       <div className="hero-pin" data-pin>
         <WasteOcean />
         <div className="hero-overlay" aria-hidden="true" />
@@ -58,7 +57,7 @@ export default function Hero() {
               </svg>
               <img src="/svg/items/plastic-bottle.svg" alt="" width="78" height="78" />
             </div>
-            <img className="hero-orgi" src="/svg/mascots/orgi-happy.svg" alt="Si Orgi, tong sampah organik, melambaikan tangan" width="300" height="300" />
+            <img className="hero-orgi hero-orgi--oops" src="/svg/mascots/orgi-oops.svg" alt="Si Orgi panik melihat botol plastik tertiup angin" width="300" height="300" />
             <p className="hero-bottle-hint">Ups, botolnya tertiup angin! Bantu cari tongnya ↓</p>
             <div className="hero-bins" aria-hidden="true">
               {BINS.map((bin) => (

@@ -80,7 +80,7 @@ export const ITEMS = [
   { id: 'kulit-pisang', name: 'Kulit Pisang', emoji: '🍌', type: 'organik', fact: 'Hancur dalam 2 minggu - 1 bulan.' },
   { id: 'apel-sisa', name: 'Sisa Apel', emoji: '🍎', type: 'organik', fact: 'Hancur dalam 2 bulan.' },
   { id: 'daun-kering', name: 'Daun Kering', emoji: '🍂', type: 'organik', fact: 'Hancur dalam 2 - 4 minggu.' },
-  { id: 'botol-plastik', name: 'Botol Plastik', emoji: '🥤', type: 'anorganik', fact: 'Baru hancur 450 tahun lagi!' },
+  { id: 'botol-plastik', name: 'Botol Plastik', emoji: '🥤', type: 'anorganik', fact: 'Perkiraan populer: 450 tahun untuk terurai; plastik bisa jadi mikroplastik.' },
   { id: 'kaleng-susu', name: 'Kaleng Susu', emoji: '🥫', type: 'anorganik', fact: 'Butuh 80 - 100 tahun untuk hancur.' },
   { id: 'gelas-plastik', name: 'Gelas Plastik', emoji: '🧋', type: 'anorganik', fact: 'Butuh 50 - 80 tahun untuk hancur.' },
   { id: 'baterai-bekas', name: 'Baterai Bekas', emoji: '🔋', type: 'b3', fact: 'Zat kimianya bisa mencemari tanah dan air.' },

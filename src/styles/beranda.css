@@ -151,6 +151,11 @@
   line-height: 1.5;
   color: var(--color-muted, #5a6b80);
 }
+.source-line a {
+  color: var(--color-forest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
 .regulasi {
   margin: 22px 0 0;
@@ -1273,12 +1278,37 @@
 .beranda #fakta-3 .station-choices button[aria-pressed='true'] { border-color: var(--station-color); box-shadow: inset 0 -3px 0 var(--station-color); }
 .beranda #fakta-3 .station-choices button:focus-visible { outline: 2px solid #334155; outline-offset: 3px; }
 .beranda #fakta-3 .station-card figcaption { margin-top: 20px; color: #64748b; font: 500 12px/1.6 'Plus Jakarta Sans', sans-serif; }
+.beranda #fakta-3 .station-instruction { margin: 14px 0 10px; font: 600 14px/1.5 'Plus Jakarta Sans', sans-serif; }
+.beranda #fakta-3 .station-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.beranda #fakta-3 .station-items button { display: inline-flex; align-items: center; gap: 6px; min-height: 50px; padding: 6px 10px; border: 2px solid #9baabc; border-radius: 12px; background: #fff; color: #263445; font: 700 12px/1.2 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
+.beranda #fakta-3 .station-items button[aria-pressed='true'] { border-color: var(--color-ink); background: #ecfdf5; box-shadow: inset 0 -3px 0 #22c55e; }
+.beranda #fakta-3 .station-items button:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+.beranda #fakta-3 .station-items img { width: 32px; height: 32px; }
+.beranda #fakta-3 .station-route { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; margin: 14px auto 0; padding: 11px; border-radius: 12px; background: #eef4ec; text-align: center; font: 600 14px/1.4 'Plus Jakarta Sans', sans-serif; }
+.beranda #fakta-3 .station-choices { margin-top: 6px; }
+.beranda #fakta-3 .station-choices button { border-width: 2px; border-color: var(--station-color); font-size: 13px; }
+.beranda #fakta-3 .station-choices button[aria-pressed='true'] { background: color-mix(in srgb, var(--station-color) 17%, white); box-shadow: inset 0 -4px 0 var(--station-color); }
+.beranda #fakta-3 .station-feedback { display: flex; flex-wrap: wrap; gap: 5px 14px; align-items: baseline; margin-top: 14px; padding: 14px 18px; border: 2px solid #b6c4cf; border-radius: 14px; background: white; font: 600 14px/1.5 'Plus Jakarta Sans', sans-serif; }
+.beranda #fakta-3 .station-feedback.is-correct { border-color: #15803d; background: #ecfdf3; color: #14532d; }
+.beranda #fakta-3 .station-feedback.is-wrong { border-color: #b45309; background: #fffbeb; color: #713f12; }
+.beranda #fakta-3 .station-feedback strong { font-size: 16px; }
+.beranda #fakta-3 .station-help { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 14px; font: 600 13px/1.5 'Plus Jakarta Sans', sans-serif; }
+.beranda #fakta-3 .station-help p { margin: 0; }
+.beranda #fakta-3 .station-reveal { min-height: 44px; padding: 8px 14px; border: 2px solid var(--color-ink); border-radius: 10px; background: #fff; color: var(--color-ink); font: 700 13px/1.3 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
+.beranda #fakta-3 .station-reveal:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; }
+.beranda #fakta-3 .station-reveal:disabled { opacity: .6; cursor: default; }
+.beranda #fakta-3 .station-carrier--correct { animation: station-sort .55s ease-in forwards; transform-box: fill-box; transform-origin: center; }
+@keyframes station-sort { 0%, 40% { opacity: 1; } 100% { opacity: 0; transform: translate(56px, 24px) scale(.7); } }
+@media (prefers-reduced-motion: reduce) { .beranda #fakta-3 .station-carrier--correct { animation: none; } }
 @media (max-width: 600px) {
   .beranda #fakta-3 .station-card { padding: 14px 12px 18px; }
   .beranda #fakta-3 .station-heading { font-size: 9px; }
   .beranda #fakta-3 .station-footer { display: block; font-size: 11px; }
   .beranda #fakta-3 .station-footer output { display: block; max-width: none; margin-top: 8px; text-align: left; }
   .beranda #fakta-3 .station-choices { justify-content: flex-start; }
+  .beranda #fakta-3 .station-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .beranda #fakta-3 .station-items button { text-align: left; }
+  .beranda #fakta-3 .station-route { text-align: left; justify-content: flex-start; }
 }
 
 /* One fixed slot per piece: icon, name, arrow, destination, result. */

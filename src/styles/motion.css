@@ -7,9 +7,6 @@
   --ease-motion: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.sampah-statis { display: flex; align-items: center; gap: 12px; margin: 28px 0 0; max-width: 55ch; font-weight: 700; line-height: 1.5; }
-.sampah-statis img { flex: none; }
-
 /* Botol punya asal dan tujuan dalam adegan hero; tidak ada penanda mengambang di tepi layar. */
 .hero-bottle-scene {
   position: absolute;
@@ -28,25 +25,7 @@
   color: #318da4;
 }
 .hero-bottle-scene img { position: absolute; left: 90px; top: 6px; width: 72px; height: 72px; transform: rotate(-18deg); }
-.bottle-route { display: none; }
-@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
-  :root[data-motion='smooth'] .beranda.has-bottle-route .hero-bottle-scene { visibility: hidden; }
-  :root[data-motion='smooth'] .beranda.has-bottle-route .sampah-statis img { display: none; }
-  :root[data-motion='smooth'] .beranda.has-bottle-route .bottle-route {
-    position: absolute;
-    z-index: 5;
-    display: block;
-    width: 164px;
-    height: 90px;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    color: #318da4;
-    will-change: transform;
-  }
-  .bottle-route svg { position: absolute; width: 124px; height: 88px; }
-  .bottle-route img { position: absolute; left: 90px; top: 6px; width: 72px; height: 72px; transform: rotate(-18deg); }
-}
+.hero-orgi--oops { transform: rotate(6deg); }
 .hero-bottle-hint {
   position: absolute;
   z-index: 2;
@@ -59,7 +38,7 @@
 }
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   :root[data-motion='smooth'] .hero-bottle-scene {
-    transform: translate3d(calc(var(--progress, 0) * -200px), calc(var(--progress, 0) * 380px), 0) rotate(calc(var(--progress, 0) * 20deg));
+    transform: translate3d(calc(var(--progress, 0) * -16px), calc(var(--progress, 0) * 12px), 0) rotate(calc(var(--progress, 0) * 8deg));
   }
 }
 @media (max-width: 1023px) {
@@ -159,7 +138,7 @@ html.is-first-loaded .preloader-mark {
 
 @media (min-width: 1024px) {
   .hero {
-    height: 200svh;
+    height: 150svh;
   }
   .hero-pin {
     position: sticky;
@@ -170,11 +149,10 @@ html.is-first-loaded .preloader-mark {
     transform: scale(calc(1 - var(--progress, 0) * 0.2));
     transform-origin: 50% 40%;
   }
-  /* Kartu bertumpuk: section 2 naik 100svh menutup hero yang sedang ter-pin.
-     Z: hero 0 < latar+isi section 2 (auto) < garis Jejak 2 < kartu 3. */
+  /* Sambungan tipis antarseksi; jangan tutup tombol dan maskot saat hero ter-pin. */
   .beranda #fakta-1 {
     position: relative;
-    margin-top: -100svh;
+    margin-top: -46px;
     border-radius: 36px 36px 0 0;
     background: var(--color-cream);
     box-shadow: 0 -28px 64px rgba(15, 23, 42, 0.18), 0 -2px 0 rgba(15, 23, 42, 0.06);
@@ -500,6 +478,7 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #fakta-1 .asal-items img { width: clamp(42px, 5vw, 65px); height: clamp(42px, 5vw, 65px); background: none; border: none; padding: 0; }
 .beranda #fakta-1 .asal-mascot { width: clamp(80px, 9vw, 155px); right: -26px; bottom: -38px; z-index: 2; }
 .beranda #fakta-1 .asal-close { margin-top: 36px; max-width: 48ch; }
+.beranda #fakta-1 .asal-next { margin: 18px 0 0; font: 600 clamp(16px, 1.4vw, 20px)/1.5 'Plus Jakarta Sans', sans-serif; }
 .beranda #fakta-1 .strong-line { font-size: clamp(24px, 3vw, 39px); line-height: 1.17; }
 
 /* Five characters form a cast. The selected character escapes its column. */
@@ -514,14 +493,29 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
   overflow: visible;
 }
 .beranda #kenalan .panggung-top { grid-template-columns: minmax(170px, .65fr) minmax(0, 1fr); align-items: center; gap: clamp(25px, 6vw, 100px); }
-@media (min-width: 1024px) and (min-height: 900px) and (prefers-reduced-motion: no-preference) {
-  :root[data-motion='smooth'] .beranda #kenalan .panggung-top { min-height: 350px; }
+@media (min-width: 1024px) {
+  .beranda #kenalan .panggung-top { min-height: 390px; }
 }
 .beranda #kenalan .panggung-bin { width: min(100%, 340px); border: 0; border-radius: 0; box-shadow: none; background: transparent; }
 .beranda #kenalan .panggung-bin img { width: 100%; height: auto; max-height: 350px; object-fit: contain; transform: scale(1.18) rotate(-4deg); }
 .beranda #kenalan .panggung-title { font-size: clamp(32px, 3.9vw, 59px); line-height: 1; }
-.beranda #kenalan .tong-stat { margin-top: 24px; --art-accent: var(--color-anorganic); }
-.beranda #kenalan .tong-stat > span:first-child { font-size: clamp(76px, 9vw, 135px) !important; }
+.beranda #kenalan .tong-stat { display: inline-block; margin-right: 10px; color: var(--color-anorganic-ink); font: 700 1.3em/1.2 var(--font-display); }
+/* Sisakan ruang untuk teks terpanjang; strip pilihan tidak melompat saat tong berganti. */
+@media (min-width: 701px) and (max-width: 1023px) {
+  .beranda #kenalan .panggung-top { min-height: 445px; }
+}
+@media (min-width: 600px) and (max-width: 700px) {
+  .beranda #kenalan .panggung-top { min-height: 545px; }
+}
+@media (min-width: 400px) and (max-width: 599px) {
+  .beranda #kenalan .panggung-top { min-height: 620px; }
+}
+@media (min-width: 360px) and (max-width: 399px) {
+  .beranda #kenalan .panggung-top { min-height: 710px; }
+}
+@media (max-width: 359px) {
+  .beranda #kenalan .panggung-top { min-height: 750px; }
+}
 .beranda #kenalan .strip { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 0; border-bottom: 3px solid var(--color-forest); }
 .beranda #kenalan .strip-tap {
   display: flex;
@@ -637,7 +631,6 @@ html.is-first-loaded .hero-pin .hero-grid > *:nth-child(2) {
 .beranda #kenalan > .art-band { background: var(--color-soft-sand, #f5f2dc) !important; }
 .beranda #jurus > .art-band { background: var(--color-soft-meadow, #e9f6df) !important; }
 .beranda #jadi-ini > .art-band { background: var(--color-cream) !important; }
-.beranda .hero > .hero-art-field { z-index: 0; opacity: .25; }
 .beranda #fakta-2 > .art-grain, .beranda #sertifikat > .art-grain { opacity: .06 !important; }
 .beranda #main-game { padding-block: clamp(100px, 12vw, 175px); }
 .beranda #main-game .band-in { max-width: 1120px; }
@@ -776,5 +769,50 @@ main:not(.beranda) > header .section-inner > :is(h1, p) { position: relative; }
 
 @media (max-width: 700px) {
   .beranda :is(#fakta-1, #kenalan, #jurus, #jadi-ini, #main-game) > .art-scatter svg:nth-child(n + 9) { display: none; }
-  .beranda .hero > .hero-art-field { opacity: .12; }
+}
+
+/* Fakta 1: contoh jadi ilustrasi ringan, bukan deretan kartu tambahan. */
+.beranda #fakta-1 .fakta-intro { align-items: stretch; }
+.beranda #fakta-1 .fakta-contoh {
+  display: grid;
+  gap: 18px;
+  align-content: end;
+  padding-top: clamp(24px, 4vw, 56px);
+}
+.beranda #fakta-1 .fakta-contoh > p {
+  margin: 0;
+  font: 700 clamp(20px, 2vw, 28px)/1.2 var(--font-display);
+  color: var(--color-forest);
+}
+.beranda #fakta-1 .fakta-contoh-items { display: flex; flex-wrap: wrap; gap: clamp(18px, 3vw, 42px); }
+.beranda #fakta-1 .fakta-contoh-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  font: 700 15px/1.2 var(--font-display);
+}
+.beranda #fakta-1 .fakta-contoh-item img { width: 64px; height: 64px; object-fit: contain; }
+.beranda #fakta-1 .fakta-definition {
+  align-self: center;
+  padding: 6px 0 6px clamp(22px, 3vw, 36px);
+  border-left: 4px solid var(--color-organic);
+}
+.beranda #fakta-1 .fakta-definition .lede { max-width: 38ch; margin: 0; padding: 0; border: 0; }
+.beranda #fakta-1 .fakta-definition .text-link { display: inline-block; margin-top: 22px; }
+@media (min-width: 1024px) {
+  .beranda #fakta-1 .fakta-intro { grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr); gap: 28px clamp(35px, 4vw, 70px); }
+  .beranda #fakta-1 .fakta-contoh { grid-column: 1; grid-row: 2; }
+  .beranda #fakta-1 .fakta-definition { grid-column: 2; grid-row: 1 / span 2; }
+}
+@media (max-width: 1023px) {
+  .beranda #fakta-1 .fakta-intro { display: grid; gap: 28px; }
+  .beranda #fakta-1 .fakta-contoh { padding-top: 10px; }
+}
+@media (max-width: 600px) {
+  .beranda #fakta-1 .fakta-contoh-items { gap: 12px; justify-content: space-between; }
+  .beranda #fakta-1 .fakta-contoh-item { font-size: 12px; }
+  .beranda #fakta-1 .fakta-contoh-item img { width: 48px; height: 48px; }
 }

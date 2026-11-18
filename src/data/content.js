@@ -85,7 +85,7 @@ export const ABOUT = {
     'Lima sahabat — Orgi, Rino, Bebe, Kiki, dan Resi — datang untuk menemani anak-anak mengenal sampah dengan cara yang menyenangkan: bermain, bercerita, dan mencoba sendiri.',
   ],
   goldenAge:
-    'Usia TK dan SD adalah masa emas pembentukan kebiasaan: kebiasaan yang ditanam sebelum usia 12 tahun cenderung menetap sampai dewasa, sehingga jauh lebih murah daripada membersihkan TPA nanti.',
+    'Anak TK dan SD bisa mulai belajar memilah lewat contoh dan latihan bersama orang dewasa. Geng Pilah membantu mereka mencoba, bukan menjanjikan kebiasaan akan menetap selamanya.',
   uxNotes: [
     'Warna cerah dan bentuk besar membantu anak mengenali tong sampah tanpa harus membaca.',
     'Tombol "Bacakan" memakai suara Bahasa Indonesia untuk anak yang belum lancar membaca.',
@@ -94,8 +94,12 @@ export const ABOUT = {
   ],
   attribution: {
     source: 'Waste4Change Indonesia',
-    article: 'Sampah: Pengertian, Jenis-Jenis, dan Cara Menanganinya',
-    note: 'Seluruh data jenis sampah dan waktu penguraian di situs ini diadaptasi dari materi publik Waste4Change Indonesia.',
+    article: 'Pengertian Sampah & Jenis-Jenisnya',
+    articleUrl: 'https://waste4change.com/blog/sampah-pengertian-jenis-hingga-peraturannya-di-indonesia',
+    timeArticle: 'Membedakan Sampah Organik dan Anorganik Berdasarkan Waktu Terurai',
+    timeUrl: 'https://waste4change.com/blog/mengapa-sampah-organik-dan-anorganik-dibedakan-berdasarkan-waktu-terurai',
+    noaaUrl: 'https://marinedebris.noaa.gov/discover-marine-debris/mystery-how-long-until-it-s-gone',
+    note: 'Materi jenis sampah dan perkiraan waktu terurai diadaptasi dari artikel Waste4Change. Waktu terurai bergantung pada bahan dan lingkungan; plastik dapat pecah menjadi mikroplastik, bukan hilang sepenuhnya (NOAA).',
   },
   // Peraturan yang mengikat pengelolaan sampah di Indonesia (mode orang tua & guru).
   regulasi: [

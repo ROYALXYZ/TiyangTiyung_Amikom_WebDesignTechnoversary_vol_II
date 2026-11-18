@@ -4,7 +4,8 @@ import { speak } from '../../lib/speech'
 // 350 kB geometri + JSON stasiun: diunduh saat bagian ini mendekat, bukan di
 // muat pertama beranda.
 const SortingStation = lazy(() => import('./SortingStation'))
-import { ColorBandBackdrop, PaperGrain, EdgePlant, NumberBadge, RawArt } from '../art'
+import { ColorBandBackdrop, PaperGrain, EdgePlant, RawArt } from '../art'
+import { ABOUT } from '../../data/content'
 import dinoOrganik from '../../assets/svg/dinosaurus-hijau-pemakan-sisa-sayur.svg?raw'
 import pelangiAwan from '../../assets/svg/pelangi-awan-bersahabat.svg?raw'
 import matahariKacamata from '../../assets/svg/matahari-kacamata-ceria.svg?raw'
@@ -41,6 +42,12 @@ const ASAL = [
   },
 ]
 
+const CONTOH_SISA = [
+  { icon: 'banana-peel', label: 'Kulit pisang' },
+  { icon: 'tetra-carton', label: 'Kotak susu' },
+  { icon: 'test-paper', label: 'Kertas kusut' },
+]
+
 export function SampahApa() {
   const teks =
     'Sampah adalah benda sisa yang sudah selesai tugasnya. Kulit pisang setelah kamu makan, kotak susu setelah kamu minum, dan kertas gambarmu yang sudah kusut.'
@@ -55,8 +62,19 @@ export function SampahApa() {
           <h2 className="h2" id="i1-title">
             Sampah Itu Apa, Sih?
           </h2>
-          <p className="lede">
-            {teks}{' '}
+          <div className="fakta-contoh">
+            <p>Sudah selesai dipakai?</p>
+            <div className="fakta-contoh-items">
+              {CONTOH_SISA.map(({ icon, label }) => (
+                <div className="fakta-contoh-item" key={icon}>
+                  <img src={ICON(icon)} alt="" width="60" height="60" loading="lazy" />
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="fakta-definition">
+            <p className="lede">{teks}</p>
             <button
               type="button"
               className="text-link"
@@ -67,8 +85,8 @@ export function SampahApa() {
             >
               Bacakan
             </button>
-          </p>
           </div>
+        </div>
         <div className="asal-grid">
           {ASAL.map((card) => (
             <article
@@ -92,8 +110,8 @@ export function SampahApa() {
         </div>
         <div className="asal-close">
           <p className="strong-line">{tutup}</p>
+          <p className="asal-next">Sekarang, kenalan dengan lima tong yang bisa membantumu memilah.</p>
         </div>
-        <p className="sampah-statis"><img src={ICON('plastic-bottle')} alt="" width="44" height="44" /> Botol ini tertiup angin. Bantu dia sampai ke tong yang tepat: kenali jenisnya, lihat dampaknya, lalu coba pilah.</p>
       </div>
       <RawArt svg={dinoOrganik} className="band-art band-art--dino" label="Dinosaurus hijau makan sisa sayur" />
     </section>
@@ -124,7 +142,7 @@ const TONG = [
     accentText: 'var(--color-anorganic-ink)',
     say: 'Botol dan kaleng masuk ke sini. Mereka disulap jadi mainan baru.',
     items: ['plastic-bottle', 'milk-can', 'plastic-cup'],
-    facts: 'Sampah anorganik awet. Botol plastik butuh 450 tahun untuk hancur.',
+    facts: 'Itu perkiraan, bukan waktu pasti plastik hilang. Pilah agar bisa didaur ulang.',
   },
   {
     id: 'b3',
@@ -221,8 +239,7 @@ export function KenalanTong() {
                   </li>
                 ))}
               </ul>
-              {tong.id === 'anorganik' && <NumberBadge className="tong-stat" value="450" unit="tahun" />}
-              <p className="panggung-fact">{tong.facts}</p>
+              <p className="panggung-fact">{tong.id === 'anorganik' && <><strong className="tong-stat">450 tahun</strong>{' '}</>}{tong.facts}</p>
               <button
                 type="button"
                 className="text-link"
@@ -233,6 +250,7 @@ export function KenalanTong() {
               >
                 Bacakan
               </button>
+              {tong.id === 'anorganik' && <p className="source-line">450 tahun ialah perkiraan populer untuk botol plastik, bukan waktu pasti hingga hilang. Sumber: <a href="https://waste4change.com/blog/contoh-sampah-anorganik-pengertian-jenis-manfaat" target="_blank" rel="noopener noreferrer">Waste4Change</a> · <a href={ABOUT.attribution.noaaUrl} target="_blank" rel="noopener noreferrer">Penjelasan NOAA</a>.</p>}
             </div>
           </div>
         </div>
@@ -277,8 +295,8 @@ export function KenalanTong() {
    ========================================================= */
 const WAKTU = [
   { items: ['banana-peel', 'test-paper'], name: 'Kulit pisang & kertas', time: '2 sampai 6 minggu', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)', rise: 0 },
-  { items: ['cigarette-butt', 'plastic-bag'], name: 'Puntung rokok & kantong plastik', time: '10 sampai 20 tahun', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)', rise: 46 },
-  { items: ['milk-can', 'plastic-bottle', 'styrofoam-box'], name: 'Kaleng, botol, styrofoam', time: '200 sampai 500 tahun', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)', rise: 118 },
+  { items: ['cigarette-butt'], name: 'Puntung rokok', time: 'sekitar 10–12 tahun', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)', rise: 46 },
+  { items: ['plastic-bottle'], name: 'Botol plastik', time: 'perkiraan 450 tahun', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)', rise: 118 },
 ]
 
 export function JalanWaktu() {
@@ -333,7 +351,7 @@ export function JalanWaktu() {
               <span className="jalan-node" />
               <div className="jalan-tag" style={{ '--accent': 'var(--color-anorganic)', '--accent-text': 'var(--color-anorganic-ink)' }}>
                 <small>Botol kaca</small>
-                <strong>tidak pernah habis</strong>
+                 <strong>sangat lama bertahan</strong>
                 <i />
               </div>
             </div>
@@ -341,12 +359,12 @@ export function JalanWaktu() {
         </div>
 
         <p className="strong-line" style={{ marginTop: 26 }}>
-          Apa pun yang ada di kanan garis putus-putus itu bakal hidup lebih lama dari kakek nenekmu.
+          Beberapa sampah bertahan lebih lama dari usia manusia. Yuk, pilah sejak awal.
         </p>
         <p className="lede" style={{ marginTop: 6 }}>
-          Dan botol kaca? Dia tidak pernah habis. Sampai kapan pun.
+          Botol kaca pun bisa bertahan sangat lama bila dibuang sembarangan.
         </p>
-        <p className="source-line">Sumber angka: Waste4Change Indonesia — “Sampah: Pengertian, Jenis-Jenis, dan Cara Menanganinya”.</p>
+        <p className="source-line">Angka hanyalah perkiraan; bahan dan kondisi lingkungan memengaruhi waktu terurai. Plastik bisa pecah menjadi mikroplastik, bukan hilang. Sumber: <a href={ABOUT.attribution.timeUrl} target="_blank" rel="noopener noreferrer">Waste4Change</a> · <a href={ABOUT.attribution.noaaUrl} target="_blank" rel="noopener noreferrer">NOAA</a>.</p>
       </div>
       <RawArt svg={pelangiAwan} className="band-art band-art--pelangi" label="Pelangi dan awan bersahabat" />
     </section>
@@ -446,11 +464,11 @@ export function AlurSampah() {
    I6 — Objek yang Sering Kamu Pakai, Ternyata Bisa Jadi Ini
    ========================================================= */
 const JADI = [
-  { from: 'plastic-bottle', name: 'Botol plastik', to: 'ui/recycle', result: 'jadi serat baju', tint: 'var(--color-anorganic-soft)', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)' },
-  { from: 'milk-can', name: 'Kaleng aluminium', to: 'doodles/can', result: 'jadi kaleng baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)', accentText: 'var(--color-paper-ink)' },
-  { from: 'cardboard-box', name: 'Kardus', to: 'ui/book-open', result: 'jadi buku', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)' },
-  { from: 'glass-bottle', name: 'Kaca', to: 'doodles/bottle', result: 'jadi botol baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)', accentText: 'var(--color-paper-ink)' },
-  { from: 'veggie-scraps', name: 'Sisa sayur', to: 'doodles/sprout', result: 'jadi kompos', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)' },
+  { from: 'plastic-bottle', name: 'Botol plastik', to: 'lucide/recycle', result: 'jadi serat baju', tint: 'var(--color-anorganic-soft)', accent: 'var(--color-anorganic)', accentText: 'var(--color-anorganic-ink)' },
+  { from: 'milk-can', name: 'Kaleng aluminium', to: 'lucide/cylinder', result: 'jadi kaleng baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)', accentText: 'var(--color-paper-ink)' },
+  { from: 'cardboard-box', name: 'Kardus', to: 'lucide/book-open', result: 'jadi buku', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)' },
+  { from: 'glass-bottle', name: 'Kaca', to: 'lucide/bottle-wine', result: 'jadi botol baru', tint: 'var(--color-paper-soft)', accent: 'var(--color-paper)', accentText: 'var(--color-paper-ink)' },
+  { from: 'veggie-scraps', name: 'Sisa sayur', to: 'lucide/sprout', result: 'jadi kompos', tint: 'var(--color-organic-soft)', accent: 'var(--color-organic)', accentText: 'var(--color-organic-ink)' },
 ]
 
 export function JadiIni() {
@@ -472,7 +490,7 @@ export function JadiIni() {
             >
               <img className="jadi-from" src={ICON(j.from)} alt="" width="62" height="62" loading="lazy" />
               <span className="jadi-name">{j.name}</span>
-              <img className="jadi-arrow" src="/svg/ui/arrow-right.svg" alt="berubah jadi" width="22" height="22" loading="lazy" />
+              <img className="jadi-arrow" src="/svg/lucide/arrow-right.svg" alt="berubah jadi" width="22" height="22" loading="lazy" />
               <span className="jadi-disc">
                 <img src={`/svg/${j.to}.svg`} alt="" width="32" height="32" loading="lazy" />
               </span>

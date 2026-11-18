@@ -42,11 +42,11 @@ Fitur yang dirancang khusus untuk anak:
 | Build | Vite |
 | UI | React 19 + Tailwind CSS v4 |
 | Animasi | CSS keyframes + IntersectionObserver (POP), scroll-pin (`--progress` dari satu rAF loop Lenis), Web Audio SFX |
-| Ikon & maskot | SVG buatan sendiri (tanpa aset berbayar) |
+| Ikon & maskot | SVG buatan sendiri + ikon Lucide berlisensi terbuka (tanpa aset berbayar) |
 | Suara | Web Audio API + Web Speech API |
 | Font | Fredoka & Nunito (SIL OFL), disajikan sendiri dari `public/fonts/` |
 
-Maskot, ikon, dan ilustrasi dibuat sendiri. Foto pendukung memakai lisensi terbuka dengan kredit di bawah.
+Maskot, ilustrasi, dan sebagian besar ikon dibuat sendiri. Ikon diagram tertentu dari Lucide; foto pendukung memakai lisensi terbuka dengan kredit di bawah.
 
 ## Petunjuk Instalasi & Cara Menjalankan
 
@@ -92,12 +92,14 @@ src/
 
 Materi jenis sampah, waktu penguraian, dan jurus 3R diadaptasi dari:
 
-- **Waste4Change Indonesia** — *"Sampah: Pengertian, Jenis, Hingga Peraturannya di Indonesia"*.
+- **Waste4Change Indonesia** — [*Pengertian Sampah & Jenis-Jenisnya*](https://waste4change.com/blog/sampah-pengertian-jenis-hingga-peraturannya-di-indonesia), [*Membedakan Sampah Organik dan Anorganik Berdasarkan Waktu Terurai*](https://waste4change.com/blog/mengapa-sampah-organik-dan-anorganik-dibedakan-berdasarkan-waktu-terurai), dan [*Contoh Sampah Anorganik, Pengertian, Jenis dan Manfaatnya*](https://waste4change.com/blog/contoh-sampah-anorganik-pengertian-jenis-manfaat).
+
+Angka 450 tahun adalah perkiraan edukasi, bukan jaminan botol plastik akan hilang dalam waktu itu. [NOAA](https://marinedebris.noaa.gov/discover-marine-debris/mystery-how-long-until-it-s-gone) menjelaskan lamanya bergantung pada bahan dan kondisi lingkungan; plastik dapat terpecah menjadi mikroplastik. Perkiraan waktu di situs bukan hasil pengukuran tim.
 
 Situs ini **tidak memuat angka nasional apa pun**. Angka timbulan sampah Indonesia yang beredar
 luas tidak dapat kami lacak ke sumber primer, jadi kami memilih tidak menampilkannya daripada
 menampilkan angka yang tidak bisa kami pertanggungjawabkan. Yang kami tampilkan hanya waktu
-penguraian per jenis benda, yang bisa diuji sendiri di rumah.
+penguraian per jenis benda sebagai perkiraan edukasi, bukan angka yang bisa diuji langsung di rumah.
 
 ## Tim
 
@@ -111,7 +113,7 @@ Nama Tim: **Tiyang Tiyung**
 
 ## Lisensi Aset
 
-Maskot, ilustrasi, dan ikon dibuat sendiri untuk kompetisi ini. Font Fredoka & Nunito memakai
+Maskot, ilustrasi, dan ikon selain yang dikreditkan di bawah dibuat sendiri untuk kompetisi ini. Font Fredoka & Nunito memakai
 lisensi SIL Open Font License. Tidak ada aset berbayar yang digunakan.
 
 - `assets/recycling-bottles.jpg`: foto **Celinebj**, *Recycling bottles.JPG*, Wikimedia Commons,
@@ -120,6 +122,11 @@ lisensi SIL Open Font License. Tidak ada aset berbayar yang digunakan.
   Menampilkan botol terkumpul di Centro de Educación Ambiental Acuexcomatl,
   Xochimilco, Mexico City; bukan dokumentasi lokasi di Indonesia. Versi situs
   diunduh pada lebar 960 piksel (ubah ukuran dari foto asli); kredit juga tercantum di halaman.
+
+- `public/svg/lucide/`: ikon **Lucide Icons and Contributors**, lisensi ISC; `arrow-right.svg`
+  turunan Feather, Copyright (c) 2013-present Cole Bemis, lisensi MIT.
+  Sumber: https://lucide.dev/license. Warna garis dikunci ke palet situs;
+  salinan pemberitahuan lisensi: `public/svg/lucide/LICENSE.txt`.
 
 Figure isometrik di bagian "Ke Mana Sampah Setelah Kamu Buang?" dibangun dengan
 **Anatomy** (https://github.com/wheresryan22/anatomy, MIT License, Copyright (c) 2026 Ryan).

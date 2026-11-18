@@ -3,7 +3,6 @@ import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Preloader from './components/layout/Preloader'
 import Hero from './components/home/Hero'
-import BotolBerjalan from './components/home/BotolBerjalan'
 import CleanPark from './components/home/CleanPark'
 import Trail from './components/home/Trail'
 import { SampahApa, KenalanTong, JalanWaktu, JurusR, AlurSampah, JadiIni } from './components/home/Fakta'
@@ -34,7 +33,6 @@ function Home() {
   return (
     <main className="beranda" id="main-content">
       <Hero />
-      <BotolBerjalan />
       <div className="beranda-flow">
         <Trail />
         <SampahApa />

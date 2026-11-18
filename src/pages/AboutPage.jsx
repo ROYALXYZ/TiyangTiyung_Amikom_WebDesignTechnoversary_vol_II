@@ -52,7 +52,8 @@ export default function AboutPage() {
         <article className="about-source bg-mint p-6 sm:p-10">
           <p className="font-display text-base font-bold text-green-800">Atribusi data pendidikan lingkungan</p>
           <h3 className="mt-3 text-3xl font-bold">{ABOUT.attribution.source}</h3>
-          <p className="mt-3 text-lg font-semibold">Artikel: “{ABOUT.attribution.article}”</p>
+           <p className="mt-3 text-lg font-semibold">Artikel: <a href={ABOUT.attribution.articleUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">“{ABOUT.attribution.article}”</a></p>
+           <p className="mt-2 text-sm">Perkiraan waktu: <a href={ABOUT.attribution.timeUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Waste4Change</a> · Penjelasan plastik: <a href={ABOUT.attribution.noaaUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">NOAA</a></p>
           <p className="mt-7 border-t-2 border-ink/30 pt-5 leading-relaxed">{ABOUT.attribution.note}</p>
         </article>
       </div>
@@ -62,7 +63,7 @@ export default function AboutPage() {
       <div className="section-inner">
         <SectionHeading number="05" eyebrow="PAHLAWAN DI BALIK LAYAR" title="Tim Geng Pilah" subtitle="Orang-orang yang menyiapkan petualangan ini untukmu." />
          <div className="grid gap-6 md:grid-cols-3">{ABOUT.team.map((member, index) => <article key={index} className="card-chunk min-w-0 p-7 text-center"><span className="mx-auto grid h-24 w-24 place-items-center rounded-3xl border-4 border-ink bg-anorganic-soft text-5xl" aria-hidden="true">{member.emoji}</span><h3 className="mt-5 break-words text-2xl font-bold leading-snug">{member.name}</h3><p className="mt-2 font-medium text-slate-700">{member.role}</p></article>)}</div>
-        <div className="mt-16 text-center"><p className="mb-6 font-display text-2xl font-bold">Sudah siap jadi pahlawan Bumi?</p><a href="#/" className="btn-chunk min-h-14 bg-organic">Main Game Pilah Sampah</a></div>
+         <div className="mt-16 text-center"><p className="mb-6 font-display text-2xl font-bold">Sudah siap jadi pahlawan Bumi?</p><a href="#/main" className="btn-chunk min-h-14 bg-organic">Main Game Pilah Sampah</a></div>
       </div>
     </section>
   </main>
