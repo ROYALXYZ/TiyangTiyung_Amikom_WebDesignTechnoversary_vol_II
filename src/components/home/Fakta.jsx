@@ -1,7 +1,6 @@
 import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react'
 import { playPop } from '../../lib/sfx'
 import { speak } from '../../lib/speech'
-import { useTongSweep } from '../../lib/sweep'
 // 350 kB geometri + JSON stasiun: diunduh saat bagian ini mendekat, bukan di
 // muat pertama beranda.
 const SortingStation = lazy(() => import('./SortingStation'))
@@ -180,11 +179,9 @@ const ITEM_NAME = {
 
 export function KenalanTong() {
   const [active, setActive] = useState(0)
-  const stage = useRef(null)
   const panel = useRef(null)
   const firstCard = useRef(true)
-  // Scroll pada panggung memperkenalkan lima tong; tombol tetap dapat dipilih langsung.
-  useTongSweep(stage, TONG.length, setActive)
+  // Kelima tong dipilih lewat tap; tidak ada sapuan yang mengikuti scroll.
   useLayoutEffect(() => {
     if (firstCard.current) { firstCard.current = false; return }
     if (document.documentElement.dataset.motion !== 'smooth' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -195,68 +192,78 @@ export function KenalanTong() {
   }, [active])
   const tong = TONG[active]
   return (
-    <section className="band band-mint tong-stage" id="kenalan" ref={stage} aria-labelledby="i2-title">
+    <section className="band band-mint" id="kenalan" aria-labelledby="i2-title">
       <ColorBandBackdrop variant={4} edge="bubbles" flat />
       <RawArt svg={awanTiup} className="band-art band-art--awan" label="Awan meniup angin segar" />
-      <div className="tong-pin" data-pin>
-        <div className="band-in">
-          <h2 className="h2" id="i2-title">
-            Kenalan Sama Tong-Tongnya
-          </h2>
-          <p className="lede">Tap satu tong, buka kelimanya, ya.</p>
+      <div className="band-in">
+        <h2 className="h2" id="i2-title">
+          Kenalan Sama Tong-Tongnya
+        </h2>
+        <p className="lede">Tap satu tong, buka kelimanya, ya.</p>
 
-          <div className="panggung" style={{ '--panggung-bg': tong.tint }}>
-            <div className="panggung-top" ref={panel}>
-              <div className="panggung-bin" data-pop>
-                <img src={`/svg/mascots/${tong.id === 'anorganik' ? 'rino' : tong.id === 'organik' ? 'orgi' : tong.id === 'b3' ? 'bebe' : tong.id === 'kertas' ? 'kiki' : 'resi'}-happy.svg`} alt={`${tong.name}, tempat sampah ${tong.kind}`} width="140" height="140" />
-              </div>
-              <div data-pop>
-                <h3 className="panggung-title">
-                  {tong.name}<span className="tong-kind" style={{ color: tong.accentText }}>{tong.kind}</span>
-                </h3>
-                <p className="panggung-say">“{tong.say}”</p>
-                <ul className="panggung-makan">
-                  {tong.items.map((it) => (
-                    <li key={it}>
-                      <img src={ICON(it)} alt="" width="26" height="26" loading="lazy" />
-                      {ITEM_NAME[it]}
-                    </li>
-                  ))}
-                </ul>
-                {tong.id === 'anorganik' && <NumberBadge className="tong-stat" value="450" unit="tahun" />}
-                <p className="panggung-fact">{tong.facts}</p>
-                <button
-                  type="button"
-                  className="text-link"
-                  onClick={() => {
-                    playPop()
-                    speak(`${tong.name}. ${tong.say}`)
-                  }}
-                >
-                  Bacakan
-                </button>
-              </div>
+        <div className="panggung" style={{ '--panggung-bg': tong.tint }}>
+          <div className="panggung-top" ref={panel} role="tabpanel" id={`tong-panel-${tong.id}`} aria-labelledby={`tong-tab-${tong.id}`} tabIndex={0}>
+            <div className="panggung-bin" data-pop>
+              <img src={`/svg/mascots/${tong.id === 'anorganik' ? 'rino' : tong.id === 'organik' ? 'orgi' : tong.id === 'b3' ? 'bebe' : tong.id === 'kertas' ? 'kiki' : 'resi'}-happy.svg`} alt={`${tong.name}, tempat sampah ${tong.kind}`} width="140" height="140" />
             </div>
-          </div>
-
-          <div className="strip" role="group" aria-label="Pilih tong">
-            {TONG.map((t, i) => (
+            <div data-pop>
+              <h3 className="panggung-title">
+                {tong.name}<span className="tong-kind" style={{ color: tong.accentText }}>{tong.kind}</span>
+              </h3>
+              <p className="panggung-say">“{tong.say}”</p>
+              <ul className="panggung-makan">
+                {tong.items.map((it) => (
+                  <li key={it}>
+                    <img src={ICON(it)} alt="" width="26" height="26" loading="lazy" />
+                    {ITEM_NAME[it]}
+                  </li>
+                ))}
+              </ul>
+              {tong.id === 'anorganik' && <NumberBadge className="tong-stat" value="450" unit="tahun" />}
+              <p className="panggung-fact">{tong.facts}</p>
               <button
                 type="button"
-                key={t.id}
-                className="strip-tap"
-                style={{ '--tint': t.tint }}
-                aria-pressed={i === active}
+                className="text-link"
                 onClick={() => {
                   playPop()
-                  setActive(i)
+                  speak(`${tong.name}. ${tong.say}`)
                 }}
               >
-                <img src={`/svg/bins/${t.id}.svg`} alt="" width="38" height="38" loading="lazy" />
-                {t.name.replace('Tong ', '')}
+                Bacakan
               </button>
-            ))}
+            </div>
           </div>
+        </div>
+
+        <div className="strip" role="tablist" aria-label="Pilih tong">
+          {TONG.map((t, i) => (
+            <button
+              type="button"
+              key={t.id}
+              role="tab"
+              id={`tong-tab-${t.id}`}
+              aria-selected={i === active}
+              aria-controls={`tong-panel-${t.id}`}
+              tabIndex={i === active ? 0 : -1}
+              className="strip-tap"
+              style={{ '--tint': t.tint }}
+              onClick={() => {
+                playPop()
+                setActive(i)
+              }}
+              onKeyDown={(event) => {
+                const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0
+                if (!step) return
+                event.preventDefault()
+                const next = (i + step + TONG.length) % TONG.length
+                setActive(next)
+                document.getElementById(`tong-tab-${TONG[next].id}`)?.focus()
+              }}
+            >
+              <img src={`/svg/bins/${t.id}.svg`} alt="" width="38" height="38" loading="lazy" />
+              {t.name.replace('Tong ', '')}
+            </button>
+          ))}
         </div>
       </div>
     </section>

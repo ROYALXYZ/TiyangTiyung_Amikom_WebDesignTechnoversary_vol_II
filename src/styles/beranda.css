@@ -34,6 +34,19 @@
   background: var(--color-mint);
 }
 
+/* Pelangi jejak ada DI BELAKANG seluruh isi seksi. Supaya benar-benar
+   terlihat, tiap band di dalam aliran ini wajib transparan: warnanya
+   dipindah ke ColorBandBackdrop yang duduk di z-index -1. */
+.beranda-flow > .band,
+.beranda-flow > .band.band-mint {
+  background: transparent;
+}
+/* Band di dalam aliran tidak membentuk stacking context sendiri, jadi latar
+   pita cukup turun ke z-index -1 (lihat ColorBandBackdrop `flat`) dan
+   lintasan di 0 tetap tergambar di depan warnanya. */
+
+.beranda .band > .panggung { position: relative; z-index: 2; }
+
 /* Pembungkus jejak: satu konteks posisi supaya SVG lintasan bisa
    melebar setinggi seluruh rangkaian seksi. Latar cream dipasang di sini,
    bukan di tiap band, supaya lintasan tidak tertutup lapisan opaque. */
@@ -42,9 +55,11 @@
   z-index: 0;
   background: var(--color-cream);
 }
-.beranda-flow > .band { position: relative; z-index: 1; }
-/* Teks seksi duduk di atas lintasan; lapisan dekorasi lain tetap di bawahnya. */
-.beranda-flow > .band > .band-in { position: relative; z-index: 3; }
+.beranda-flow > .band { position: relative; }
+
+/* `.band` tidak memakai z-index: itu memasang stacking context dan latar pita
+   di -1 akan terkurung di dalamnya. Isi seksi tetap di atas lintasan karena
+   Trail adalah elemen absolut tanpa z-index positif. */
 
 /* ---------- primitif ---------- */
 
@@ -488,32 +503,18 @@
   margin-top: clamp(30px, 3vw, 44px);
 }
 
-/* ---------- PIN STAGE I2: scroll memperkenalkan lima tong ---------- */
-
-/* Pin hanya di jalur smooth (atribut dipasang startMotion): tanpa Lenis,
-   section kembali mengalir normal dan sapuan lokal tidak dipakai. */
-:root[data-motion='smooth'] .beranda .band.tong-stage {
-  min-height: 220svh;
-  padding: 0;
+/* ---------- I2: panggung tong dipilih lewat tap, tidak lagi di-pin ---------- */
+/* Dulu seksi ini sepanjang 220svh dan tong berganti sendiri saat digulir.
+   Itu membuat halaman terasa macet dan menyembunyikan judul dari pembaca
+   yang menggulir cepat, jadi sapuan itu dibuang: kelima tong sekarang
+   hanya berganti saat ditekan. */
+.beranda .band.tong-stage {
+  min-height: 0;
+  padding: var(--space-7) clamp(20px, 5vw, 96px);
 }
+.tong-pin { position: relative; }
 
-:root[data-motion='touch'] .tong-pin,
-:root[data-motion='reduced'] .tong-pin { position: relative; }
-
-:root[data-motion='smooth'] .tong-pin {
-  position: sticky;
-  top: 0;
-  display: grid;
-  align-content: center;
-  min-height: 100svh;
-  width: 100%;
-}
-
-/* Pin selebar viewport; isi tetap memakai gutter band asli. */
-:root[data-motion='smooth'] .tong-pin > .band-in {
-  width: calc(100% - 2 * clamp(20px, 5vw, 96px));
-}
-/* panel masuk saat pertama kali muncul */
+/* panel masuk saat tongnya berganti */
 .panggung-top {
   animation: none;
 }
@@ -527,19 +528,8 @@
   100% { opacity: 1; translate: 0 0; }
 }
 
-/* tanpa pin: tinggi kembali normal, kelima tong dipilih manual */
-@media (max-width: 1023px), (max-height: 719px), (prefers-reduced-motion: reduce) {
-  :root[data-motion='smooth'] .beranda .band.tong-stage {
-    min-height: 0;
-    padding: var(--space-7) clamp(20px, 5vw, 96px);
-  }
-  .tong-pin { position: relative; }
-  :root[data-motion='smooth'] .tong-pin {
-    position: relative;
-    min-height: 0;
-    display: block;
-  }
-  .panggung-top { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  :root[data-motion='smooth'] .panggung-top { animation: none; }
 }
 
 .strip-tap {
