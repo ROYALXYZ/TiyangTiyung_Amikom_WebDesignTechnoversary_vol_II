@@ -102,7 +102,9 @@
 .beranda #jadi-ini > .band-in,
 .beranda #kenalan > :is(.band-in, .tong-pin) {
   position: relative;
-  z-index: 1;
+  /* 2, di atas `.trail` (1): sungai membentang di belakang isi, termasuk
+     judul, persis garis peta di balik legenda. */
+  z-index: 2;
 }
 
 @media (max-width: 700px) {
@@ -347,11 +349,11 @@
 
 .trail {
   position: absolute;
-  /* z-index 1: `.trail` adalah anak PERTAMA `.beranda-flow` dan semua band
-     saudaranya berposition: relative dengan z-index auto, jadi dengan
-     z-index 0 yang seri band dicat BELAKANGAN dan menutupi sungai.
-     Isi seksi tetap di atasnya lewat z-index sendiri (.band-in: 1,
-     .panggung: 2). */
+  /* z-index 1: `.band` memakai `isolation: isolate`, jadi `.art-band` (z=-1)
+     terkurung di dalam stacking context band itu sendiri dan band-nya dicat
+     sebagai satu blok di z=auto — dengan trail di 0, band opaque menutupi
+     sungai di seksi mana pun yang punya .art-band. Satu level di atas band,
+     dan isi seksi di atasnya lewat .band-in/.panggung (2). */
   z-index: 1;
   inset: 0;
   pointer-events: none;
