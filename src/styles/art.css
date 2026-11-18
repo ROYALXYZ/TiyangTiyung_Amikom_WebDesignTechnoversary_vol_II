@@ -102,9 +102,9 @@
 .beranda #jadi-ini > .band-in,
 .beranda #kenalan > :is(.band-in, .tong-pin) {
   position: relative;
-  /* 2, di atas `.trail` (1): sungai membentang di belakang isi, termasuk
+  /* 3, di atas `.trail` (2): sungai membentang di belakang isi, termasuk
      judul, persis garis peta di balik legenda. */
-  z-index: 2;
+  z-index: 3;
 }
 
 @media (max-width: 700px) {
@@ -349,12 +349,11 @@
 
 .trail {
   position: absolute;
-  /* z-index 1: `.band` memakai `isolation: isolate`, jadi `.art-band` (z=-1)
-     terkurung di dalam stacking context band itu sendiri dan band-nya dicat
-     sebagai satu blok di z=auto — dengan trail di 0, band opaque menutupi
-     sungai di seksi mana pun yang punya .art-band. Satu level di atas band,
-     dan isi seksi di atasnya lewat .band-in/.panggung (2). */
-  z-index: 1;
+  /* z-index 2: `.band` memakai `isolation: isolate` (motion.css), jadi
+     `.art-band` z=-1 terkurung di dalam stacking context band dan band-nya
+     dicat sebagai satu blok opaque. Satu level di atas `.band`, dan isi
+     seksi di atasnya lewat .band-in/.panggung (3). */
+  z-index: 2;
   inset: 0;
   pointer-events: none;
 }
@@ -363,8 +362,15 @@
   width: 100%;
   /* Tinggi ditulis inline oleh Trail.jsx dan HARUS sama dengan tinggi
      viewBox-nya: preserveAspectRatio="none" memetakan viewBox penuh ke
-     kotak elemen, jadi selisih 10% saja sudah menggeser seluruh sungai. */
-  overflow: visible;
+     kotak elemen, jadi selisih 10% saja sudah menggeser seluruh sungai.
+     `overflow: hidden` (bukan visible): garis yang ditarik ke luar kotak
+     5.481px memaksa Chromium membuat layer raksasa yang memotong pita. */
+  overflow: hidden;
+  /* Hulu masuk dari y negatif (di atas `.beranda-flow`) supaya air datang
+     dari luar layar. Dengan `overflow: hidden` bagian itu terpotong, dan
+     itulah yang diinginkan — tapi batas bawah viewBox tidak boleh ikut
+     memotong: jalur digambar ulang tiap resize, jadi simpan ruang. */
+  overflow-clip-margin: 0;
 }
 /* Lima path dengan dashoffset yang berubah tiap frame: beri tahu compositor
    supaya perubahannya tidak memicu repaint berulang. */
