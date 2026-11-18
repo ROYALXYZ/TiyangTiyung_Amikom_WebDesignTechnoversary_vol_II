@@ -1,4 +1,13 @@
-import React, { useId } from 'react'
+import React, { useEffect, useId, useRef } from 'react'
+import { onFrame, isReduced } from '../../lib/smooth'
+import fish from '../../assets/ocean/fish-bone.svg?raw'
+import bottle from '../../assets/ocean/plastic-bottle.svg?raw'
+import bag from '../../assets/ocean/plastic-bag.svg?raw'
+import glass from '../../assets/ocean/glass-bottle.svg?raw'
+import cup from '../../assets/ocean/plastic-cup.svg?raw'
+import cigarette from '../../assets/ocean/cigarette-butt.svg?raw'
+import foam from '../../assets/ocean/styrofoam-box.svg?raw'
+import wrapper from '../../assets/ocean/candy-wrapper.svg?raw'
 
 const ink = 'var(--art-ink, var(--color-ink, #1e293b))'
 const colors = {
@@ -9,6 +18,50 @@ const colors = {
   red: 'var(--art-red, var(--color-b3, #EF4444))',
   blue: 'var(--art-blue, var(--color-paper, #3B82F6))',
   grey: 'var(--art-grey, var(--color-residu, #64748B))',
+}
+
+// Original illustrations live in public/svg/items; local copies let Vite inline
+// their real paths at build time, keeping the sea visible without JavaScript.
+const oceanItems = [fish, bottle, bag, foam, glass, cup, wrapper, cigarette]
+const debrisPositions = [[48, 62, 72], [12, 40, 48], [29, 15, 47], [79, 15, 48], [67, 52, 47], [88, 88, 38], [5, 78, 42], [38, 30, 34]]
+
+export function WasteOcean() {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node || isReduced()) return
+    const hero = node.closest('.hero')
+    if (!hero) return
+    let visible = false
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+      node.classList.toggle('ocean-active', visible)
+    })
+    observer.observe(hero)
+    const remove = onFrame(y => {
+      if (!visible) return
+      const start = hero.getBoundingClientRect().top + y
+      const range = Math.max(hero.offsetHeight - window.innerHeight, window.innerHeight * .65)
+      const progress = Math.min(1, Math.max(0, (y - start) / range))
+      node.style.setProperty('--ocean-recede', `${progress}`)
+    })
+    return () => { observer.disconnect(); remove() }
+  }, [])
+
+  return <div ref={ref} className="waste-ocean" aria-hidden="true">
+    <svg viewBox="0 0 1200 400" preserveAspectRatio="none" className="waste-ocean-waves">
+      <path className="ocean-wave ocean-wave-back" d="M-100 100Q50 65 200 99T500 99T800 99T1100 99T1400 99V400H-100Z" />
+      <path className="ocean-wave ocean-wave-mid" d="M-100 158Q50 116 200 156T500 156T800 156T1100 156T1400 156V400H-100Z" />
+      <path className="ocean-wave ocean-wave-front" d="M-100 232Q50 196 200 230T500 230T800 230T1100 230T1400 230V400H-100Z" />
+    </svg>
+    <div className="ocean-debris">
+      {oceanItems.map((item, index) => {
+        const [x, y, size] = debrisPositions[index]
+        return <span key={index} className={`ocean-item ocean-item-${index}`} style={{ '--ocean-x': `${x}%`, '--ocean-y': `${y}%`, '--ocean-size': `${size}px` }} dangerouslySetInnerHTML={{ __html: item }} />
+      })}
+    </div>
+  </div>
 }
 
 const marks = [

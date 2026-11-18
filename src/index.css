@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
+  --color-ocean-depth: #7597a8;
   --font-display: 'Fredoka', ui-rounded, system-ui, sans-serif;
   --font-body: 'Nunito', ui-sans-serif, system-ui, sans-serif;
 

@@ -1316,7 +1316,7 @@
 .beranda .hero-pin {
   display: grid;
   align-items: center;
-  padding-bottom: 112px;
+  padding-bottom: max(96px, clamp(150px, 36vw, 220px));
   background: var(--color-mint);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 92px), 74% calc(100% - 30px), 42% 100%, 0 calc(100% - 46px));
 }
@@ -1324,7 +1324,7 @@
 .beranda #fakta-1 { padding-top: 100px; margin-top: -46px; }
 
 @media (max-width: 1023px) {
-  .beranda .hero-pin { min-height: 0; padding-bottom: 96px; }
+  .beranda .hero-pin { min-height: 0; padding-bottom: max(96px, clamp(150px, 36vw, 220px)); }
   .beranda .hero-art { order: 0; justify-items: start; }
   .beranda .panggung-top { grid-template-columns: 128px minmax(0, 1fr); justify-items: stretch; text-align: left; }
   .beranda .panggung-bin { width: 128px; }
