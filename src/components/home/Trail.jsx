@@ -30,12 +30,27 @@ const SPREAD = 0.55
 const RAINBOW = ['#EF4444', '#F59E0B', '#22C55E', '#3B82F6', '#8B5CF6']
 
 /**
- * Kurva hulu→hilir yang tidak pernah berbalik arah vertikal.
- * Tiap ruas satu cubic; semua pegangan y berada di dalam [a.y, b.y] sehingga
- * y monoton naik — dibaca sebagai aliran, bukan zig-zag. x dipegang di sumbu
- * a.x sampai 25% ruas dan baru menyapu ke b.x di 40% terakhir, jadi
- * penyeberangan terjadi sebagai belokan lebar, bukan siku.
+ * Aliran hulu→hilir: air berkelok, bukan siku.
+ *
+ * Versi lama hanya `C` vertikal lalu `L` horizontal, satu belokan keras per
+ * seksi pada amplitudo yang selalu sama — karena itu terbaca monoton lurus.
+ * Sekarang tiap ruas:
+ *
+ * 1. Turun sambil meliuk: dua cubic berurutan yang bergeser x menjauh lalu
+ *    mendekat (S halus), dengan amplitudo yang berubah tiap ruas sehingga
+ *    sungai melebar dan menyempit seperti air sungguhan.
+ * 2. Menyeberang di pita padding atas seksi tujuan — satu-satunya jalur
+ *    kosong karena seksi berimpit dan isi pertama mulai ~146px. Penyeberangan
+ *    tetap kurva, bukan `L`, jadi tak ada siku.
+ *
+ * Semua pegangan y tetap di dalam [a.y, b.y]: y monoton naik, tidak pernah
+ * berbalik, jadi tetap terbaca sebagai aliran.
  */
+
+// Amplitudo gelombang, `MEANDER` tidak lagi dipakai: variasi datang dari
+// jumlah gelombang per ruas (panjang ruas / 230px) dan dari fase `i % 3`,
+// jadi tidak ada dua ruas yang berombak identik.
+
 function buildRiver(marks) {
   if (marks.length < 2) return ''
   let d = `M ${marks[0].x} ${marks[0].y}`
@@ -43,13 +58,50 @@ function buildRiver(marks) {
     const a = marks[i]
     const b = marks[i + 1]
     const span = b.y - a.y
-    // Semua simpul sudah duduk di pita padding atas seksinya, jadi ruas
-    // cukup: turun di gutter a.x → menyeberang horizontal SETINGGI simpul b
-    // (di pita itu tidak ada isi) → selesai. Tidak ada diagonal yang bisa
-    // memotong judul atau bagan.
-    const bend = Math.max(Math.min(span * 0.2, 90), 1)
-    d += ` C ${a.x} ${a.y + bend} ${a.x} ${b.y - bend} ${a.x} ${b.y}`
-    d += ` L ${b.x} ${b.y}`
+    if (span <= 0) continue
+
+    const sign = a.side === 'left' ? -1 : 1
+
+    // Pita penyeberangan: 44px di atas tepi simpul tujuan, masih di dalam
+    // padding seksi berikutnya.
+    const laneY = b.y - Math.min(44, span * 0.3)
+    const run = laneY - a.y
+    if (run <= 0) {
+      d += ` L ${b.x} ${b.y}`
+      continue
+    }
+
+    // Liukan mengayun ke arah TEPI layar, tidak pernah ke dalam kolom isi.
+    // Ruas antar-seksi ~1200px; SATU lengkung 46px atas 1200px cuma miring 2°
+    // dan terbaca tegak. Jadi ruas dipecah jadi beberapa gelombang (~1
+    // lengkung per 230px turun), masing-masing terpisah dari garis simpul.
+    // Amplitudo dipotong sisa ruang ke tepi: simpul hanya ~57px dari tepi di
+    // 1440, ayunan 46px ke luar akan memotong pita pelangi.
+    // x jalur memakai satuan viewBox (1 = 1% lebar layar), jadi amplitudo
+    // dikonversi SEKALI di sini. `scale` = px per unit.
+    const scale = a.scale || 14.4
+    const cap = Math.min(46, a.room ?? 46) / scale
+    const amp = Math.min(cap, 1.9 + (i % 3) * 0.55)
+    const waves = Math.min(5, Math.max(1, Math.round(run / 230)))
+    const step = run / waves
+    for (let w = 0; w < waves; w += 1) {
+      // Tanda bergantian per gelombang: mengayun keluar, lalu kembali, lalu
+      // keluar lagi — itu yang membuat aliran bergelombang, bukan melengkung
+      // sekali lalu lurus.
+      const dir = (w % 2 === 0 ? 1 : -1) * sign
+      const y0 = a.y + step * w
+      const y1 = y0 + step
+      const bend = amp * dir
+      d += ` C ${a.x + bend} ${y0 + step * 0.42} ${a.x + bend * 0.35} ${y0 + step * 0.78} ${a.x} ${y1}`
+    }
+    // Penyeberangan: kurva lebar yang naik lalu turun, bukan garis horizontal.
+    // Lengkungan ini yang membuat ruas terbaca sebagai air melewati seksi,
+    // bukan sebagai garis pemisah di atas kartu.
+    const midX = (a.x + b.x) / 2
+    const arch = Math.min(span * 0.14, 46)
+    d += ` C ${midX} ${laneY - arch} ${midX} ${laneY - arch * 0.25} ${b.x} ${laneY}`
+    // Turun pendek ke simpul.
+    d += ` C ${b.x} ${laneY + (b.y - laneY) * 0.5} ${b.x} ${b.y} ${b.x} ${b.y}`
   }
   return d
 }
@@ -104,26 +156,44 @@ export default function Trail() {
       // tampak putus. Di bawah ~4% garis mulai terbaca sebagai border layar,
       // itu sebabnya simpul ditaruh di pita padding, bukan di tengah isi.
       const gutter = Math.max(16, Math.round(window.innerWidth * 0.04))
+      const w = ellipse.clientWidth || window.innerWidth
+      // Simpul tidak duduk di satu garis vertikal yang sama: tiap sisi punya
+      // tiga kedalaman berbeda. Kalau semuanya x-nya identik, aliran terbaca
+      // sebagai dua batang lurus di tepi layar. Variasi ini yang membuat
+      // sungai benar-benar berkelok dari hulu ke hilir.
+      const DEPTH = [10, 34, -4]
       const marks = TARGETS.map((sel, i) => {
         const el = flow.querySelector(sel)
         if (!el) return null
         const r = el.getBoundingClientRect()
+        const left = i % 2 === 0
+        const depth = DEPTH[Math.floor(i / 2) % DEPTH.length]
         // Simpul duduk di PITA PADDING atas seksi (tepi + 44px): seksi
         // berimpit dan isi pertamanya mulai ~146px, jadi pita itu kosong dan
         // ruas penyeberangan tidak pernah melintasi judul atau bagan.
+        const xPx = r.left + (left ? gutter + depth : r.width - gutter - depth)
+        // Sisa ruang ke tepi layar dalam PIXEL (sama satuan dengan `sway`), jadi
+        // liukan tidak pernah keluar kanvas: simpul kiri cuma ~57px dari tepi
+        // di 1440, dan ayunan 46px ke luar akan memotong pita pelangi.
+        const room = (left ? xPx : window.innerWidth - xPx) - (w * 0.012)
         return {
           y: Math.round(r.top + window.scrollY - flowTop) + 44,
-          x: r.left + (i % 2 === 0 ? gutter : r.width - gutter),
-          side: i % 2 === 0 ? 'left' : 'right',
+          x: xPx,
+          side: left ? 'left' : 'right',
+          room: Math.max(room, 0),
+          // Satu unit viewBox = `w/100` px. Dipakai mengubah amplitudo px ke
+          // satuan x jalur.
+          scale: w / 100,
         }
       }).filter(Boolean)
       if (marks.length < 2) return
 
-      // Hulu duduk di dalam hero: y negatif relatif ke flow, jadi garisnya
-      // benar-benar muncul dari atas halaman, bukan dari tepi seksi pertama.
-      // x-nya ditarik ke simpul pertama supaya aliran tidak menyeberang dua kali.
-      const w = ellipse.clientWidth || window.innerWidth
-      const head = { y: SOURCE_OFFSET(), x: (marks[0].x / w) * 100 }
+      // Hulu sungai duduk di atas simpul pertama, di gutter yang sama. Kalau
+      // x-nya di tengah kanvas, ruas pertama harus menyeberang melewati judul
+      // seksi pertama; kalau diwarisi simpul pertama, aliran turun lurus dari
+      // atas layar lalu langsung tersambung. Liukan ruas ini yang membuatnya
+      // tidak terbaca sebagai tiang.
+      const head = { y: SOURCE_OFFSET(), x: (marks[0].x / w) * 100, side: 'left', room: marks[0].room, scale: marks[0].scale }
       // Di sinilah `lastMarks` diisi; `ready` menandai pengisian pertama
       // supaya lightKnots() di akhir fungsi ini tidak membandingkan ke array
       // kosong (semua simpul jadi tetap redup).
