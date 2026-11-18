@@ -1,9 +1,11 @@
 // Selalu ter-mount. CSS yang menyembunyikan (dan meniadakan di touch/reduced).
 // Logo memakai path milik proyek sendiri (sama dengan Navbar) dan digambar
 // lewat stroke-dashoffset; pathLength="1" supaya tidak perlu getTotalLength().
+// Ponytail: overlay tidak pernah menangkap fokus — halaman di bawahnya sudah
+// interaktif, jadi aria-hidden saja tanpa focus trap.
 export default function Preloader() {
   return (
-    <div className="preloader" aria-hidden="true">
+    <div className="preloader" aria-hidden="true" inert>
       <svg
         className="preloader-logo"
         viewBox="0 0 40 40"

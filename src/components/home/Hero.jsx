@@ -1,6 +1,5 @@
 ﻿import { playPop } from '../../lib/sfx'
 import { speak } from '../../lib/speech'
-import ArtSlot from '../../lib/artSlot.jsx'
 import { BlobField } from '../art'
 
 const BINS = ['organik', 'anorganik', 'b3', 'kertas', 'residu']
@@ -55,10 +54,9 @@ export default function Hero() {
             <img className="hero-orgi" src="/svg/mascots/orgi-happy.svg" alt="Si Orgi, tong sampah organik, melambaikan tangan" width="300" height="300" />
             <div className="hero-bins" aria-hidden="true">
               {BINS.map((bin) => (
-                <img key={bin} src={`/svg/bins/${bin}.svg`} alt="" width="54" height="54" loading="lazy" />
+                <img key={bin} src={`/svg/bins/${bin}.svg`} alt="" width="54" height="54" />
               ))}
             </div>
-            <ArtSlot name="hero-doodle" className="hero-slot" />
           </div>
         </div>
       </div>

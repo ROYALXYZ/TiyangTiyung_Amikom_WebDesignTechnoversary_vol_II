@@ -1,0 +1,226 @@
+/* ===========================================================
+   RawArt + ambient motion.
+   Artwork from src/assets/svg (inline, so its own @keyframes run).
+   Rule of restraint: one ambient loop per section, all >= 2.2s.
+   =========================================================== */
+
+.raw-art {
+  display: block;
+  pointer-events: none;
+}
+
+.raw-art > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Generator output anchors rotation at the viewBox origin, which swings the
+   whole drawing. Re-anchor to the artwork's own box so it bobs in place. */
+.raw-art svg g g {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- section-corner art ---------- */
+/* viewBox is cropped to the figure at mount, so the wrapper only sets size. */
+.band-art {
+  position: absolute;
+  z-index: 0;
+  width: clamp(120px, 15vw, 230px);
+}
+
+.band-art--dino {
+  right: clamp(8px, 2vw, 36px);
+  bottom: clamp(90px, 12vw, 190px);
+  rotate: -4deg;
+}
+
+.band-art--pelangi {
+  right: clamp(12px, 4vw, 64px);
+  top: clamp(60px, 7vw, 110px);
+  width: clamp(110px, 13vw, 200px);
+}
+
+.band-art--matahari {
+  right: clamp(8px, 3vw, 48px);
+  top: clamp(52px, 6vw, 96px);
+  width: clamp(110px, 12vw, 185px);
+}
+
+.band-art--awan {
+  right: clamp(8px, 3vw, 52px);
+  top: clamp(46px, 5vw, 84px);
+  width: clamp(120px, 14vw, 210px);
+}
+
+.band-art--bebek {
+  display: none;
+}
+
+.band-art--tulang {
+  right: clamp(8px, 3vw, 44px);
+  bottom: clamp(150px, 18vw, 260px);
+  width: clamp(92px, 10vw, 150px);
+}
+
+/* Headline owns the top-left of these sections; keep art clear of the text lane. */
+.beranda #fakta-1,
+.beranda #fakta-2,
+.beranda #fakta-3,
+.beranda #jurus,
+.beranda #jadi-ini,
+.beranda #kenalan {
+  overflow: hidden;
+}
+
+.beranda #fakta-1 > .band-in,
+.beranda #fakta-2 > .band-in,
+.beranda #fakta-3 > .band-in,
+.beranda #jurus > .band-in,
+.beranda #jadi-ini > .band-in,
+.beranda #kenalan > :is(.band-in, .tong-pin) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 700px) {
+  .band-art {
+    width: 92px;
+    opacity: 0.9;
+  }
+
+  .band-art--dino {
+    right: 4px;
+    bottom: 34px;
+  }
+
+  .band-art--pelangi,
+  .band-art--matahari,
+  .band-art--awan {
+    top: auto;
+    right: 4px;
+    bottom: 10px;
+    width: 84px;
+  }
+
+  .band-art--tulang {
+    bottom: 10px;
+    width: 72px;
+  }
+}
+
+/* ---------- page art (Story / About / Play) ---------- */
+/* These pages use `.section-shell` + `.section-inner`, and motion.css caps
+   `.section-inner` at 1050-1240px. The gutter is thin for most viewports, so
+   art is anchored to the *section viewport* edge, not the text column, and
+   only shown where a gutter actually exists. */
+
+.page-art {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.page-art--kresek,
+.page-art--bumi,
+.page-art--kaleng {
+  right: clamp(12px, 3vw, 56px);
+}
+
+/* Play header carries Rino on the right; the bottle balances him on the left.
+   Bottle sits in the left gutter, so the copy column is padded clear of it —
+   otherwise the 90–140px art overlaps the h1/paragraph at desktop widths. */
+.page-art--botol {
+  left: clamp(12px, 3vw, 56px);
+  bottom: clamp(20px, 2.5vw, 52px);
+  width: clamp(90px, 8vw, 140px);
+  display: block;
+  opacity: 0.9;
+}
+
+@media (min-width: 1024px) {
+  [data-page='main'] > header .section-inner {
+    padding-left: clamp(120px, 12vw, 190px);
+  }
+}
+
+/* Below 1024px the art would eat the text column: drop it entirely. */
+@media (max-width: 1023px) {
+  .page-art--botol {
+    display: none;
+  }
+}
+
+.page-art--kresek { top: clamp(90px, 9vw, 150px); width: clamp(120px, 12vw, 180px); }
+.page-art--apel { top: clamp(70px, 7vw, 110px); width: clamp(100px, 9vw, 150px); right: clamp(12px, 3vw, 56px); }
+.page-art--kaleng {
+  bottom: auto;
+  top: clamp(70px, 7vw, 110px);
+  width: clamp(100px, 9vw, 150px);
+}
+.page-art--bumi { top: clamp(70px, 7vw, 110px); width: clamp(110px, 10vw, 165px); }
+
+/* Text column on these headers is capped at 1240px, so art in the gutter
+   collides with the illustration. Push it fully outside the column. */
+.page-art--bumi,
+.page-art--kresek {
+  right: clamp(2px, 0.6vw, 16px);
+}
+
+/* Only surfaces where the 1240px column leaves >= 120px of gutter each side. */
+@media (min-width: 1500px) {
+  .page-art { display: block; }
+}
+/* The 3R connector is a solid rule drawn behind the numbered discs.
+   A repeating gradient sweeps along it so the section never sits still. */
+
+.beranda #jurus .jurus-grid::after {
+  background-image: repeating-linear-gradient(
+    90deg,
+    currentColor 0 14px,
+    transparent 14px 28px
+  );
+  background-color: transparent;
+  border-top: 0;
+  height: 4px;
+  color: var(--color-forest);
+  opacity: 0.35;
+  animation: dashed-flow 9s linear infinite;
+}
+
+@keyframes dashed-flow {
+  to {
+    background-position: 280px 0;
+  }
+}
+
+/* Alur Sampah: the dashed route under the timeline drifts rightward. */
+.beranda .jalan-row::before {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #a8bdad 0 12px,
+    transparent 12px 24px
+  );
+  border-top: 0;
+  height: 4px;
+  animation: dashed-flow 11s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beranda #jurus .jurus-grid::after,
+  .beranda .jalan-row::before {
+    animation: none !important;
+  }
+
+  .beranda #jurus .jurus-grid::after {
+    background-image: none;
+    background-color: var(--color-forest);
+  }
+
+  .beranda .jalan-row::before {
+    background-image: none;
+    background-color: #a8bdad;
+  }
+}

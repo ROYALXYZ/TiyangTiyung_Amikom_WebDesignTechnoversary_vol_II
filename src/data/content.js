@@ -85,7 +85,7 @@ export const ABOUT = {
     'Lima sahabat — Orgi, Rino, Bebe, Kiki, dan Resi — datang untuk menemani anak-anak mengenal sampah dengan cara yang menyenangkan: bermain, bercerita, dan mencoba sendiri.',
   ],
   goldenAge:
-    'Usia TK dan SD adalah masa emas pembentukan kebiasaan. Kebiasaan memilah sampah yang ditanam sebelum usia 12 tahun cenderung bertahan sampai dewasa — jauh lebih murah daripada membersihkan TPA nanti.',
+    'Usia TK dan SD adalah masa emas pembentukan kebiasaan: kebiasaan yang ditanam sebelum usia 12 tahun cenderung menetap sampai dewasa, sehingga jauh lebih murah daripada membersihkan TPA nanti.',
   uxNotes: [
     'Warna cerah dan bentuk besar membantu anak mengenali tong sampah tanpa harus membaca.',
     'Tombol "Bacakan" memakai suara Bahasa Indonesia untuk anak yang belum lancar membaca.',
@@ -97,6 +97,27 @@ export const ABOUT = {
     article: 'Sampah: Pengertian, Jenis-Jenis, dan Cara Menanganinya',
     note: 'Seluruh data jenis sampah dan waktu penguraian di situs ini diadaptasi dari materi publik Waste4Change Indonesia.',
   },
+  // Peraturan yang mengikat pengelolaan sampah di Indonesia (mode orang tua & guru).
+  regulasi: [
+    {
+      id: 'uu-18-2008',
+      nama: 'UU No. 18 Tahun 2008',
+      tentang: 'Pengelolaan Sampah',
+      isi: 'Pengelolaan sampah dibagi menjadi dua kegiatan: pengurangan sampah (pembatasan timbulan, pendauran ulang, pemanfaatan kembali — 3R) dan penanganan sampah (pemilahan, pengumpulan, pengangkutan, pengolahan, pemrosesan akhir).',
+    },
+    {
+      id: 'pp-81-2012',
+      nama: 'PP No. 81 Tahun 2012',
+      tentang: 'Pengelolaan Sampah Rumah Tangga dan Sampah Sejenis Sampah Rumah Tangga',
+      isi: 'Mewajibkan produsen dan masyarakat memilah sampah sejak dari sumbernya, sebelum sampah diangkut dan diolah.',
+    },
+    {
+      id: 'perpres-97-2017',
+      nama: 'Perpres No. 97 Tahun 2017',
+      tentang: 'Jakstranas — Kebijakan dan Strategi Nasional Pengelolaan Sampah',
+      isi: 'Menargetkan pengurangan sampah 30% dan penanganan sampah 70% pada 2025.',
+    },
+  ],
   team: [
     { name: 'Laila Septiani Hidayat', role: 'UI/UX & Maskot Designer', emoji: '🎨' },
     { name: 'Ramadhan Hari Nugroho', role: 'Creative Frontend Developer', emoji: '💻' },

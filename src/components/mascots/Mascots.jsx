@@ -1,7 +1,8 @@
 import React from 'react'
 
 const ink = '#1E293B'
-const palette = { organik: '#22C55E', anorganik: '#F9BE38', b3: '#F56B63', kertas: '#5B9DF2', residu: '#93A1AE' }
+// Satu sumber warna per tong: sama dengan data/waste.js dan public/svg/bins/*.
+const palette = { organik: '#22C55E', anorganik: '#F59E0B', b3: '#EF4444', kertas: '#3B82F6', residu: '#64748B' }
 
 function Mascot({ type, className = '' }) {
   const color = palette[type]

@@ -4,7 +4,7 @@ import { playPop } from '../../lib/sfx'
 
 const bins = Object.values(BINS)
 const date = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-const font = '"Fredoka", "Plus Jakarta Sans", system-ui, sans-serif'
+const font = '"Fredoka", "Nunito", system-ui, sans-serif'
 
 function paintCertificate(ctx, name, avatar) {
   const { width: w, height: h } = ctx.canvas
@@ -52,7 +52,7 @@ function paintCertificate(ctx, name, avatar) {
     ctx.font = `700 ${size}px ${font}`
     size -= 2
   } while (ctx.measureText(name).width > 850 && size > 32)
-  ctx.fillStyle = avatar.color
+  ctx.fillStyle = '#1E293B'
   ctx.fillText(name, 540, 1000)
   ctx.strokeStyle = '#1E293B'
   ctx.lineWidth = 3
@@ -76,6 +76,7 @@ export default function HeroCertificate() {
   const [name, setName] = useState('')
   const [avatarId, setAvatarId] = useState('organik')
   const [error, setError] = useState('')
+  const [saved, setSaved] = useState('')
   const [saving, setSaving] = useState(false)
   const urls = useRef(new Map())
   const avatar = BINS[avatarId]
@@ -94,6 +95,7 @@ export default function HeroCertificate() {
     }
     if (saving) return
     setError('')
+    setSaved('')
     setSaving(true)
     try {
       await document.fonts.ready
@@ -114,6 +116,7 @@ export default function HeroCertificate() {
       link.click()
       link.remove()
       playPop()
+      setSaved('Sertifikat diunduh. Cek folder unduhanmu ya!')
       // Beri browser waktu menyelesaikan unduhan sebelum URL dilepaskan.
     } catch {
       setError('Sertifikat belum bisa disimpan. Coba lagi ya!')
@@ -129,18 +132,19 @@ export default function HeroCertificate() {
           <h2 className="font-display text-3xl sm:text-4xl">Sertifikat Pahlawan Bumi Cilik</h2>
           <p className="mt-2 mb-6">Tuliskan namamu, pilih teman Geng Pilah, lalu simpan sertifikatmu!</p>
           <label htmlFor="hero-certificate-name" className="mb-2 block font-display text-xl">Namamu siapa?</label>
-          <input id="hero-certificate-name" name="hero-name" type="text" autoComplete="given-name" maxLength={24} required value={name} onChange={(event) => { setName(event.target.value); if (error) setError('') }} placeholder="Tulis namamu di sini" aria-invalid={Boolean(error)} aria-describedby={error ? 'hero-certificate-error' : undefined} className="min-h-14 w-full rounded-2xl border-4 border-ink bg-white px-4 text-lg" />
-          <p className="mt-2 text-sm">Maksimal 24 huruf. Nama hanya dipakai untuk gambar sertifikatmu.</p>
+          <input id="hero-certificate-name" name="hero-name" type="text" autoComplete="given-name" maxLength={24} required value={name} onChange={(event) => { setName(event.target.value); if (error) setError(''); if (saved) setSaved('') }} placeholder="Tulis namamu di sini" aria-invalid={Boolean(error)} aria-describedby={`hero-certificate-hint${error ? ' hero-certificate-error' : ''}`} className="min-h-14 w-full rounded-2xl border-4 border-ink bg-white px-4 text-lg" />
+          <p id="hero-certificate-hint" className="mt-2 text-sm">Maksimal 24 huruf. Nama hanya dipakai untuk gambar sertifikatmu.</p>
           <fieldset className="mt-7"><legend className="mb-3 font-display text-xl">Pilih teman pahlawanmu</legend><div className="flex flex-wrap gap-3">{bins.map((bin) => <label key={bin.id} className={`flex min-h-16 min-w-24 cursor-pointer flex-col items-center justify-center rounded-2xl border-4 border-ink px-3 py-2 text-center font-display shadow-chunk-sm transition-all hover:-translate-y-0.5 active:translate-y-1 focus-within:ring-4 focus-within:ring-ink focus-within:ring-offset-2 ${avatarId === bin.id ? 'ring-4 ring-ink ring-offset-2' : ''}`} style={{ background: bin.soft }}><input type="radio" name="avatar" value={bin.id} checked={avatarId === bin.id} onChange={() => setAvatarId(bin.id)} className="sr-only" /><span aria-hidden="true" className="text-3xl">{bin.emoji}</span><span>{bin.name}</span><span aria-hidden="true" className="mt-1 h-2 w-9 rounded-full border border-ink" style={{ background: bin.color }} /></label>)}</div></fieldset>
-          <p id="hero-certificate-error" role="alert" className="mt-5 min-h-6 font-medium text-b3">{error}</p>
+          <p id="hero-certificate-error" role="alert" className="mt-5 min-h-6 font-medium text-red-700">{error}</p>
+          <p role="status" className="min-h-6 font-medium">{saved}</p>
           <button type="submit" disabled={saving} className="btn-chunk mt-3 min-h-14 w-full bg-organic px-5 text-lg disabled:opacity-60">{saving ? 'Sedang menyiapkan sertifikat...' : '⬇️ Simpan Sertifikat (PNG)'}</button>
         </form>
 
-        <div><h3 className="mb-3 font-display text-2xl">Lihat sertifikatmu</h3><div aria-label="Pratinjau sertifikat" className="mx-auto flex aspect-[4/5] w-full max-w-[440px] flex-col items-center justify-between overflow-hidden rounded-3xl border-4 border-ink bg-cream p-[5%] text-center shadow-chunk-sm" style={{ outline: `3px solid ${avatar.color}`, outlineOffset: '-12px' }}>
+        <div><h3 className="mb-3 font-display text-2xl">Lihat sertifikatmu</h3><div role="img" aria-label={`Pratinjau sertifikat untuk ${name.trim() || 'Nama Pahlawan'}, teman ${avatar.name}`} className="mx-auto flex aspect-[4/5] w-full max-w-[440px] flex-col items-center justify-between overflow-hidden rounded-3xl border-4 border-ink bg-cream p-[5%] text-center shadow-chunk-sm" style={{ outline: `3px solid ${avatar.color}`, outlineOffset: '-12px' }}>
           <div className="font-display text-[clamp(15px,3.5vw,28px)] font-bold tracking-wider">GENG PILAH</div>
           <div className="flex aspect-square w-[44%] items-center justify-center rounded-full border-4 border-ink text-[clamp(50px,13vw,110px)]" style={{ background: avatar.soft }} aria-hidden="true">{avatar.emoji}</div>
-          <div className="w-full"><p className="font-display text-[clamp(17px,4vw,32px)] leading-tight">SERTIFIKAT<br />PAHLAWAN BUMI CILIK</p><p className="mt-2 text-[clamp(10px,2vw,16px)]">Dengan bangga diberikan kepada</p><p className="mt-2 break-words border-b-2 border-ink pb-1 font-display text-[clamp(20px,5vw,42px)] font-bold leading-tight" style={{ color: avatar.color }}>{name.trim() || 'Nama Pahlawan'}</p><p className="mt-2 text-[clamp(9px,1.8vw,14px)]">Terima kasih sudah menjaga Bumi dengan memilah sampah!</p></div>
-          <div className="w-full"><p className="text-[clamp(10px,2vw,15px)]">{date}</p><div className="mt-2 flex justify-center gap-2">{bins.map((bin) => <span key={bin.id} aria-label={bin.bin} className="h-2 w-8 rounded-full border border-ink" style={{ background: bin.color }} />)}</div></div>
+          <div className="w-full"><p className="font-display text-[clamp(17px,4vw,32px)] leading-tight">SERTIFIKAT<br />PAHLAWAN BUMI CILIK</p><p className="mt-2 text-[clamp(10px,2vw,16px)]">Dengan bangga diberikan kepada</p><p className="mt-2 break-words border-b-2 border-ink pb-1 font-display text-[clamp(20px,5vw,42px)] font-bold leading-tight text-ink">{name.trim() || 'Nama Pahlawan'}</p><p className="mt-2 text-[clamp(9px,1.8vw,14px)]">Terima kasih sudah menjaga Bumi dengan memilah sampah!</p></div>
+          <div className="w-full"><p className="text-[clamp(10px,2vw,15px)]">{date}</p><div className="mt-2 flex justify-center gap-2">{bins.map((bin) => <span key={bin.id} role="img" aria-label={bin.bin} className="h-2 w-8 rounded-full border border-ink" style={{ background: bin.color }} />)}</div></div>
         </div></div>
       </div>
     </section>

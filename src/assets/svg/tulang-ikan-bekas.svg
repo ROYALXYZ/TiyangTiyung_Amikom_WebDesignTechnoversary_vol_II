@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" width="100%" height="100%">
+  <style>
+@keyframes art-bob {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-13deg) scale(1.04); }
+  75% { transform: rotate(13deg) scale(1.04); }
+}
+.art-bob { animation: art-bob 2.2s ease-in-out 0s infinite normal; transform-origin: 0px 0px;  }
+  </style>
+  <g transform="translate(400, 270) rotate(0)">
+    <g class="art-bob">
+      <g transform="scale(0.76)">
+        <path d="M -68 0 L 54 0" stroke="#1E1E1E" stroke-width="3.92" stroke-linecap="round" />
+        <path d="M -38 -32 Q -28 0 -38 32 M -14 -38 Q -4 0 -14 38 M 10 -34 Q 18 0 10 34 M 32 -24 Q 38 0 32 24" fill="none" stroke="#F3EFE6" stroke-width="6.16" stroke-linecap="round" />
+        <path d="M -38 -32 Q -28 0 -38 32 M -14 -38 Q -4 0 -14 38 M 10 -34 Q 18 0 10 34 M 32 -24 Q 38 0 32 24" fill="none" stroke="#1E1E1E" stroke-width="2.52" stroke-linecap="round" />
+        <path d="M -82 -26 L -48 0 L -82 26 C -92 10, -92 -10, -82 -26 Z" fill="#F3EFE6" stroke="#1E1E1E" stroke-width="2.8" stroke-linejoin="round" />
+        <polygon points="52,0 82,-28 72,0 82,28" fill="#CBD5E1" stroke="#1E1E1E" stroke-width="2.8" stroke-linejoin="round" />
+        <path d="M -74 -8 L -64 2 M -64 -8 L -74 2" stroke="#1E1E1E" stroke-width="2.38" stroke-linecap="round" />
+      </g>
+    </g>
+  </g>
+</svg>

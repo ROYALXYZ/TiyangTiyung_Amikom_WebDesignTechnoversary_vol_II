@@ -117,6 +117,29 @@
   line-height: 1.35;
 }
 
+/* One-line attribution under any numeric claim (Waste4Change / UU 18/2008). */
+.source-line {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-muted, #5a6b80);
+}
+
+.regulasi {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-muted, #5a6b80);
+}
+
+.regulasi strong {
+  color: var(--color-ink);
+}
+
 .node {
   display: grid;
   place-items: center;
@@ -612,7 +635,7 @@
   margin-top: 2px;
   font-family: var(--font-display);
   font-size: clamp(16px, 1.7vw, 20px);
-  color: var(--accent, var(--color-organic));
+  color: var(--accent-text, var(--color-leaf-ink));
 }
 
 .jalan-tag i {
@@ -645,7 +668,7 @@
   box-shadow: 0 4px 0 var(--color-ink);
   font-family: var(--font-display);
   font-size: 15px;
-  color: var(--color-paper);
+  color: var(--color-paper-ink);
 }
 
 .jalan-float {
@@ -655,6 +678,12 @@
   display: grid;
   justify-items: center;
   gap: 6px;
+}
+
+/* Placeholder stasiun isometrik selama chunk 279 kB diunduh: tinggi cadangan
+   supaya tidak ada lompatan layout, tapi tidak menampilkan apa pun. */
+.station-placeholder {
+  min-height: clamp(320px, 46vw, 520px);
 }
 
 .jalan-ring {

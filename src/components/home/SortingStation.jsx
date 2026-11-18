@@ -127,8 +127,8 @@ export default function SortingStation() {
         <g className="station-carrier"><g dangerouslySetInnerHTML={{ __html: art.carrierSvg }} /><g transform={art.carrier}><rect x="-9" y="-7" width="18" height="14" rx="1" fill="#fffdf7"/><g className="station-item-icon" transform="translate(-9 -7) scale(.28 .21)" dangerouslySetInnerHTML={face(selected)} /></g></g>
       </svg>
     </div>
-    <div className="station-footer"><span>Pilih tujuan</span><output aria-live="polite"><strong>{item.name} → {BINS[item.type].name}</strong><small>{item.fact.replace(/(\d) - (\d)/g, '$1–$2')}</small></output></div>
-    <div className="station-choices" aria-label="Lihat tujuan sampah">{categories.map((type, index) => <button type="button" key={type} aria-pressed={selected === index} onClick={() => select(index)} style={{ '--station-color': BINS[type].color }}>{BINS[type].bin}</button>)}</div>
+    <div className="station-footer"><span>Pilih tujuan</span><output><strong>{item.name} → {BINS[item.type].name}</strong><small>{item.fact.replace(/(\d) - (\d)/g, '$1–$2')}</small></output></div>
+    <div className="station-choices" role="group" aria-label="Lihat tujuan sampah">{categories.map((type, index) => <button type="button" key={type} aria-pressed={selected === index} onClick={() => select(index)} style={{ '--station-color': BINS[type].color }}>{BINS[type].bin}</button>)}</div>
     <figcaption>Satu barang melewati lintasan, lalu karusel memilih tong tujuannya. Pilih tong untuk melihat contohnya; permainan pilah ada di bagian berikutnya.</figcaption>
   </figure>
 }

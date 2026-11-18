@@ -14,8 +14,8 @@ export default function CleanPark() {
     if (picked.length === PARK_TRASH.length - 1) playFanfare()
   }
   return <section id="taman" className="section-shell bg-mint/85"><div className="section-inner grid items-start gap-10 lg:grid-cols-[.8fr_1.2fr]">
-    <div className="lg:sticky lg:top-28"><SectionHeading number="01" eyebrow="MISI PERTAMA" title="Taman kita butuh bantuan!" subtitle="Ada sampah berserakan. Ketuk satu per satu untuk membersihkan taman!"/>
-      <div className="reveal card-chunk inline-flex min-h-16 items-center gap-3 bg-white px-6 font-display text-lg font-bold"><span className="text-2xl">{done ? '🌟' : '🧹'}</span>{done ? 'Hebat! Taman bersih!' : `${picked.length} dari ${PARK_TRASH.length} sampah dibersihkan`}</div>
+    <div className="lg:sticky lg:top-28"><SectionHeading number="02" eyebrow="MISI PERTAMA" title="Taman kita butuh bantuan!" subtitle="Ada sampah berserakan. Ketuk satu per satu untuk membersihkan taman!"/>
+      <div className="reveal card-chunk inline-flex min-h-16 items-center gap-3 bg-white px-6 font-display text-lg font-bold" role="status"><span className="text-2xl">{done ? '🌟' : '🧹'}</span>{done ? 'Hebat! Taman bersih!' : `${picked.length} dari ${PARK_TRASH.length} sampah dibersihkan`}</div>
       {done && <button type="button" onClick={() => setPicked([])} className="mt-5 block min-h-14 rounded-2xl border-[3px] border-ink bg-anorganic px-5 font-display font-bold shadow-chunk-sm">Main lagi ↻</button>}
     </div>
     <div className={`park-scene reveal relative min-h-[440px] overflow-hidden rounded-[2.5rem] border-4 border-ink shadow-chunk-lg sm:min-h-[560px] ${done ? 'park-clean' : ''}`}>

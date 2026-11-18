@@ -64,7 +64,7 @@ export default function KasihMakanGame() {
   function showToast(message) {
     clearTimeout(toastTimer.current)
     setToast(message)
-    toastTimer.current = setTimeout(() => setToast(''), 5500)
+    toastTimer.current = setTimeout(() => setToast('Ayo, lanjut pilah sampahnya!'), 5500)
   }
 
   function animateBin(binId, kind) {
@@ -181,7 +181,7 @@ export default function KasihMakanGame() {
           .pilah-confetti { display: none; }
         }
       `}</style>
-      <div className="mb-6 flex flex-wrap gap-3" aria-label="Pilih tingkat permainan">
+      <div className="mb-6 flex flex-wrap gap-3" role="group" aria-label="Pilih tingkat permainan">
         {LEVELS.map((entry, index) => (
           <button key={entry.id} type="button" disabled={entry.id > progress.unlocked} onClick={() => startLevel(index)} aria-pressed={levelIndex === index} className={`min-h-14 rounded-2xl border-4 border-ink px-5 font-display text-base shadow-chunk-sm transition-all hover:-translate-y-0.5 active:translate-y-1 disabled:cursor-not-allowed disabled:opacity-45 ${levelIndex === index ? 'bg-mint' : 'bg-cream'}`}>
             {entry.stars} Level {entry.id} {entry.id > progress.unlocked ? '🔒' : progress.best[entry.id] ? '⭐'.repeat(progress.best[entry.id]) : ''}
@@ -192,7 +192,7 @@ export default function KasihMakanGame() {
       <div className="card-chunk mb-6 bg-cream p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div><span className="font-display text-xl sm:text-2xl">{level.stars} Level {level.id}: {level.title}</span><p className="text-sm">{level.subtitle}. {level.bins.length} tong sampah</p></div>
-          <div className="flex flex-wrap items-center gap-3 font-display"><span>Terpilah: {level.items.length - remaining.length}/{level.items.length}</span><span aria-label={`Skor ${score} poin`}>Poin: <span key={score} className="pilah-score">{score}</span></span></div>
+          <div className="flex flex-wrap items-center gap-3 font-display"><span>Terpilah: {level.items.length - remaining.length}/{level.items.length}</span><span>Poin: <span key={score} className="pilah-score">{score}</span></span></div>
         </div>
         <div role="progressbar" aria-label="Kemajuan memilah sampah" aria-valuemin={0} aria-valuemax={level.items.length} aria-valuenow={level.items.length - remaining.length} className="mt-4 h-5 overflow-hidden rounded-full border-2 border-ink bg-mint">
           <div className="h-full bg-organic transition-[width] duration-300" style={{ width: `${100 * (level.items.length - remaining.length) / level.items.length}%` }} />
@@ -205,7 +205,7 @@ export default function KasihMakanGame() {
       {completed ? (
         <div className="relative overflow-hidden rounded-3xl border-4 border-ink bg-mint p-6 text-center shadow-chunk-sm sm:p-10">
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">{Array.from({ length: 28 }, (_, index) => <span key={index} className="pilah-confetti absolute top-[-16px] h-3 w-2 rounded-sm" style={{ left: `${(index * 37) % 100}%`, background: Object.values(BINS)[index % 5].color, '--drift': `${(index % 5 - 2) * 45}px`, animationDelay: `${(index % 7) * 0.11}s` }} />)}</div>
-          <div className="relative"><p className="font-display text-4xl">Hore, Level {level.id} selesai!</p><p aria-label={`${earnedStars} dari 3 bintang`} className="my-4 text-5xl">{'⭐'.repeat(earnedStars)}{'☆'.repeat(3 - earnedStars)}</p><p>Hebat! Kamu sudah memilah {level.items.length} sampah. {mistakes === 0 ? 'Sempurna tanpa salah!' : 'Salah coba boleh, belajar terus!'}</p><div className="mt-5 flex flex-wrap justify-center gap-3"><button type="button" onClick={() => startLevel(levelIndex)} className="btn-chunk min-h-14 px-5">Main Lagi</button>{levelIndex < LEVELS.length - 1 && <button type="button" onClick={() => startLevel(levelIndex + 1)} className="btn-chunk min-h-14 bg-organic px-5">Level Berikutnya →</button>}</div></div>
+          <div className="relative"><p className="font-display text-4xl">Hore, Level {level.id} selesai!</p><p role="img" aria-label={`${earnedStars} dari 3 bintang`} className="my-4 text-5xl">{'⭐'.repeat(earnedStars)}{'☆'.repeat(3 - earnedStars)}</p><p>Hebat! Kamu sudah memilah {level.items.length} sampah. {mistakes === 0 ? 'Sempurna tanpa salah!' : 'Salah coba boleh, belajar terus!'}</p><div className="mt-5 flex flex-wrap justify-center gap-3"><button type="button" onClick={() => startLevel(levelIndex)} className="btn-chunk min-h-14 px-5">Main Lagi</button>{levelIndex < LEVELS.length - 1 && <button type="button" onClick={() => startLevel(levelIndex + 1)} className="btn-chunk min-h-14 bg-organic px-5">Level Berikutnya →</button>}</div></div>
         </div>
       ) : (
         <>
@@ -213,7 +213,7 @@ export default function KasihMakanGame() {
           <div className="mb-7 flex flex-wrap justify-center gap-3 rounded-3xl border-4 border-ink bg-cream p-4 sm:gap-4 sm:p-6">
             {remaining.map((id) => {
               const item = itemById(id)
-              return <button key={id} type="button" aria-label={`Pilih ${item.name} untuk dipilah`} aria-pressed={selected === id} onPointerDown={(event) => onPointerDown(event, id)} onPointerMove={onPointerMove} onPointerUp={(event) => finishPointer(event)} onPointerCancel={(event) => finishPointer(event, true)} onClick={() => { if (suppressClickRef.current) { suppressClickRef.current = false; return } setSelected(id) }} className={`min-h-16 min-w-24 select-none rounded-2xl border-4 border-ink px-3 py-2 font-display shadow-chunk-sm transition-[background-color,box-shadow] hover:bg-mint ${selected === id ? 'bg-mint ring-4 ring-organic ring-offset-2' : 'bg-white'}`} style={{ touchAction: 'none', position: 'relative' }}><span className="block text-3xl" aria-hidden="true">{item.emoji}</span><span className="block text-sm">{item.name}</span></button>
+              return <button key={id} type="button" aria-label={`Pilih ${item.name} untuk dipilah`} aria-pressed={selected === id} onPointerDown={(event) => onPointerDown(event, id)} onPointerMove={onPointerMove} onPointerUp={(event) => finishPointer(event)} onPointerCancel={(event) => finishPointer(event, true)} onClick={() => { if (suppressClickRef.current) { suppressClickRef.current = false; return } setSelected(id) }} className={`min-h-16 min-w-24 select-none rounded-2xl border-4 border-ink px-3 py-2 font-display shadow-chunk-sm transition-[background-color,box-shadow] hover:bg-mint ${selected === id ? 'bg-mint shadow-chunk' : 'bg-white'}`} style={{ touchAction: 'pan-y', position: 'relative' }}><span className="block text-3xl" aria-hidden="true">{item.emoji}</span><span className="block text-sm">{item.name}</span></button>
             })}
           </div>
           <h3 className="mb-3 font-display text-2xl">2. Beri makan tong yang tepat</h3>

@@ -28,19 +28,61 @@ function tick(time) {
 }
 
 function loop(time) {
+  // Ponytail: the frame chain parks itself when nothing is listening — no
+  // scroll effects registered and Lenis not gliding. A parked chain is revived
+  // by wake() (scroll, resize, wheel, onFrame registration, jumpTo).
+  // `frame` is cleared BEFORE tick so a wake() called from inside a tick
+  // callback schedules its own frame and survives; the park/continue decision
+  // then decides whether THIS frame continues the chain.
+  frame = 0
   tick(time)
-  requestAnimationFrame(loop)
+  if (frames.size || (lenis && lenis.isScrolling)) {
+    if (!frame) frame = requestAnimationFrame(loop)
+  } else {
+    idleSince = performance.now()
+  }
+}
+
+// Coarse keep-alive: while the chain is parked, a timer re-checks every 250ms
+// so effects that depend on scroll position cannot lag. A timer (not a rAF)
+// means an idle page really does cost zero frames — the whole point of parking.
+const IDLE_POLL = 250
+let frame = 0
+let idleSince = 0
+
+export function wake() {
+  if (frame) return
+  frame = requestAnimationFrame(loop)
+}
+
+function poll() {
+  if (!frame && performance.now() - idleSince > IDLE_POLL) wake()
+  window.setTimeout(poll, IDLE_POLL)
 }
 
 const PRELOADER_TOTAL = 1250
 
+// Preloader releases as soon as the real readiness signals land (fonts +
+// first hero paint), not on a fixed timer. The timer is only the ceiling.
 function bootPreloader() {
   const root = document.documentElement
   if (!smoothAllowed()) {
     root.classList.add('no-preloader', 'is-first-loaded')
     return
   }
-  window.setTimeout(() => root.classList.add('is-first-loaded'), PRELOADER_TOTAL)
+  let released = false
+  const release = () => {
+    if (released) return
+    released = true
+    root.classList.add('is-first-loaded')
+  }
+  const timeout = window.setTimeout(release, PRELOADER_TOTAL)
+  const fonts = document.fonts?.ready ?? Promise.resolve()
+  fonts.then(() => requestAnimationFrame(() => requestAnimationFrame(release)))
+  window.addEventListener('load', () => {
+    clearTimeout(timeout)
+    release()
+  }, { once: true })
 }
 
 export function startMotion() {
@@ -55,6 +97,15 @@ export function startMotion() {
   // heavier feel: lower lerp = longer glide; wheel multiplier reduces notch travel
   if (smoothAllowed()) lenis = new Lenis({ lerp: 0.075, wheelMultiplier: 0.9, autoRaf: false })
 
+  // Coarse poll: only alive while the frame chain is parked.
+  poll()
+
+  // Wake the chain on real user input instead of per-frame listeners.
+  for (const type of ['scroll', 'wheel', 'resize', 'keydown']) {
+    window.addEventListener(type, wake, { passive: true })
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) wake() })
+
   document.addEventListener('click', (event) => {
     const link = event.target.closest?.('a[href^="#"]')
     if (!link) return
@@ -68,9 +119,13 @@ export function startMotion() {
     const y = target.getBoundingClientRect().top + scrollPos() - 84
     if (lenis) lenis.scrollTo(y)
     else window.scrollTo(0, y)
+    // WCAG 2.4.1: melewati blok navigasi harus memindahkan fokus, bukan cuma
+    // menggulir. Tanpa ini fokus keyboard tetap tertinggal di tautan skip.
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1')
+    target.focus({ preventScroll: true })
   })
 
-  requestAnimationFrame(loop)
+  wake()
 
   if (import.meta.env.DEV) {
     window.__motion = { get lenis() { return lenis }, scrollPos, isTouch, isReduced, onFrame, tick }
@@ -79,6 +134,7 @@ export function startMotion() {
 
 export function onFrame(fn) {
   frames.add(fn)
+  wake()
   return () => frames.delete(fn)
 }
 

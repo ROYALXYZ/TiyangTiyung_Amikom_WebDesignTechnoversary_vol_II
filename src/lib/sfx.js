@@ -51,7 +51,20 @@ export const playFanfare = () => {
 
 export function setMuted(value) {
   muted = value
+  try {
+    localStorage.setItem('gengpilah:muted', value ? '1' : '0')
+  } catch {
+    // private mode / storage disabled: mute still applies to this session
+  }
 }
 export function isMuted() {
   return muted
 }
+export function readMuted() {
+  try {
+    return localStorage.getItem('gengpilah:muted') === '1'
+  } catch {
+    return false
+  }
+}
+muted = readMuted()

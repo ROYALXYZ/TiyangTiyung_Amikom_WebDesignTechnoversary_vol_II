@@ -1,7 +1,7 @@
-// ponytail: route focus uses one heading; upgrade to route-specific landmarks if needed.
+// ponytail: route focus uses the skip-link target; every route marks one main.
 export function focusRoute() {
-  const heading = document.querySelector('main h1, main h2')
-  if (!heading) return
-  heading.tabIndex = -1
-  heading.focus({ preventScroll: true })
+  const target = document.querySelector('#main-content') || document.querySelector('main')
+  if (!target) return
+  target.tabIndex = -1
+  target.focus({ preventScroll: true })
 }

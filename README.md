@@ -13,10 +13,10 @@ anak belajar memilah sampah tanpa membaca teks panjang.
 
 Isi utama:
 
-- **Beranda Petualangan** — jalur petualangan SVG yang tergambar mengikuti scroll ("Jejak
-  Petualangan"), taman interaktif yang bisa dibersihkan dengan satu sentuhan, perkenalan lima
-  maskot, game memilah sampah tiga level, dan pembuat sertifikat pahlawan yang dapat diunduh
-  sebagai PNG.
+- **Beranda Petualangan** — taman interaktif yang bisa dibersihkan dengan satu sentuhan,
+  perkenalan lima maskot tong sampah, peta waktu penguraian sampah, jurus 3R,
+  stasiun pemilah isometrik, game memilah sampah tiga level, dan pembuat sertifikat
+  pahlawan yang dapat diunduh sebagai PNG.
 - **Pojok Cerita & Kreasi** — komik bercabang "Petualangan Bobi si Botol Plastik", galeri
   sulap daur ulang, fakta sampah Indonesia berangka resmi, dan artikel edukasi bersumber
   Waste4Change.
@@ -41,10 +41,10 @@ Fitur yang dirancang khusus untuk anak:
 | --- | --- |
 | Build | Vite |
 | UI | React 19 + Tailwind CSS v4 |
-| Animasi | CSS keyframes + IntersectionObserver (POP), scroll-drawn SVG trail, Web Audio SFX |
+| Animasi | CSS keyframes + IntersectionObserver (POP), scroll-pin (`--progress` dari satu rAF loop Lenis), Web Audio SFX |
 | Ikon & maskot | SVG buatan sendiri (tanpa aset berbayar) |
 | Suara | Web Audio API + Web Speech API |
-| Font | Fredoka & Nunito (Google Fonts, gratis) |
+| Font | Fredoka & Nunito (SIL OFL), disajikan sendiri dari `public/fonts/` |
 
 Seluruh aset gratis dan dibuat sendiri; tidak ada template atau komponen berbayar.
 
@@ -75,17 +75,17 @@ permainan dan janji pahlawan disimpan di `localStorage` perangkat pengunjung.
 
 ```
 src/
-  App.jsx                 # rute + jalur petualangan SVG
+  App.jsx                 # rute + skip link + code splitting per halaman
   components/
     layout/               # navbar & footer
-    home/                 # hero, taman interaktif, galeri maskot
+    home/                 # hero, taman interaktif, peta waktu, stasiun pemilah
     mascots/              # lima karakter SVG + Bumi
     game/                 # game "Kasih Makan Geng Pilah" 3 level
     certificate/          # pembuat sertifikat PNG
-    story/  common/       # komponen halaman cerita & bersama
-  pages/                  # Pojok Cerita, Tentang, Surat Pahlawan
+    art/  common/         # komponen ilustrasi & bersama
+  pages/                  # Main, Pojok Cerita, Tentang, Surat Pahlawan
   data/                   # data sampah, level, dan konten edukasi
-  lib/                    # efek suara, suara Bahasa Indonesia, canvas
+  lib/                    # efek suara, suara Bahasa Indonesia, scroll, canvas
 ```
 
 ## Sumber Data
@@ -111,8 +111,8 @@ Nama Tim: **Tiyang Tiyung**
 
 ## Lisensi Aset
 
-Maskot, ilustrasi, dan ikon dibuat sendiri untuk kompetisi ini. Font Fredoka & Plus Jakarta
-Sans memakai lisensi SIL Open Font License. Tidak ada aset berbayar yang digunakan.
+Maskot, ilustrasi, dan ikon dibuat sendiri untuk kompetisi ini. Font Fredoka & Nunito memakai
+lisensi SIL Open Font License. Tidak ada aset berbayar yang digunakan.
 
 Figure isometrik di bagian "Ke Mana Sampah Setelah Kamu Buang?" dibangun dengan
 **Anatomy** (https://github.com/wheresryan22/anatomy, MIT License, Copyright (c) 2026 Ryan).
